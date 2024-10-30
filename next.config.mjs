@@ -20,6 +20,18 @@ const nextConfig = {
         hostname: 'sprint-fe-project.s3.ap-northeast-2.amazonaws.com',
         pathname: '/**', // 하위 경로의 모든 이미지 허용
       },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com', // 구글 프로필 이미지 도메인 추가
+        port: '', // 특정 포트를 허용하려면 설정
+        pathname: '/**', // 모든 경로를 허용
+      },
+      {
+        protocol: 'http',
+        hostname: 'k.kakaocdn.net', // 카카오 프로필 이미지 도메인 추가
+        port: '', // 특정 포트를 허용하려면 설정
+        pathname: '/**', // 모든 경로를 허용
+      },
     ],
   },
   webpack: (config) => {

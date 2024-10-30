@@ -37,12 +37,12 @@ export default function SignUpForm() {
     }
   };
 
-  // 닉네임 유효성 검사 함수
+  // 이름 유효성 검사 함수
   const validateNickname = () => {
     if (!nickname) {
-      setNicknameError('닉네임은 필수 입력입니다.');
-    } else if (nickname.length > 20) {
-      setNicknameError('닉네임은 최대 20자까지 가능합니다.');
+      setNicknameError('이름은 필수 입력입니다.');
+    } else if (nickname.length > 10) {
+      setNicknameError('이름은 최대 10자까지 가능합니다.');
     } else {
       setNicknameError('');
     }
@@ -145,7 +145,7 @@ export default function SignUpForm() {
           setEmailError('이미 사용중인 이메일입니다.');
         }
         if (error.response?.data.message === '이미 사용중인 닉네임입니다.') {
-          setNicknameError('이미 사용중인 닉네임입니다.');
+          setNicknameError('이미 사용중인 이름입니다.');
         }
         console.error('회원가입 중 에러 발생:', error);
       }
