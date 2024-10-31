@@ -1,4 +1,4 @@
-import type { TaskListDto } from '@/src/types/tasks/TaskListDto';
+import type { TaskListDto } from '@/src/types/tasks/taskListDto';
 
 export const MockData: TaskListDto[] = [
   {
