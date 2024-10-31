@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { TaskListDto, TaskDto } from '@/src/types/tasks/TaskListDto';
+import type { TaskListDto, TaskDto } from '@/src/types/tasks/taskListDto';
 
 import TaskCard from '../TaskCard';
 import { MockData } from '../mockdata';
