@@ -2,7 +2,7 @@ import { deleteGroupById } from '@/src/api/team/teamAPI';
 import { useTeamStore } from '@/src/stores/teamStore';
 import Button from '@components/@shared/Button';
 import { Modal } from '@components/@shared/Modal';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -17,6 +17,7 @@ export default function DeleteTeamModal({
 }: DeleteTeamModalProps) {
   const { id } = useTeamStore();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   // 그룹 삭제 Mutation
   const { mutate: deleteGroup } = useMutation({
@@ -25,6 +26,10 @@ export default function DeleteTeamModal({
       console.log('팀 정보 삭제 완료!');
       onClose();
       router.push('/myteam');
+    },
+    onSettled: () => {
+      // 쿼리 무효화 및 리패치
+      queryClient.invalidateQueries({ queryKey: ['user'] });
     },
     onError: (error) => {
       console.error('팀 삭제 실패:', error);

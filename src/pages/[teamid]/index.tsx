@@ -8,6 +8,7 @@ import MemberList from '@components/team/member/MemberList';
 import { useTeamStore } from '@/src/stores/teamStore';
 import { useEffect } from 'react';
 import Button from '@components/@shared/Button';
+import LoadingSpinner from '@components/@shared/LoadingSpinner';
 
 export default function TeamPage() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function TeamPage() {
     }
   }, [data, setTeamData]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;
   if (isError) return <div>Error loading data</div>;
 
   return (

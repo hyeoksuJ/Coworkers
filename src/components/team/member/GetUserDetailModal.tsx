@@ -45,11 +45,12 @@ export default function GetUserDetailModal({
     >
       <Modal.Wrapper array="column">
         <Modal.Header fontColor="primary">
-          <div className="relative mx-auto h-[46px] w-[46px] md:h-[52px] md:w-[52px]">
+          <div className="relative mx-auto h-[100px] w-[100px]">
             <Image
               src={img || '/icons/profile_large.svg'}
               alt="프로필 사진"
               fill
+              className="rounded-[16px] object-cover "
             />
           </div>
         </Modal.Header>

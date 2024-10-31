@@ -45,7 +45,7 @@ export default function MemberBox({
               src={userImage || '/icons/profile_large.svg'}
               alt="프로필 사진"
               fill
-              style={{ objectFit: 'cover' }}
+              className="rounded-[5px] object-cover"
             />
           </div>
 

@@ -2,6 +2,10 @@ import Image from 'next/image';
 import Button from '@components/@shared/Button';
 import { Modal } from '@components/@shared/Modal';
 
+import { deleteTask, TaskUrlParams } from '@/src/api/tasks/taskAPI';
+import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 interface DeleteTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -13,9 +17,30 @@ export default function DeleteTaskModal({
   onClose,
   taskName,
 }: DeleteTaskModalProps) {
-  const handleClick = () => {
-    console.log('DeleteTask 성공');
-    onClose();
+  const queryClient = useQueryClient();
+  const { taskListId, taskId } = useTaskListStore();
+
+  const { mutate: removeTask } = useMutation({
+    mutationFn: async ({ params }: { params: TaskUrlParams }) => {
+      return deleteTask(params);
+    },
+    onSuccess: () => {
+      onClose();
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks', taskListId] });
+    },
+    onError: (error) => {
+      console.error('patchTask 실패:', error);
+    },
+  });
+
+  const handleClick = async () => {
+    try {
+      await removeTask({ params: { taskId } });
+    } catch (error) {
+      console.error('removeTask 에러:', error);
+    }
   };
 
   return (
@@ -29,7 +54,7 @@ export default function DeleteTaskModal({
       fontArray="center"
       gap="24"
     >
-      <Modal.Wrapper array="column" className="gap-3">
+      <Modal.Wrapper array="column" className=" gap-3">
         <Modal.Header
           fontSize="16"
           fontColor="primary"
@@ -42,7 +67,7 @@ export default function DeleteTaskModal({
             height={24}
           />
           <p className="leading-normal">
-            &apos;{taskName}&apos; <br />할 일을 정말 삭제하시겠어요?
+            &apos;{taskName}&apos; <br />할 일을 삭제하시겠어요?
           </p>
         </Modal.Header>
         <Modal.Content fontColor="secondary" fontSize="14" fontArray="center">

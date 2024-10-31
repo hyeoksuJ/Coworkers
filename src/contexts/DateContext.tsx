@@ -13,8 +13,8 @@ interface DateContextProps {
 const DateContext = createContext<DateContextProps | undefined>(undefined);
 
 export function DateProvider({ children }: { children: ReactNode }) {
-  const today = dayjs(); // 오늘 날짜
-  const [date, setDate] = useState<dayjs.Dayjs>(today); // 현재 날짜 상태
+  const today = dayjs(); // 초기값, 오늘 날짜
+  const [date, setDate] = useState<dayjs.Dayjs>(today); // 선택한 날짜
 
   dayjs.locale('ko');
 

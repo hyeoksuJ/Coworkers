@@ -1,21 +1,39 @@
 import Image from 'next/image';
-// import Link from 'next/link';
+import { useUserStore } from '@/src/stores/useUserStore';
+import { useRouter } from 'next/router';
 
 import Button from '@components/@shared/Button';
 import ICON_PATHS from '@constants/iconPaths';
 import IMAGE_PATHS from '@constants/imagePaths';
 
 export default function Content() {
-  //  const { isLoggedIn, teamId } = useAuth();
+  const { user } = useUserStore();
+  const router = useRouter();
+
+  const handleRedirect = () => {
+    if (user) {
+      if (user.id) {
+        router.push('/myteam');
+      } else {
+        router.push('/addteam');
+      }
+    } else {
+      router.push('/signin');
+    }
+  };
 
   return (
     <section className="mx-4 flex flex-col gap-8 text-2lg-medium text-white md:mx-6 xl:mx-auto xl:w-[996px] xl:text-2xl-medium">
       <div className="my-10 mt-20 flex w-full justify-center md:my-20 xl:my-10 xl:mb-32">
-        {/* <Link href={isLoggedIn ? `/${teamId}` : '/login'} passHref> */}
-        <Button bgColor="gradient" shape="round" width={343} height={48}>
+        <Button
+          bgColor="gradient"
+          shape="round"
+          width={343}
+          height={48}
+          onClick={handleRedirect}
+        >
           지금 시작하기
         </Button>
-        {/* </Link> */}
       </div>
       <div className="gradient-border flex w-full flex-col rounded-40 px-[54px] shadow-[0_0_12px_2px_rgba(255,255,255,0.5)] md:px-[81px] xl:px-[174px] ">
         <div className="mx-auto flex flex-col items-center md:w-full md:flex-row md:justify-around">

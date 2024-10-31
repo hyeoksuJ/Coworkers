@@ -1,7 +1,9 @@
 import { useModal } from '@hooks/useModal';
 import { useTeamStore } from '@/src/stores/teamStore';
+import Link from 'next/link';
 import TaskBar from './TaskBar';
 import AddTaskListModal from './AddTaskListModal';
+import styles from '../../../styles/scroll.module.css';
 
 export default function TaskList() {
   const {
@@ -42,15 +44,17 @@ export default function TaskList() {
         </p>
       )}
 
-      <div className="flex flex-col gap-[10px]">
-        {taskLists.map((taskList) => (
-          <TaskBar
-            key={taskList.id}
-            name={taskList.name}
-            tasks={taskList.tasks}
-            id={taskList.id}
-          />
-        ))}
+      <div className={`max-h-[320px] overflow-y-auto ${styles.taskListScroll}`}>
+        <div className="flex flex-col gap-[10px]">
+          {taskLists.map((taskList) => (
+            <TaskBar
+              key={taskList.id}
+              name={taskList.name}
+              tasks={taskList.tasks}
+              id={taskList.id}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

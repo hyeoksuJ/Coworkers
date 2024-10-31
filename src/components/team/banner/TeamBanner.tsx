@@ -40,7 +40,7 @@ export default function TeamBanner() {
             src={imageUrl || '/icons/profile_default.png'}
             alt="팀 프로필 이미지"
             fill
-            style={{ objectFit: 'cover' }}
+            className="rounded-[16px] object-cover"
           />
         </div>
         <p className="break-words break-all text-xl-bold">{teamName}</p>

@@ -1,31 +1,78 @@
-import { authAxiosInstance } from '@libs/axios/axiosInstance';
+import type { TaskRequestBody } from '@/src/types/tasks/taskDto';
+import { apiCall } from '@utils/apiCall';
 
-// 특정 날짜 및 특정 목록에 해당하는 모든 할 일
-// 날짜 기본 값 당일
-export const getTasks = async (
-  groupId: number,
-  taskListId: number,
-  date: string
+/**
+ * @파라미터
+ * - Task URL에 groupId 및 taskListId가 파라미터로 작성되어 있지만, 받지 않는 경우가 있습니다.
+ * - get, patch, delete의 경우 필요하지 않습니다.
+ */
+
+export interface TaskUrlParams {
+  groupId?: number; // group 식별자
+  taskListId?: number; // taskList 식별자
+  taskId?: number; // task 식별자
+  id?: number; // order 식별자
+  recurringId?: number; // 반복 설정 식별자
+  date?: string;
+}
+
+// 공통 경로
+const getTaskPath = (
+  groupId?: number | undefined,
+  taskListId?: number | undefined
+) =>
+  `groups/${groupId === undefined ? 'groupId' : groupId}/task-lists/${taskListId === undefined ? 'taskListId' : taskListId}/tasks`;
+
+// 요청: groupId, taskListId X
+export const getTask = async (params: TaskUrlParams) => {
+  const { taskId, date } = params;
+  return apiCall('get', `${getTaskPath(undefined, undefined)}/${taskId}`, {
+    params: { date },
+  });
+};
+
+export const patchTask = async (
+  params: TaskUrlParams,
+  data: TaskRequestBody['patch']
 ) => {
-  const response = await authAxiosInstance.get(
-    `groups/${groupId}/task-lists/${taskListId}/tasks`,
-    {
-      params: { date },
-    }
+  const { taskId } = params;
+  return apiCall(
+    'patch',
+    `${getTaskPath(undefined, undefined)}/${taskId}`,
+    data
   );
-  return response.data;
 };
 
-// 특정 할 일
-export const getTask = async (taskId: number) => {
-  const response = await authAxiosInstance.get(
-    `/{teamId}/groups/{groupId}/task-lists/{taskListId}/tasks/${taskId}`
-  );
-  return response.data;
+export const deleteTask = async (params: TaskUrlParams) => {
+  const { taskId } = params;
+  return apiCall('delete', `${getTaskPath(undefined, undefined)}/${taskId}`);
 };
 
-export const deleteTask = async (taskId: number) => {
-  await authAxiosInstance.delete(
-    `groups/{groupId}/task-lists/{taskListId}/tasks/${taskId}`
+export const deleteRecurringTask = async (params: TaskUrlParams) => {
+  const { recurringId } = params;
+  return apiCall(
+    'delete',
+    `${getTaskPath(undefined, undefined)}/{taskId}/recurring/${recurringId}`
+  );
+};
+
+// 요청: groupId, taskListId O
+export const postTask = async (
+  params: TaskUrlParams,
+  data: TaskRequestBody['post']
+) => {
+  const { groupId, taskListId } = params;
+  return apiCall('post', `${getTaskPath(groupId, taskListId)}`, data);
+};
+
+export const patchTaskOrder = async (
+  params: TaskUrlParams,
+  data: TaskRequestBody['patchOrder']
+) => {
+  const { groupId, taskListId, id } = params;
+  return apiCall(
+    'patch',
+    `${getTaskPath(groupId, taskListId)}/tasks/${id}/order`,
+    data
   );
 };

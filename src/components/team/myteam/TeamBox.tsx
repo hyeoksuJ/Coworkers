@@ -15,7 +15,6 @@ export default function TeamBox({
   updatedAt,
 }: TeamBoxProps) {
   const lastActiveAt = getTimeAgo(updatedAt);
-  console.log(updatedAt);
 
   return (
     <div className="w-full">

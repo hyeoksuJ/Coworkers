@@ -20,7 +20,14 @@ interface Team {
 }
 
 export default function NavBarTeam({ data }: { data: User }) {
-  const [selectedTeam, setSelectedTeam] = useState<Option | null>(null);
+  const [selectedTeam, setSelectedTeam] = useState<Option | null>({
+    label: '팀 메뉴',
+    component: (
+      <Button bgColor="transparent" border="white" size="full" height={40}>
+        + 팀 추가하기
+      </Button>
+    ),
+  });
   const [isLogoOnlyPage, setIsLogoOnlyPage] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isLeftOpen, setIsLeftOpen] = useState(false);
@@ -123,6 +130,15 @@ export default function NavBarTeam({ data }: { data: User }) {
     // 현재 팀 ID와 선택한 팀의 ID가 다를 경우에만 상태 업데이트
     if (option.id !== Number(id)) {
       setSelectedTeam(option);
+    } else {
+      setSelectedTeam({
+        label: '팀 메뉴',
+        component: (
+          <Button bgColor="transparent" border="white" size="full" height={40}>
+            + 팀 추가하기
+          </Button>
+        ),
+      });
     }
   };
 

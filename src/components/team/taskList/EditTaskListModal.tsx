@@ -69,7 +69,7 @@ export default function EditTaskListModal({
       groupId: number;
       listId: string;
       name: string;
-    }) => patchTaskList(groupId, listId, name),
+    }) => patchTaskList({ groupId, id: taskListId }, { name }),
     onSuccess: () => {
       onClose();
     },

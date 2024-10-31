@@ -40,7 +40,7 @@ export interface TaskProps {
   writer: Writer; // 태스크 작성자
   doneBy: DoneBy; // 완료한 사용자
   commentCount: number; // 댓글 수
-  frequency: string; // 반복 주기 ('ONCE' 등)
+  frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'ONCE'; // 반복 주기 ('ONCE' 등)
 }
 
 export interface TaskListProps {
