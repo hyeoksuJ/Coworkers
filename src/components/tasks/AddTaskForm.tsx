@@ -8,7 +8,7 @@ import Dropdown, { Option } from '@components/@shared/Dropdown';
 import { Input, ScrollTextArea } from '@components/@shared/Input';
 import { REQUEST_INIT } from '@constants/initValues';
 import ToggleIcon from '@icons/toggle.svg';
-import type { TaskRequestDto } from '@/src/types/tasks/TaskListDto';
+import type { TaskRequestDto } from '@/src/types/tasks/taskListDto';
 
 import WeeklySelector from './WeeklySelector';
 import Calender from './Calender';
