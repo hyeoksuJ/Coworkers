@@ -1,7 +1,7 @@
 import CalenderIcon from '@icons/calendar_large.svg';
 import CommentIcon from '@icons/comment.svg';
 import RepeatIcon from '@icons/repeat.svg';
-import type { TaskDto } from '@/src/types/tasks/TaskListDto';
+import type { TaskDto } from '@/src/types/tasks/taskListDto';
 import { useTaskListContext } from '@/src/contexts/TaskListContext';
 
 import { useModal } from '@hooks/useModal';
