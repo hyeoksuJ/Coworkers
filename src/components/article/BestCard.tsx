@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import IcmediaIcon from 'public/icons/ic_medal.svg';
 import ProfileIcon from 'public/icons/profile_large.svg';
-import HeartIcon from 'public/icons/heart.svg';
 import { useCard } from '@hooks/article/useArticleCard';
 import useViewportSize from '@hooks/useViewportSize';
 import { useEffect, useState } from 'react';
@@ -9,6 +8,7 @@ import dayjs from 'dayjs';
 import ArrowRightIcon from 'public/icons/arrow_right.svg';
 import NetworkError from '@components/@shared/NetworkError';
 import { useRouter } from 'next/router';
+import Heart from './Heart';
 
 interface BestCardProps {
   keyword: string;
@@ -77,7 +77,7 @@ export default function BestCard({ keyword }: BestCardProps) {
       <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {cards?.map((card) => (
           <li key={card.id}>
-            <article className=" h-[178px] w-full rounded-xl border border-background-tertiary bg-background-secondary">
+            <article className=" relative h-[178px] w-full rounded-xl border border-background-tertiary bg-background-secondary">
               <div
                 className="mx-4 mb-4 mt-[9.5px] flex cursor-pointer flex-col"
                 onClick={() => handleDetalCard(card.id)}
@@ -117,12 +117,14 @@ export default function BestCard({ keyword }: BestCardProps) {
                     </span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <HeartIcon />
                     <span className="text-xs-regular text-slate-400 md:text-md-medium">
                       {card.likeCount}
                     </span>
                   </div>
                 </div>
+              </div>
+              <div className="absolute bottom-[15px] right-[30px]">
+                <Heart articleId={card.id} />
               </div>
             </article>
           </li>

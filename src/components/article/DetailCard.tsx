@@ -1,6 +1,5 @@
 import LargeKebabIcon from 'public/icons/kebab_large.svg';
 import CommentIcon from 'public/icons/comment.svg';
-import HeartIcon from 'public/icons/heart.svg';
 import { useDetailCard } from '@hooks/article/useArticleDetail';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
@@ -10,6 +9,7 @@ import Dropdown, { Option } from '@components/@shared/Dropdown';
 import { useModal } from '@hooks/useModal';
 import CommentForm from './CommentForm';
 import CardDeleteModal from './CommentCardDeletModal';
+import Heart from './Heart';
 
 export default function DetailCard() {
   const router = useRouter();
@@ -103,7 +103,7 @@ export default function DetailCard() {
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <HeartIcon />
+              <Heart articleId={data?.id} />
               <span className="text-xs-regular text-slate-400 md:text-md-medium">
                 {data?.likeCount}
               </span>

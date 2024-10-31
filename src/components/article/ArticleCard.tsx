@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import ProfileIcon from 'public/icons/profile_large.svg';
-import HeartIcon from 'public/icons/heart.svg';
 import ArrayDropdown from '@components/article/ArrayDropdown';
 import { useCards } from '@hooks/article/useArticleCard';
 import NetworkError from '@components/@shared/NetworkError';
@@ -9,6 +7,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
+import Heart from './Heart';
 
 interface ArticleCardProps {
   keyword: string;
@@ -29,13 +28,14 @@ interface Card {
 
 export default function ArticleCard({ keyword }: ArticleCardProps) {
   const [orderBy, setorderBy] = useState('recent');
+
   const {
     data: cards,
     isError,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useCards(6, orderBy, keyword || '');
+  } = useCards(10, orderBy, keyword || '');
   const router = useRouter();
 
   const handleDetalCard = (id: number) => {
@@ -69,56 +69,67 @@ export default function ArticleCard({ keyword }: ArticleCardProps) {
         <ArrayDropdown onSelect={handleSelect} />
       </div>
 
-      {cards?.pages.map((page) => (
-        <div className="mb-4" key={page[0].id}>
-          <ul className="grid gap-4 xl:grid-cols-2">
-            {page.map((card: Card) => (
-              <li key={card.id}>
-                <article className="h-[178px] w-full rounded-xl border border-background-tertiary bg-background-secondary">
-                  <div
-                    className="mx-4 mb-4 mt-6 cursor-pointer  "
-                    onClick={() => handleDetalCard(card.id)}
-                  >
-                    <div className="mb-10 flex justify-between">
-                      <div>
-                        <h3 className="mb-3 text-md-medium md:text-2lg-medium">
-                          {card.title}
-                        </h3>
-                        <span className="text-xs-regular text-slate-400 md:text-md-medium">
-                          {dayjs(card.createdAt).format('YYYY.MM.DD')}
-                        </span>
+      {cards?.pages.map((page) => {
+        const pageKey = page.map((pageCard: Card) => pageCard.id).join('-');
+        return (
+          <div className="mb-4" key={pageKey}>
+            <ul className="grid gap-4 xl:grid-cols-2">
+              {page.map((card: Card) => (
+                <li key={card.id}>
+                  <article className="relative h-[178px] w-full rounded-xl border border-background-tertiary bg-background-secondary">
+                    <div
+                      className="mx-4 mb-4 mt-6 cursor-pointer"
+                      onClick={() => handleDetalCard(card.id)}
+                    >
+                      <div className="mb-10 flex justify-between">
+                        <div>
+                          <h3 className=" mb-3 text-md-medium md:text-2lg-medium">
+                            {card.title}
+                          </h3>
+                          <span className="text-xs-regular text-slate-400 md:text-md-medium">
+                            {dayjs(card.createdAt).format('YYYY.MM.DD')}
+                          </span>
+                        </div>
+                        <div className="h-16 w-16 overflow-hidden rounded-lg">
+                          <Image
+                            src={card.image}
+                            width={64}
+                            height={64}
+                            alt="게시글 이미지"
+                            className="rounded-lg"
+                          />
+                        </div>
                       </div>
-                      <div className="h-16 w-16 overflow-hidden rounded-lg">
-                        <Image
-                          src={card.image}
-                          width={64}
-                          height={64}
-                          alt="게시글 이미지"
-                          className="rounded-lg"
-                        />
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Image
+                            src="/icons/profile_large.svg"
+                            width={32}
+                            height={32}
+                            alt="게시글 이미지"
+                            className="rounded-full"
+                          />
+                          <span className="text-xs-medium md:text-md-medium">
+                            {card.writer.nickname}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="text-xs-regular text-slate-400 md:text-md-medium">
+                            {card.likeCount}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <ProfileIcon />
-                        <span className="text-xs-medium md:text-md-medium">
-                          {card.writer.nickname}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <HeartIcon />
-                        <span className="text-xs-regular text-slate-400 md:text-md-medium">
-                          {card.likeCount}
-                        </span>
-                      </div>
+                    <div className="absolute bottom-[18px] right-[30px]">
+                      <Heart articleId={card.id} />
                     </div>
-                  </div>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+                  </article>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
       <div
         ref={ref}
         className={clsx({

@@ -3,7 +3,7 @@ import {
   fetchCommentadd,
 } from '@/src/api/article/articlecardAPI';
 import { Article } from '@/src/types/article/ArticleType';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface FetchCardDetailProps {
   articleId: number;
@@ -12,13 +12,14 @@ interface FetchCardDetailProps {
 
 export const useDetailCard = ({ articleId }: FetchCardDetailProps) => {
   return useQuery<Article>({
-    queryKey: ['DetailCard'],
+    queryKey: ['DetailCard', articleId],
     queryFn: () => fetchCardDetail({ articleId }),
     enabled: !!articleId,
   });
 };
 
 export const useCommentAdd = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
       articleId,
@@ -32,6 +33,9 @@ export const useCommentAdd = () => {
     },
     onError: (error) => {
       console.error('게시글 등록안됨', error);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['CommentCards'] });
     },
   });
 };
