@@ -5,12 +5,9 @@ import dayjs from 'dayjs';
 import { useTask } from '@hooks/myhistory/useTask';
 import Task from '@/src/types/myhistory/TaskType';
 import { useDeleteTask } from '@hooks/myhistory/useDeleteTask';
-import { useState } from 'react';
-import SideBar from '@components/@shared/SideBar';
 import NetworkError from '@components/@shared/NetworkError';
 
 export default function MyTask() {
-  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const mutation = useDeleteTask();
 
   const { data: taskResponse, isLoading, isError } = useTask();
@@ -63,16 +60,7 @@ export default function MyTask() {
     {} as Record<string, Task[]>
   );
 
-  const handleEditTask = () => {
-    setIsSideBarOpen(true); // 사이드바 열기
-  };
-
-  const handleCloseSideBar = () => {
-    setIsSideBarOpen(false); // 사이드바 닫기
-  };
-
   const basic = (taskId: number): Option[] => [
-    { label: '수정', component: <div onClick={handleEditTask}>수정하기</div> },
     {
       label: '삭제',
       component: <div onClick={() => handelDeleteTask(taskId)}>삭제하기</div>,
@@ -104,14 +92,6 @@ export default function MyTask() {
           ))}
         </div>
       ))}
-      <SideBar
-        position="right"
-        onClose={handleCloseSideBar}
-        isOpen={isSideBarOpen}
-        button="cancelbutton"
-      >
-        사이드바
-      </SideBar>
     </div>
   );
 }

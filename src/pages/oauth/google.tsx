@@ -7,8 +7,7 @@ import { useEffect, useState } from 'react';
 export default function GoogleOauth() {
   const router = useRouter();
   const { setTokens, updateUser } = useUserStore();
-  const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchGoogleOauthToken = async (
     code: string
@@ -44,8 +43,7 @@ export default function GoogleOauth() {
         try {
           const googleOauthToken = await fetchGoogleOauthToken(code);
           if (!googleOauthToken) {
-            setErrorMessage('googleOauthToken 가져오기 실패');
-            setLoading(false);
+            setIsLoading(false);
             return;
           }
 
@@ -73,16 +71,14 @@ export default function GoogleOauth() {
               }
             } catch (signInError) {
               console.error('구글 간편 로그인 API 호출 에러:', signInError);
-              setErrorMessage('구글 간편 로그인 중 오류가 발생했습니다.');
             }
           };
 
           await signInWithGoogle(googleOauthToken); // Google Id 토큰(JWT)을 가지고 간편 로그인
         } catch (error) {
-          setErrorMessage('로그인 중 오류 발생');
           console.error('로그인 처리 중 에러 발생:', error);
         } finally {
-          setLoading(false);
+          setIsLoading(false);
         }
       }
     };
@@ -90,10 +86,7 @@ export default function GoogleOauth() {
     handleOauthCallback();
   }, [router, setTokens, updateUser]);
 
-  return (
-    <div>
-      {loading && <div>구글 인증 중</div>}
-      {errorMessage && <div className="text-status-danger">{errorMessage}</div>}
-    </div>
-  );
+  if (isLoading) {
+    return null;
+  }
 }

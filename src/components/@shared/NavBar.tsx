@@ -17,7 +17,14 @@ export default function NavBar() {
 
   useEffect(() => {
     setIsClient(true);
-    const logoOnlyPages = ['/signin', 'signup', 'addteam', '/'];
+    const logoOnlyPages = [
+      '/signin',
+      'signup',
+      'addteam',
+      '/',
+      '/oauth/signup/google',
+      '/oauth/signup/kakao',
+    ];
     setIsLogoOnlyPage(logoOnlyPages.includes(router.pathname));
   }, [router.pathname]);
 

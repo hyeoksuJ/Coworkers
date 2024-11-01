@@ -30,7 +30,7 @@ const frequencyOptions: Option[] = [
 
 export default function AddTaskForm({ onClose }: AddTaskFormProps) {
   const queryClient = useQueryClient();
-  const { date: contextDate, getCurrentMonth } = useDate();
+  const { inputDate, getCurrentMonth } = useDate();
   const { groupId, taskListId } = useTaskListStore();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFrequency, setSelectedFrequency] = useState<Option>(
@@ -45,7 +45,7 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
     mode: 'onChange',
     defaultValues: {
       ...TASK_REQUEST_INIT.POST,
-      startDate: toKSTISOString(contextDate),
+      startDate: toKSTISOString(inputDate),
     },
   });
 

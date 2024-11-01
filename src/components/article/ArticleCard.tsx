@@ -81,9 +81,9 @@ export default function ArticleCard({ keyword }: ArticleCardProps) {
                       className="mx-4 mb-4 mt-6 cursor-pointer"
                       onClick={() => handleDetalCard(card.id)}
                     >
-                      <div className="mb-10 flex justify-between">
-                        <div>
-                          <h3 className=" mb-3 text-md-medium md:text-2lg-medium">
+                      <div className=" mb-10 flex justify-between">
+                        <div className="w-[230px] overflow-hidden md:w-[480px]">
+                          <h3 className=" mb-3 max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-md-medium md:text-2lg-medium">
                             {card.title}
                           </h3>
                           <span className="text-xs-regular text-slate-400 md:text-md-medium">

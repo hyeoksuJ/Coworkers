@@ -3,6 +3,7 @@ import {
   UserPassword,
   UserPasswordCheck,
   UserProfileChange,
+  UserProfileNickname,
 } from '@/src/types/mysetting/settingData';
 
 // 계정설정 페이지의 프로필이미지, 이름, 이메일 가져옴
@@ -15,6 +16,16 @@ export const fetchUserData = async () => {
 export const fetchProfileImage = async ({ image }: UserProfileChange) => {
   const response = await authAxiosInstance.patch('user', {
     image,
+  });
+  return response.data;
+};
+
+// 프로필 닉네임 변경
+export const fetchProfileNickname = async ({
+  nickname,
+}: UserProfileNickname) => {
+  const response = await authAxiosInstance.patch('user', {
+    nickname,
   });
   return response.data;
 };

@@ -6,8 +6,7 @@ import { useEffect, useState } from 'react';
 export default function KakaoOauth() {
   const router = useRouter();
   const { setTokens, updateUser } = useUserStore();
-  const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const handleOauthCallback = async () => {
@@ -42,16 +41,14 @@ export default function KakaoOauth() {
               }
             } catch (signInError) {
               console.error('카카오 간편 로그인 API 호출 에러:', signInError);
-              setErrorMessage('카카오 간편 로그인 중 오류가 발생했습니다.');
             }
           };
 
           await signInWithKakao(code); // Kakao 인가 코드를 가지고 간편 로그인
         } catch (error) {
-          setErrorMessage('로그인 중 오류 발생');
           console.error('로그인 처리 중 에러 발생:', error);
         } finally {
-          setLoading(false);
+          setIsLoading(false);
         }
       }
     };
@@ -59,10 +56,7 @@ export default function KakaoOauth() {
     handleOauthCallback();
   }, [router, setTokens, updateUser]);
 
-  return (
-    <div>
-      {loading && <div>카카오 인증 중</div>}
-      {errorMessage && <div className="text-status-danger">{errorMessage}</div>}
-    </div>
-  );
+  if (isLoading) {
+    return null;
+  }
 }

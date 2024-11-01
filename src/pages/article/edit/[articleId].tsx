@@ -2,7 +2,7 @@ import Button from '@components/@shared/Button';
 import { Input, ScrollTextArea } from '@components/@shared/Input';
 import { Modal } from '@components/@shared/Modal';
 import ArticleImageInput from '@components/article/NewArticleImage';
-import { useDetailCard } from '@hooks/article/useArticleDetail';
+import { useDetailCard } from '@hooks/article/useCommentAdd';
 import { useEditArticle } from '@hooks/article/useEditArticle';
 import { useModal } from '@hooks/useModal';
 import { useRouter } from 'next/router';

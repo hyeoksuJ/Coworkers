@@ -46,3 +46,7 @@ export interface UserPasswordCheck {
 export interface UserProfileChange {
   image: File | string;
 }
+
+export interface UserProfileNickname {
+  nickname: string;
+}

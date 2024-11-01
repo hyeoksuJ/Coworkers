@@ -4,15 +4,18 @@ import { useModal } from '@hooks/useModal';
 import AlertIcon from 'public/icons/alert.svg';
 import Button from '@components/@shared/Button';
 import { useUserDelete } from '@hooks/mysetting/useUserDelete';
+import { useRouter } from 'next/router';
 
 export default function RemoveAccount() {
   const { isOpen, onOpen, onClose } = useModal();
-
+  const router = useRouter();
   const mutation = useUserDelete();
 
   const handleUserDelete = () => {
     mutation.mutate();
     onClose();
+    router.push('/signin');
+    localStorage.removeItem('userStorage');
   };
 
   return (

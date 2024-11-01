@@ -14,6 +14,7 @@ import {
 } from '@components/@shared/createTeamOption';
 import Menu from 'public/icons/menu.svg';
 import Link from 'next/link';
+import { useUserStore } from '@/src/stores/useUserStore';
 import Button from './Button';
 import SideBar from './SideBar';
 import TeamItem from './TeamItem';
@@ -90,7 +91,14 @@ export default function NavBarTeam({ data }: { data: User }) {
 
   useEffect(() => {
     setIsClient(true);
-    const logoOnlyPages = ['/signin', 'signup', 'addteam', '/'];
+    const logoOnlyPages = [
+      '/signin',
+      'signup',
+      'addteam',
+      '/',
+      '/oauth/signup/google',
+      '/oauth/signup/kakao',
+    ];
     setIsLogoOnlyPage(logoOnlyPages.includes(router.pathname));
   }, [router.pathname]);
 
@@ -122,6 +130,19 @@ export default function NavBarTeam({ data }: { data: User }) {
   const handleAddTeam = () => {
     addOpenModal();
     setIsLeftOpen(false);
+  };
+
+  /**
+   * 네비게이션 바의 로고를 클릭 시 랜딩 페이지로 이동은 기존과 동일, Link 태그에서 button 태그로 변경
+   * 간편 로그인 후 닉네임 설정 페이지에서 네비게이션 바의 로고를 클릭 시 간편 로그인 로그아웃
+   * 닉네임이 10자를 초과 시 간편 로그인 신규 유저로 간주 => 10자 이하로 제한
+   */
+  const handleLogoutAndRedirect = () => {
+    const { user, logout } = useUserStore.getState();
+    if (user && user.nickname?.length > 10) {
+      logout();
+    }
+    router.push('/');
   };
 
   return (
@@ -165,14 +186,14 @@ export default function NavBarTeam({ data }: { data: User }) {
           </nav>
         </SideBar>
       </div>
-      <Link href="/">
+      <button type="button" onClick={handleLogoutAndRedirect}>
         <div className="block max-xl:hidden">
           <Image src={PCLogo} alt="로고" width={158} height={32} />
         </div>
         <div className="hidden max-xl:block">
           <Image src={PCLogo} alt="로고" width={102} height={20} />
         </div>
-      </Link>
+      </button>
       {!isLogoOnlyPage && (
         <>
           <div className="max-md:hidden">

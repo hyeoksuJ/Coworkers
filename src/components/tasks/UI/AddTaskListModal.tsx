@@ -20,11 +20,15 @@ export default function AddTaskListModal({
   onClose,
 }: AddTaskListModalProps) {
   const queryClient = useQueryClient();
-  const { groupId } = useTaskListStore();
+  const { taskLists, groupId } = useTaskListStore();
   const {
     register,
+    watch,
     handleSubmit,
-    formState: { isValid },
+    getValues,
+    formState: { errors },
+    setError,
+    clearErrors,
   } = useForm<TaskListRequestBody['post']>({
     mode: 'onChange',
     defaultValues: {
@@ -61,6 +65,28 @@ export default function AddTaskListModal({
     onClose();
   };
 
+  // 중복 이름 유효성 검사
+  const handleBlur = () => {
+    const name = getValues('name');
+    const isDuplicate = taskLists.some((taskList) => taskList.name === name);
+
+    if (!name) {
+      setError('name', {
+        type: 'manual',
+        message: '목록 이름은 필수 입력 사항입니다.',
+      });
+    } else if (isDuplicate) {
+      setError('name', {
+        type: 'manual',
+        message: '이미 존재하는 목록 이름입니다.',
+      });
+    } else {
+      clearErrors('name');
+    }
+  };
+
+  const nameValue = watch('name');
+
   return (
     <Modal
       isOpen={isOpen}
@@ -86,9 +112,15 @@ export default function AddTaskListModal({
             label="목록 이름"
             placeholder="목록 이름을 입력해주세요."
             inputProps={{
-              ...register('name', { required: '제목은 필수 입력 사항입니다.' }),
+              ...register('name', {
+                required: '목록 이름은 필수 입력 사항입니다.',
+                onBlur: handleBlur,
+              }),
             }}
           />
+          {errors.name && (
+            <p className="pt-2 text-sm text-red-500">{errors.name.message}</p>
+          )}
         </Modal.Content>
       </Modal.Wrapper>
       <Modal.Footer>
@@ -96,7 +128,7 @@ export default function AddTaskListModal({
           size="full"
           type="submit"
           onClick={handleSubmit(onSubmit)}
-          disabled={!isValid}
+          disabled={!nameValue || !!errors.name}
         >
           만들기
         </Button>

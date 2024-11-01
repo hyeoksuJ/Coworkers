@@ -1,15 +1,17 @@
 import LargeKebabIcon from 'public/icons/kebab_large.svg';
 import CommentIcon from 'public/icons/comment.svg';
-import { useDetailCard } from '@hooks/article/useArticleDetail';
+import { useDetailCard } from '@hooks/article/useCommentAdd';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import NetworkError from '@components/@shared/NetworkError';
 import Dropdown, { Option } from '@components/@shared/Dropdown';
+import { useUserData } from '@hooks/mysetting/useUserData';
 import { useModal } from '@hooks/useModal';
 import CommentForm from './CommentForm';
-import CardDeleteModal from './CommentCardDeletModal';
+import CardDeleteModal from './ArticleCardDeletModal';
 import Heart from './Heart';
+import NoAccessModal from './NoAccessModal';
 
 export default function DetailCard() {
   const router = useRouter();
@@ -20,9 +22,17 @@ export default function DetailCard() {
     onClose: DeleteCloseModal,
   } = useModal();
 
+  const { data: UserData } = useUserData();
+
   const { data, isLoading, isError } = useDetailCard({
     articleId: Number(articleId),
   });
+
+  const {
+    isOpen: NoAccessModalIsOpen,
+    onClose: NoAccessModalCloseModa,
+    onOpen: NoAccessModalOpenModal,
+  } = useModal();
 
   if (isLoading) return <p>Loading...</p>;
   if (isError)
@@ -34,7 +44,11 @@ export default function DetailCard() {
 
   const handleSelect = (option: Option) => {
     if (option.label === '삭제하기') {
-      DeleteOpenModal();
+      if (UserData?.id === data?.writer.id) {
+        DeleteOpenModal();
+      } else {
+        NoAccessModalOpenModal();
+      }
     } else {
       router.push(`/article/edit/${articleId}`);
     }
@@ -121,6 +135,10 @@ export default function DetailCard() {
         isOpen={DeleteIsOpen}
         onClose={DeleteCloseModal}
         articleId={articleId}
+      />
+      <NoAccessModal
+        isOpen={NoAccessModalIsOpen}
+        onClose={NoAccessModalCloseModa}
       />
     </>
   );

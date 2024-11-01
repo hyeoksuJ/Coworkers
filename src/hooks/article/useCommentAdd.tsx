@@ -36,6 +36,7 @@ export const useCommentAdd = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['CommentCards'] });
+      queryClient.invalidateQueries({ queryKey: ['DetailCard'] });
     },
   });
 };

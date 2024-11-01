@@ -35,3 +35,8 @@ div.selectedDay {
 .day {
   color: white;
 }
+
+.disabledDay {
+  pointer-events: none;
+  color: #64748b;
+}

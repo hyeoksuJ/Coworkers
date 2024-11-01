@@ -31,18 +31,28 @@ export default function Calender({
   onDateChange,
   isInput = false,
 }: CalenderProps) {
-  const { date: contextDate, setDate, today } = useDate();
+  const { date: contextDate, setInputDate, setDate, today } = useDate();
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs(contextDate));
   const [displayedMonth, setDisplayedMonth] = useState(dayjs(contextDate));
   const { isMobile } = useViewportSize();
 
   const handleDateChange = (newDate: Date | null) => {
     if (newDate) {
-      const dayjsDate = dayjs(newDate); // Date를 Dayjs로 변환
-      setSelectedDate(dayjsDate); // 선택된 날짜 업데이트
-      setDate(dayjsDate); // 선택된 날짜 Context에 업데이트
+      const dayjsDate = dayjs(newDate);
+      const isBeforeToday = dayjsDate.isBefore(dayjs(), 'day');
+      if (isInput && isBeforeToday) {
+        return;
+      }
+      setSelectedDate(dayjsDate);
+
+      if (isInput) {
+        setInputDate(dayjsDate);
+      } else {
+        setDate(dayjsDate);
+      }
+
       if (onDateChange) {
-        onDateChange(dayjsDate); // 선택된 날짜 부모 컴포넌트에 전달
+        onDateChange(dayjsDate);
       }
       onClose();
     }
@@ -94,6 +104,7 @@ export default function Calender({
         const day = dayjs(date);
         const isDisplayedMonth = day.isSame(displayedMonth, 'month');
         const isToday = day.isSame(today, 'day');
+        const isBeforeToday = day.isBefore(today, 'day');
         const isSelected =
           day.isSame(selectedDate, 'month') &&
           day.date() === selectedDate.date();
@@ -106,6 +117,9 @@ export default function Calender({
         }
         if (isSelected) {
           return styles.selectedDay;
+        }
+        if (isInput && isBeforeToday) {
+          return styles.disabledDay;
         }
         return styles.day;
       }}

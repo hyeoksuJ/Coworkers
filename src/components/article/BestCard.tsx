@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import IcmediaIcon from 'public/icons/ic_medal.svg';
-import ProfileIcon from 'public/icons/profile_large.svg';
 import { useCard } from '@hooks/article/useArticleCard';
 import useViewportSize from '@hooks/useViewportSize';
 import { useEffect, useState } from 'react';
@@ -111,7 +110,13 @@ export default function BestCard({ keyword }: BestCardProps) {
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <ProfileIcon />
+                    <Image
+                      src="/icons/profile_large.svg"
+                      width={32}
+                      height={32}
+                      alt="게시글 이미지"
+                      className="rounded-full"
+                    />
                     <span className="text-xs-medium md:text-md-medium">
                       {card.writer.nickname}
                     </span>

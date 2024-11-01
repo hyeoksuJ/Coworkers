@@ -4,10 +4,14 @@ import { useUserData } from '@hooks/mysetting/useUserData';
 import NetworkError from '@components/@shared/NetworkError';
 import { useProfileChange } from '@hooks/mysetting/useProfileChange';
 import { useImageURL } from '@hooks/mysetting/useImageURL';
+import { useNicknameChange } from '@hooks/mysetting/useNicknameChange';
+import { Input } from '@components/@shared/Input';
+import Button from '@components/@shared/Button';
 import Image from 'next/image';
 import PasswordInput from './PasswordInput';
 
 export default function InputTask() {
+  const [profileNickname, setProfileNickname] = useState<string>('');
   const [ProfileImage, setProfileImage] = useState<string | JSX.Element>(
     <ProfileEditIcon />
   );
@@ -16,6 +20,7 @@ export default function InputTask() {
 
   const { data, isLoading, isError } = useUserData();
   const mutation = useProfileChange();
+  const nicknameMutation = useNicknameChange();
 
   const mutationImage = useImageURL();
 
@@ -23,6 +28,12 @@ export default function InputTask() {
   const handelImageChange = (imageURL: string) => {
     if (imageURL) {
       mutation.mutate({ image: imageURL });
+    }
+  };
+
+  const handelNicknameChangeSubmit = () => {
+    if (profileNickname) {
+      nicknameMutation.mutate({ nickname: profileNickname });
     }
   };
 
@@ -54,6 +65,7 @@ export default function InputTask() {
           className="h-16 w-16 rounded-full object-cover"
         />
       );
+      setProfileNickname(data.nickname);
     } else {
       setProfileImage(<ProfileEditIcon />);
     }
@@ -66,6 +78,11 @@ export default function InputTask() {
   if (isError) {
     return <NetworkError />;
   }
+
+  const handleNicknameChang = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setProfileNickname(value);
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -113,15 +130,26 @@ export default function InputTask() {
           </div>
         </button>
       </div>
-      <div className="flex w-full flex-col">
-        <span className="mb-3 text-lg-medium text-text-primary">이름</span>
-        <div
-          className="h-[48px] w-full rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary outline outline-[1px]
-            outline-[#343E4E] focus:outline-none"
-        >
-          {data?.nickname}
+      <div className="relative flex w-full flex-col">
+        <Input
+          label="이름"
+          inputProps={{
+            onChange: handleNicknameChang,
+            value: profileNickname,
+          }}
+        />
+        <div className="absolute bottom-[13px] right-3">
+          <Button
+            onClick={handelNicknameChangeSubmit}
+            fontSize="14"
+            width={70}
+            height={20}
+          >
+            변경하기
+          </Button>
         </div>
       </div>
+
       <PasswordInput />
     </main>
   );

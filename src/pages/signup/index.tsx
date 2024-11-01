@@ -2,8 +2,26 @@ import Divider from '@components/auth/Divider';
 import GoogleOauthButton from '@components/auth/GoogleOauthButton';
 import KaKaoOauthButton from '@components/auth/KaKaoOauthButton';
 import SignUpForm from '@components/auth/SignUpForm';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 export default function SignUp() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const userStorage = localStorage.getItem('userStorage');
+    if (userStorage) {
+      router.push('/myteam');
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <div className="flex w-full flex-col items-center">
       <SignUpForm />

@@ -1,4 +1,4 @@
-import { useDetailCard } from '@hooks/article/useArticleDetail';
+import { useDetailCard } from '@hooks/article/useCommentAdd';
 import { authAxiosInstance } from '@libs/axios/axiosInstance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import HeartIcon from 'public/icons/heart.svg';
