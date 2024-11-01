@@ -14,7 +14,13 @@ interface TaskListStore {
   comments: CommentDto[]; // task의 comments[] 데이터
   commentId: number;
   SelectedCommentId: number;
-  taskCompletionStatus: Record<number, boolean>; // 각 작업의 완료 상태
+  taskCompletionStatus: {
+    [taskId: number]: {
+      done: boolean;
+      name: string;
+      description: string;
+    };
+  };
 
   setGroupId: (groupId: number) => void;
   setTaskLists: (taskLists: any) => void;
@@ -22,7 +28,12 @@ interface TaskListStore {
   setTasks: (tasks: TaskDto[]) => void;
   setTask: (task: TaskDto) => void;
   setTaskId: (taskId: number | undefined) => void;
-  setTaskCompletionStatus: (taskId: number, doneAt: string | null) => void; // Task의 완료 상태 설정
+  setTaskCompletionStatus: (
+    taskId: number,
+    taskDone: boolean,
+    taskName: string,
+    taskDescription: string
+  ) => void; // Task의 완료 상태
   setSidebarOpen: (isOpen: boolean) => void;
   setComments: (comments: CommentDto[]) => void;
   setCommentId: (commentId: number) => void;
@@ -136,7 +147,9 @@ export const useTaskListStore = create<TaskListStore>((set) => ({
   tasks: initialSelectedTasks,
   taskId: 0,
   task: initialTask,
-  taskCompletionStatus: {},
+  taskCompletionStatus: {
+    0: { done: false, name: '', description: '' },
+  },
   isSidebarOpen: false,
   comments: initialComments,
   commentId: 0,
@@ -148,16 +161,21 @@ export const useTaskListStore = create<TaskListStore>((set) => ({
   setTasks: (tasks: TaskDto[]) => set({ tasks }),
   setTask: (task: TaskDto | undefined) => set({ task }),
   setTaskId: (taskId: number | undefined) => set({ taskId }),
-  setTaskCompletionStatus: (taskId, doneAt) => {
-    const isDone = doneAt !== null;
+  setTaskCompletionStatus: (
+    taskId: number,
+    taskDone: boolean,
+    taskName: string,
+    taskDescription: string
+  ) => {
+    const updatedTask = {
+      done: taskDone,
+      name: taskName,
+      description: taskDescription,
+    };
     set((state) => ({
-      tasks: state.tasks.map(
-        (task) =>
-          task.id === taskId ? { ...task, doneAt, done: isDone } : task // done 값을 업데이트
-      ),
       taskCompletionStatus: {
         ...state.taskCompletionStatus,
-        [taskId]: isDone,
+        [taskId]: updatedTask,
       },
     }));
   },

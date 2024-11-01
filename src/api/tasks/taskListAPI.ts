@@ -10,6 +10,7 @@ import { apiCall } from '@utils/apiCall';
 export interface TaskListUrlParams {
   groupId?: number; // group 식별자
   id?: number; // taskList 식별자
+  listId?: string;
   date?: string;
   name?: string;
   displayIndex?: number;
@@ -28,8 +29,8 @@ export const getTaskList = async (params: TaskListUrlParams) => {
 };
 
 export const deleteTaskList = async (params: TaskListUrlParams) => {
-  const { id } = params;
-  return apiCall('delete', `${getTaskListPath(undefined)}/${id}`);
+  const { listId } = params;
+  return apiCall('delete', `${getTaskListPath(undefined)}/${listId}`);
 };
 
 // 요청: groupId O
@@ -50,8 +51,8 @@ export const patchTaskList = async (
   params: TaskListUrlParams,
   data: TaskListRequestBody['patch']
 ) => {
-  const { groupId, id } = params;
-  return apiCall('patch', `${getTaskListPath(groupId)}/${id}`, data);
+  const { groupId, listId } = params;
+  return apiCall('patch', `${getTaskListPath(groupId)}/${listId}`, data);
 };
 
 export const patchTaskListOrder = async (

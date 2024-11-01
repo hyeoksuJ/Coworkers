@@ -10,7 +10,7 @@ export interface TaskRequestBody {
   };
   patch: {
     name: string;
-    description: string | null;
+    description: string;
     done: boolean; // 완료 상태
   };
   patchOrder: {

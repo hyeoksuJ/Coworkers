@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 
 interface ArticleImageInputProps {
   onUploadSuccess: (response: any) => void; // 성공 시 부모 컴포넌트로 값을 전달하는 콜백 함수
-  data: Article | undefined;
+  data?: Article | undefined;
 }
 
 export default function ArticleImageInput({

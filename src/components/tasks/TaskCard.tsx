@@ -22,7 +22,8 @@ interface TaskCardProps {
 }
 
 export default function TaskCard({ task }: TaskCardProps) {
-  const { setTaskId, isSidebarOpen, setSidebarOpen } = useTaskListStore();
+  const { taskCompletionStatus, setTaskId, isSidebarOpen, setSidebarOpen } =
+    useTaskListStore();
   const router = useRouter();
   const { query, pathname } = router;
 
@@ -45,16 +46,27 @@ export default function TaskCard({ task }: TaskCardProps) {
     setTaskId(task.id);
   };
 
+  const isChecked = taskCompletionStatus[task.id]?.done ?? task.doneAt !== null;
+
   return (
     <li className="flex flex-col gap-[10px] rounded-lg bg-background-secondary px-[14px] py-3 text-text-default">
       <div className="flex">
         <div className="flex gap-2">
-          <CheckBox taskId={task.id} doneAt={task.doneAt} />
+          <CheckBox
+            taskId={task.id}
+            taskName={task.name}
+            taskDescription={task.description}
+            doneAt={task.doneAt}
+          />
           <Link
             href={`${pathname}?${params.toString()}`}
             onClick={() => setSidebarOpen(!isSidebarOpen)}
           >
-            <h1 className="text-text-primary">{task.name}</h1>
+            <h1
+              className={`text-text-primary ${isChecked ? 'line-through' : ''}`}
+            >
+              {task.name}
+            </h1>
           </Link>
           <TaskSideBar
             isOpen={isSidebarOpen}

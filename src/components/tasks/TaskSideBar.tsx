@@ -28,7 +28,13 @@ export function TaskSideBar({ isOpen, onClose }: TaskSideBarProps) {
   const router = useRouter();
   const { taskId } = router.query;
   const { date } = useDate();
-  const { task, setTask, setTaskId } = useTaskListStore();
+  const {
+    taskCompletionStatus,
+    setTaskCompletionStatus,
+    task,
+    setTask,
+    setTaskId,
+  } = useTaskListStore();
 
   // GET, task
   const {
@@ -60,21 +66,28 @@ export function TaskSideBar({ isOpen, onClose }: TaskSideBarProps) {
 
   // 완료 버튼 클릭 핸들러
   const handleCompleteClick = async () => {
-    if (task) {
+    if (taskId) {
+      const currentTaskStatus =
+        taskCompletionStatus[Number(taskId)]?.done ?? false;
+
       const patchData: TaskRequestBody['patch'] = {
-        name: task.name,
-        description: task.description,
-        done: !!task.doneAt,
+        name: taskData.name,
+        description: taskData.description ? taskData.description : '',
+        done: !currentTaskStatus,
       };
 
       const params: TaskUrlParams = {
-        taskId: task.id,
+        taskId: Number(taskId),
       };
 
-      const updatedDoneAt = patchData.done ? new Date().toISOString() : null;
+      setTaskCompletionStatus(
+        Number(taskId),
+        !currentTaskStatus,
+        taskData.name,
+        taskData.description
+      );
 
       await patchTask(params, patchData);
-      setTask({ ...task, doneAt: updatedDoneAt });
     }
   };
 
@@ -83,7 +96,11 @@ export function TaskSideBar({ isOpen, onClose }: TaskSideBarProps) {
       position="right"
       isOpen={isOpen}
       onClose={onClose}
-      button={task?.doneAt ? 'cancelbutton' : 'completebutton'}
+      button={
+        taskCompletionStatus[Number(taskId)]?.done
+          ? 'cancelbutton'
+          : 'completebutton'
+      }
       clickEvent={handleCompleteClick}
     >
       {taskLoading && <p className="mx-5 mt-14">Loading...</p>}

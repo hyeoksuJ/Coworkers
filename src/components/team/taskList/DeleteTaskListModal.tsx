@@ -32,7 +32,7 @@ export default function DeleteTaskListModal({
 
   // 목록 삭제 Mutation
   const { mutate: deleteList } = useMutation({
-    mutationFn: (id: number) => deleteTaskList({ groupId: id }),
+    mutationFn: (listId: string) => deleteTaskList({ listId }),
     onSuccess: () => {
       onClose();
     },
@@ -50,7 +50,7 @@ export default function DeleteTaskListModal({
     if (!isAdmin) {
       return;
     }
-    deleteList(taskListId);
+    deleteList(String(taskListId));
 
     // 로컬 스토리지에서 기존 TaskLists 가져오기 (없으면 빈 배열)
     const existingTaskListsString = localStorage.getItem(`TaskLists_${id}`);
