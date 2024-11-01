@@ -18,7 +18,6 @@ export default function NavBar() {
   useEffect(() => {
     setIsClient(true);
     const logoOnlyPages = ['/signin', 'signup', 'addteam', '/'];
-    // 팀참여하기 페이지, 비밀번호 재설정페이지 추가 필요
     setIsLogoOnlyPage(logoOnlyPages.includes(router.pathname));
   }, [router.pathname]);
 

@@ -36,7 +36,7 @@ export default function DetailCard() {
     if (option.label === '삭제하기') {
       DeleteOpenModal();
     } else {
-      router.push('/article/newarticle');
+      router.push(`/article/edit/${articleId}`);
     }
   };
 

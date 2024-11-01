@@ -1,18 +1,27 @@
+import { Article } from '@/src/types/article/ArticleType';
 import { useImageURL } from '@hooks/mysetting/useImageURL';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ArticleImageInputProps {
   onUploadSuccess: (response: any) => void; // 성공 시 부모 컴포넌트로 값을 전달하는 콜백 함수
+  data: Article | undefined;
 }
 
 export default function ArticleImageInput({
   onUploadSuccess,
+  data,
 }: ArticleImageInputProps) {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement | null>(null);
 
   const mutationImage = useImageURL();
+
+  useEffect(() => {
+    if (data) {
+      setProfileImage(data.image);
+    }
+  }, [data]);
 
   const handelImageUpload = (file: File) => {
     const formData = new FormData();

@@ -1,6 +1,8 @@
 import Button from '@components/@shared/Button';
 import { Modal } from '@components/@shared/Modal';
+import { useModal } from '@hooks/useModal';
 import Image from 'next/image';
+import ProfileImageModal from './ProfileImageModal';
 
 interface GetUserDetailModalProps {
   isOpen: boolean;
@@ -19,6 +21,11 @@ export default function GetUserDetailModal({
   img,
   role,
 }: GetUserDetailModalProps) {
+  const {
+    isOpen: IsProfileModalOpen,
+    onClose: ProfileModalClose,
+    onOpen: ProfileModalOpen,
+  } = useModal();
   const handleCopyClick = (text: string) => {
     navigator.clipboard
       .writeText(text)
@@ -44,29 +51,36 @@ export default function GetUserDetailModal({
       gap="40"
     >
       <Modal.Wrapper array="column">
-        <Modal.Header fontColor="primary">
-          <div className="relative mx-auto h-[100px] w-[100px]">
-            <Image
-              src={img || '/icons/profile_large.svg'}
-              alt="프로필 사진"
-              fill
-              className="rounded-[16px] object-cover "
-            />
-          </div>
-        </Modal.Header>
-        <Modal.Content fontColor="secondary" fontSize="14" fontArray="center">
-          <p className="mt-[20px] flex items-center justify-center gap-[2px]">
-            {role === 'ADMIN' && (
+        <Modal.Content fontColor="secondary" fontSize="14" fontArray="left">
+          <div className="flex justify-between gap-[25px]">
+            <div
+              className="relative mx-auto h-[70px] w-[70px] cursor-pointer"
+              onClick={ProfileModalOpen}
+            >
               <Image
-                src="/images/crown.png"
-                alt="왕관 이미지"
-                width={15}
-                height={15}
+                src={img || '/icons/profile_large.svg'}
+                alt="프로필 사진"
+                fill
+                className="rounded-[16px] object-cover "
               />
-            )}
-            {name}
-          </p>
-          <p className="mt-[8px] text-xs-regular">{email}</p>
+            </div>
+            <div className="flex-grow">
+              <p className="mt-[10px] flex items-center gap-[2px] text-lg-medium">
+                {role === 'ADMIN' && (
+                  <Image
+                    src="/images/crown.png"
+                    alt="왕관 이미지"
+                    width={15}
+                    height={15}
+                  />
+                )}
+                {name}
+              </p>
+              <p className="mt-[15px] whitespace-nowrap text-xs-regular">
+                {email}
+              </p>
+            </div>
+          </div>
         </Modal.Content>
       </Modal.Wrapper>
       <Modal.Footer>
@@ -74,6 +88,11 @@ export default function GetUserDetailModal({
           이메일 복사하기
         </Button>
       </Modal.Footer>
+      <ProfileImageModal
+        isOpen={IsProfileModalOpen}
+        onClose={ProfileModalClose}
+        img={img || '/icons/profile_large.svg'}
+      />
     </Modal>
   );
 }
