@@ -1,8 +1,8 @@
 import { IconInput, Input } from '@components/@shared/Input';
 import { useEffect, useState } from 'react';
 import { usePasswordCheck } from '@hooks/mysetting/usePasswordCheck';
-import PasswordChange from './PasswordChange';
 import { useUserData } from '@hooks/mysetting/useUserData';
+import PasswordChange from './PasswordChange';
 
 export default function PasswordInput() {
   const [email, setEmail] = useState('');
@@ -32,7 +32,7 @@ export default function PasswordInput() {
     if (data) {
       setEmail(data.email);
     }
-  });
+  }, [data]);
 
   return (
     <>

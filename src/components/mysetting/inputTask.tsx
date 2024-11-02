@@ -1,16 +1,15 @@
 import ProfileEditIcon from 'public/icons/profile_edit.svg';
 import { useEffect, useRef, useState } from 'react';
 import { useUserData } from '@hooks/mysetting/useUserData';
-import NetworkError from '@components/@shared/NetworkError';
 import { useProfileChange } from '@hooks/mysetting/useProfileChange';
 import { useImageURL } from '@hooks/mysetting/useImageURL';
 import { useNicknameChange } from '@hooks/mysetting/useNicknameChange';
 import { Input } from '@components/@shared/Input';
 import Button from '@components/@shared/Button';
 import Image from 'next/image';
+import { useModal } from '@hooks/useModal';
 import PasswordInput from './PasswordInput';
 import ShareModal from './ShareModal';
-import { useModal } from '@hooks/useModal';
 
 export default function InputTask() {
   const [profileNickname, setProfileNickname] = useState<string>('');

@@ -1,6 +1,5 @@
 import Button from '@components/@shared/Button';
 import { Modal } from '@components/@shared/Modal';
-import { useModal } from '@hooks/useModal';
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -14,25 +13,23 @@ export default function ShareModal({
   ModalTaitle,
 }: ShareModalProps) {
   return (
-    <>
-      <Modal
-        isOpen={isOpen}
-        isXButton
-        onClose={onClose}
-        array="column"
-        padding="default"
-        bgColor="primary"
-        fontSize="16"
-        fontArray="center"
-        gap="40"
-      >
-        <Modal.Wrapper array="column">
-          <Modal.Header fontColor="primary">{ModalTaitle}</Modal.Header>
-        </Modal.Wrapper>
-        <Modal.Footer>
-          <Button onClick={onClose}>닫기</Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+    <Modal
+      isOpen={isOpen}
+      isXButton
+      onClose={onClose}
+      array="column"
+      padding="default"
+      bgColor="primary"
+      fontSize="16"
+      fontArray="center"
+      gap="40"
+    >
+      <Modal.Wrapper array="column">
+        <Modal.Header fontColor="primary">{ModalTaitle}</Modal.Header>
+      </Modal.Wrapper>
+      <Modal.Footer>
+        <Button onClick={onClose}>닫기</Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
