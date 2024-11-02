@@ -10,6 +10,20 @@
 
 body {
   @apply bg-background-primary font-sans text-text-primary;
+  overflow-y: scroll;
+}
+
+body::-webkit-scrollbar {
+  width: 5px; /* 스크롤바 너비 */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #10b981; /* 스크롤바 색상 */
+  border-radius: 10px; /* 둥글게 만들기 */
+}
+
+body::-webkit-scrollbar-track {
+  background: transparent; /* 스크롤바 트랙 색상 */
 }
 
 .blur-lg {

@@ -4,8 +4,8 @@ import { User } from '@/src/types/mysetting/settingData';
 
 const logoOnlyPages = [
   '/signin',
-  'signup',
-  'addteam',
+  '/signup',
+  '/addteam',
   '/',
   '/oauth/signup/google',
   '/oauth/signup/kakao',

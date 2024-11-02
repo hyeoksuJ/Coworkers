@@ -11,7 +11,7 @@ export default function ExileDropdown({ onSelect }: ExileDropdownProps) {
   ];
 
   const moreIcon = (
-    <div className="flex h-[10px] w-[20px] items-center">
+    <div className="relative flex h-[10px] w-[20px] items-center">
       <Image
         src="/icons/kebab_large.svg"
         alt="더보기 아이콘"

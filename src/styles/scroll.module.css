@@ -64,3 +64,15 @@
 .taskListScroll::-webkit-scrollbar-track {
   background: transparent; /* 스크롤바 트랙 색상 */
 }
+
+/* 모바일 전용 스크롤바 스타일 */
+@media (max-width: 768px) {
+  .taskListScroll::-webkit-scrollbar {
+    width: 12px; /* 모바일에서는 스크롤바 숨기기 */
+  }
+
+  .taskListScroll {
+    /* 스크롤이 필요한 요소의 다른 스타일 */
+    -webkit-overflow-scrolling: touch; /* 부드러운 스크롤링 */
+  }
+}

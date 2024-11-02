@@ -93,8 +93,8 @@ export default function NavBarTeam({ data }: { data: User }) {
     setIsClient(true);
     const logoOnlyPages = [
       '/signin',
-      'signup',
-      'addteam',
+      '/signup',
+      '/addteam',
       '/',
       '/oauth/signup/google',
       '/oauth/signup/kakao',
@@ -210,7 +210,7 @@ export default function NavBarTeam({ data }: { data: User }) {
             <AddTeamModal isOpen={addIsOpen} onClose={addCloseModal} />
           </div>
           <Link href="/article">
-            <span className="max-md:hidden">자유게시판</span>
+            <span className="hover:text-brand-primary">자유게시판</span>
           </Link>
         </>
       )}

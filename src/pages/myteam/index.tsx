@@ -1,6 +1,7 @@
 import { getMemberships } from '@/src/api/team/memberAPI';
 import Button from '@components/@shared/Button';
 import LoadingSpinner from '@components/@shared/LoadingSpinner';
+import UserNotFound from '@components/@shared/UserNotFound';
 import EmptyTeamPage from '@components/team/myteam/EmptyTeamPage';
 import TeamBox from '@components/team/myteam/TeamBox';
 import { useQuery } from '@tanstack/react-query';
@@ -36,7 +37,7 @@ export default function MyTeamPage() {
   });
 
   if (isLoading) return <LoadingSpinner />;
-  if (isError) return <div>Error loading data</div>;
+  if (isError) return <UserNotFound />;
 
   return memberships && memberships.length !== 0 ? (
     <main className="mx-auto mb-[30px] mt-[20px] flex w-full min-w-[340px] flex-col px-[20px] xl:w-[1200px] xl:px-0">

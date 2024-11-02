@@ -1,12 +1,13 @@
 import { IconInput, Input } from '@components/@shared/Input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePasswordCheck } from '@hooks/mysetting/usePasswordCheck';
 import PasswordChange from './PasswordChange';
+import { useUserData } from '@hooks/mysetting/useUserData';
 
 export default function PasswordInput() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const { data } = useUserData();
   const mutation = usePasswordCheck();
 
   const handleSubmit = async (): Promise<number> => {
@@ -26,6 +27,12 @@ export default function PasswordInput() {
     const { value } = e.target;
     setPassword(value);
   };
+
+  useEffect(() => {
+    if (data) {
+      setEmail(data.email);
+    }
+  });
 
   return (
     <>

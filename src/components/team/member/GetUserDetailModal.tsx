@@ -52,7 +52,7 @@ export default function GetUserDetailModal({
     >
       <Modal.Wrapper array="column">
         <Modal.Content fontColor="secondary" fontSize="14" fontArray="left">
-          <div className="flex justify-between gap-[25px]">
+          <div className="flex items-center justify-start gap-[20px] overflow-hidden">
             <div
               className="relative mx-auto h-[70px] w-[70px] cursor-pointer"
               onClick={ProfileModalOpen}
@@ -64,8 +64,8 @@ export default function GetUserDetailModal({
                 className="rounded-[16px] object-cover "
               />
             </div>
-            <div className="flex-grow">
-              <p className="mt-[10px] flex items-center gap-[2px] text-lg-medium">
+            <div className="w-[60%] flex-grow md:w-[180px] md:flex-grow-0">
+              <p className="flex items-center gap-[2px] break-words text-lg-medium">
                 {role === 'ADMIN' && (
                   <Image
                     src="/images/crown.png"
@@ -76,9 +76,7 @@ export default function GetUserDetailModal({
                 )}
                 {name}
               </p>
-              <p className="mt-[15px] whitespace-nowrap text-xs-regular">
-                {email}
-              </p>
+              <p className="mt-[15px] break-words text-xs-regular">{email}</p>
             </div>
           </div>
         </Modal.Content>

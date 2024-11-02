@@ -11,11 +11,15 @@ export default function RemoveAccount() {
   const router = useRouter();
   const mutation = useUserDelete();
 
-  const handleUserDelete = () => {
-    mutation.mutate();
-    onClose();
-    router.push('/signin');
-    localStorage.removeItem('userStorage');
+  const handleUserDelete = async () => {
+    try {
+      await mutation.mutateAsync();
+      onClose();
+      localStorage.removeItem('userStorage');
+      router.push('/signin');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

@@ -28,9 +28,12 @@ export default function SignUpForm() {
 
   // 이메일 유효성 검사 함수
   const validateEmail = () => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email) {
       setEmailError('이메일은 필수 입력입니다.');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    } else if (email.length > 50) {
+      setEmailError('이메일은 50자 이내로 작성해 주세요.');
+    } else if (!emailRegex.test(email)) {
       setEmailError('이메일 형식으로 작성해 주세요.');
     } else {
       setEmailError('');
@@ -50,13 +53,13 @@ export default function SignUpForm() {
 
   // 비밀번호 유효성 검사 함수
   const validatePassword = () => {
+    const passwordRegex =
+      /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/;
     if (!password) {
       setPasswordError('비밀번호는 필수 입력입니다.');
     } else if (password.length < 8) {
       setPasswordError('비밀번호는 최소 8자 이상입니다.');
-    } else if (
-      !/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).+$/.test(password)
-    ) {
+    } else if (!passwordRegex.test(password)) {
       setPasswordError('비밀번호는 숫자, 영문, 특수문자가 포함되어야 합니다.');
     } else {
       setPasswordError('');

@@ -1,7 +1,7 @@
 import { useModal } from '@hooks/useModal';
 import { useTeamStore } from '@/src/stores/teamStore';
 import { Option } from '@components/@shared/Dropdown';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -20,14 +20,16 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchTaskListOrder } from '@/src/api/tasks/taskListAPI';
 import Image from 'next/image';
+import styles from '@styles/scroll.module.css';
 import TaskBar from './TaskBar';
 import AddTaskListModal from './AddTaskListModal';
-import styles from '../../../styles/scroll.module.css';
 import EditDropdown from '../EditDropdown';
 import EditTaskListModal from './EditTaskListModal';
 import DeleteTaskListModal from './DeleteTaskListModal';
 
 export default function TaskList() {
+  const scrollableRef = useRef<HTMLDivElement | null>(null);
+
   const {
     isOpen: addListIsOpen,
     onOpen: addListOpenModal,
@@ -91,6 +93,26 @@ export default function TaskList() {
       queryClient.invalidateQueries({ queryKey: ['group', id] });
     },
   });
+
+  // 드래그 시작 시 스크롤바 외부의 터치를 막기 위한 이벤트 핸들러
+  const handleTouchStart = (e: TouchEvent) => {
+    const touch = e.touches[0];
+    const scrollableElement = scrollableRef.current;
+
+    if (scrollableElement) {
+      const scrollbarWidth =
+        scrollableElement.offsetWidth - scrollableElement.clientWidth;
+
+      // 터치 위치가 스크롤바가 있는 영역이 아닐 경우 스크롤을 막습니다.
+      if (
+        touch.clientX < scrollableElement.clientWidth ||
+        touch.clientX > scrollableElement.clientWidth + scrollbarWidth
+      ) {
+        e.preventDefault(); // 스크롤 막기
+      }
+    }
+  };
+
   const handleDragStart = () => {
     // 일정 시간 후 드래그로 간주
     const timer = setTimeout(() => setIsDragging(true), thresholdTime);
@@ -149,7 +171,7 @@ export default function TaskList() {
   };
 
   const moreIcon = (
-    <div className="flex w-[20px] items-center">
+    <div className="relative flex w-[20px] items-center">
       <Image
         src="/icons/kebab_large.svg"
         alt="더보기 아이콘"
@@ -166,6 +188,19 @@ export default function TaskList() {
       setDisplayedTaskList(Array.from(taskLists));
     }
   }, [taskLists]);
+
+  useEffect(() => {
+    const scrollableElement = scrollableRef.current;
+    if (scrollableElement) {
+      scrollableElement.addEventListener('touchstart', handleTouchStart);
+    }
+
+    return () => {
+      if (scrollableElement) {
+        scrollableElement.removeEventListener('touchstart', handleTouchStart);
+      }
+    };
+  }, []);
 
   return (
     <section>
@@ -202,6 +237,7 @@ export default function TaskList() {
         onDragEnd={handleDragEnd}
       >
         <div
+          ref={scrollableRef}
           className={`max-h-[320px] overflow-y-auto overflow-x-hidden ${styles.taskListScroll}`}
         >
           <SortableContext

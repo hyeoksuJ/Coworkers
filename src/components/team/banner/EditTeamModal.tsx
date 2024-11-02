@@ -1,6 +1,7 @@
 import { postImage } from '@/src/api/imageAPI';
 import { patchGroupById } from '@/src/api/team/teamAPI';
 import { useTeamStore } from '@/src/stores/teamStore';
+import Image from 'next/image';
 import Button from '@components/@shared/Button';
 import { Input } from '@components/@shared/Input';
 import { Modal } from '@components/@shared/Modal';
@@ -46,6 +47,12 @@ export default function EditTeamModal({ isOpen, onClose }: EditTeamModalProps) {
   const userData = queryClient.getQueryData<UserData>(['user']);
   const TeamNames =
     userData?.memberships.map((membership) => membership.group.name) || [];
+
+  // 팀 관리자만 삭제 가능
+  const isAdmin =
+    userData &&
+    userData.memberships.find((m) => m.groupId === Number(id))?.role ===
+      'ADMIN';
 
   // 그룹 수정 Mutation
   const { mutate: editGroup } = useMutation({
@@ -95,6 +102,10 @@ export default function EditTeamModal({ isOpen, onClose }: EditTeamModalProps) {
   });
 
   const handlePatchClick = () => {
+    // 팀 관리자만 수정 가능
+    if (!isAdmin) {
+      return;
+    }
     setTeamName(localTeamName); // 최종적으로 store에 반영
     if (imageFile) {
       // 새로 선택된 파일이 있으면 업로드
@@ -125,33 +136,64 @@ export default function EditTeamModal({ isOpen, onClose }: EditTeamModalProps) {
       padding="default"
       bgColor="primary"
     >
-      <p className="mb-[40px] text-center text-2xl-semibold">팀 수정하기</p>
-      <p className="mb-[15px] text-lg-medium">팀 프로필</p>
-      <ProfileImageInput
-        onFileChange={handleFileChange}
-        initialFile={imageUrl}
-      />
-      <p className="mt-[20px] text-lg-medium">팀 이름</p>
-      <Input
-        placeholder="팀 이름을 입력해주세요."
-        onBlur={() => validateOnBlur('teamName', teamName)}
-        inputProps={{
-          value: localTeamName,
-          onChange: handleChange,
-        }}
-        className="mb-[30px] mt-[15px]"
-        errorMessage={errors.teamName?.message}
-        isError={errors.teamName?.isError}
-      />
-
-      <Modal.Footer>
-        <Button
-          size="full"
-          onClick={handlePatchClick}
-          disabled={localTeamName === ''}
+      {isAdmin ? (
+        <>
+          <p className="mb-[40px] text-center text-2xl-semibold">팀 수정하기</p>
+          <p className="mb-[15px] text-lg-medium">팀 프로필</p>
+          <ProfileImageInput
+            onFileChange={handleFileChange}
+            initialFile={imageUrl}
+          />
+          <p className="mt-[20px] text-lg-medium">팀 이름</p>
+          <Input
+            placeholder="팀 이름을 입력해주세요."
+            onBlur={() => validateOnBlur('teamName', teamName)}
+            inputProps={{
+              value: localTeamName,
+              onChange: handleChange,
+            }}
+            className="mb-[30px] mt-[15px]"
+            errorMessage={errors.teamName?.message}
+            isError={errors.teamName?.isError}
+          />
+        </>
+      ) : (
+        <Modal.Header
+          fontColor="primary"
+          className="flex flex-col items-center gap-[16px]"
         >
-          수정하기
-        </Button>
+          <Image
+            src="/icons/alert.svg"
+            alt="경고 아이콘"
+            width={24}
+            height={24}
+          />
+          권한 없음
+        </Modal.Header>
+      )}
+      <Modal.Content fontColor="secondary" fontSize="14" fontArray="center">
+        {!isAdmin && <p className="my-[20px]">관리자만 수정할 수 있습니다.</p>}
+      </Modal.Content>
+      <Modal.Footer>
+        {isAdmin && (
+          <Button
+            size="full"
+            onClick={handlePatchClick}
+            disabled={localTeamName === ''}
+          >
+            수정하기
+          </Button>
+        )}
+        {!isAdmin && (
+          <Button
+            size="full"
+            bgColor="white"
+            fontColor="gray"
+            onClick={onClose}
+          >
+            취소
+          </Button>
+        )}{' '}
       </Modal.Footer>
     </Modal>
   );

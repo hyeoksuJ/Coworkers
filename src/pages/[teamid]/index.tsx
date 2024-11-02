@@ -9,6 +9,7 @@ import { useTeamStore } from '@/src/stores/teamStore';
 import { useEffect } from 'react';
 import Button from '@components/@shared/Button';
 import LoadingSpinner from '@components/@shared/LoadingSpinner';
+import UserNotFound from '@components/@shared/UserNotFound';
 
 export default function TeamPage() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function TeamPage() {
   }, [data, setTeamData]);
 
   if (isLoading) return <LoadingSpinner />;
-  if (isError) return <div>Error loading data</div>;
+  if (isError) return <UserNotFound />;
 
   return (
     <main className="mx-auto mb-[30px] mt-[20px] flex w-full min-w-[340px] flex-col px-[10px] xl:w-[1200px] xl:px-0">

@@ -70,8 +70,8 @@ export default function TaskBar({ name, tasks, id, isDragging }: TaskBarProps) {
           </p>
         </div>
         <div className="flex items-center justify-between">
-          <div className="mr-[10px] flex items-center gap-[10px]">
-            <div className="flex h-[25px] w-[58px] items-center justify-between rounded-[12px] bg-background-primary px-[8px] py-[4px]">
+          <div className="mr-[10px] flex items-center ">
+            <div className="flex h-[25px] w-fit items-center justify-between gap-[2px] rounded-[12px] bg-background-primary px-[8px] py-[4px]">
               {doneRate === 100 ? (
                 <Image
                   src="/icons/progress_done.svg"
