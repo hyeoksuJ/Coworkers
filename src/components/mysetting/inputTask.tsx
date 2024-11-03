@@ -5,6 +5,7 @@ import { useProfileChange } from '@hooks/mysetting/useProfileChange';
 import { useImageURL } from '@hooks/mysetting/useImageURL';
 import { useNicknameChange } from '@hooks/mysetting/useNicknameChange';
 import { Input } from '@components/@shared/Input';
+import clsx from 'clsx';
 import Button from '@components/@shared/Button';
 import Image from 'next/image';
 import { useModal } from '@hooks/useModal';
@@ -16,6 +17,7 @@ export default function InputTask() {
   const [ProfileImage, setProfileImage] = useState<string | JSX.Element>(
     <ProfileEditIcon />
   );
+  const [isError, setIsError] = useState<boolean>(false);
 
   const {
     isOpen: NicknameCompleteIsOpen,
@@ -94,6 +96,7 @@ export default function InputTask() {
   const handleNicknameChang = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setProfileNickname(value);
+    setIsError(value.length > 10);
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,8 +152,15 @@ export default function InputTask() {
             onChange: handleNicknameChang,
             value: profileNickname,
           }}
+          isError={isError}
+          errorMessage="이름은 10글자 내외입니다."
         />
-        <div className="absolute bottom-[13px] right-3">
+        <div
+          className={clsx('absolute bottom-[16px] right-3', {
+            hidden: isError === true,
+            block: isError === false,
+          })}
+        >
           <Button
             onClick={handelNicknameChangeSubmit}
             fontSize="14"
