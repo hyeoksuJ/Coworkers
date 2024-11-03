@@ -45,7 +45,7 @@ export default function SignUpForm() {
     if (!nickname) {
       setNicknameError('이름은 필수 입력입니다.');
     } else if (nickname.length > 10) {
-      setNicknameError('이름은 최대 10자까지 가능합니다.');
+      setNicknameError('이름은 10글자 이내로 작성해 주세요.');
     } else {
       setNicknameError('');
     }

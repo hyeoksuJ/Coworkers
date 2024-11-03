@@ -98,7 +98,7 @@ export default function NavBar() {
     <header className=" flex h-16 items-center justify-center border-b border-border-primary border-opacity-10 bg-background-secondary px-6">
       <nav className="flex h-8 w-[1200px]  items-center justify-between text-text-primary max-xl:w-full max-md:w-full ">
         <div className="flex items-center gap-10 max-md:gap-5">
-          {isLogoOnlyPage && (
+          {isLogoOnlyPage ? (
             <Link href="/">
               <div className="block max-xl:hidden">
                 <Image src={PCLogo} alt="로고" width={158} height={32} />
@@ -107,8 +107,9 @@ export default function NavBar() {
                 <Image src={PCLogo} alt="로고" width={102} height={20} />
               </div>
             </Link>
+          ) : (
+            data && <NavBarTeam data={data} />
           )}
-          {data && <NavBarTeam data={data} />}
         </div>
         {!isLogoOnlyPage && (
           <div>
