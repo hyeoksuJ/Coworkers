@@ -201,7 +201,7 @@ export default function CommentList() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <Image
-                      src={comment.writer.image}
+                      src={comment.writer.image || '/icons/profile_large.svg'}
                       width={32}
                       height={32}
                       alt="프로필이미지"
@@ -241,7 +241,7 @@ export default function CommentList() {
                 <div className="mt-2 flex justify-between">
                   <div className="flex items-center">
                     <Image
-                      src={comment.writer.image}
+                      src={comment.writer.image || '/icons/profile_large.svg'}
                       width={32}
                       height={32}
                       alt="프로필이미지"

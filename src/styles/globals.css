@@ -158,3 +158,12 @@ div.react-datepicker__day--disabled {
   border-radius: 8px;
   color: #64748b;
 }
+
+@font-face {
+  font-family: 'PretendardVariable';
+  src: url('/fonts/PretendardVariable.woff') format('woff');
+}
+
+body {
+  font-family: 'PretendardVariable', sans-serif;
+}

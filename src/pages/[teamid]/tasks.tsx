@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDate } from '@/src/contexts/DateContext';
 import { useQuery } from '@tanstack/react-query';
@@ -6,17 +5,19 @@ import { useTaskListStore } from '@/src/stores/taskListStore';
 import { getTaskLists, getTaskList } from '@/src/api/tasks/taskListAPI';
 import TaskDate from '@components/tasks/Layout/TaskDate';
 import TaskList from '@components/tasks/Layout/TaskList';
-import AddTaskButton from '@components/tasks/UI/AddTaskButton';
+import AddTaskButton from '@components/tasks/UI/button/AddTaskButton';
 import { toKSTISOString } from '@utils/toKSTISOString';
 
 export default function TasksPage() {
-  const router = useRouter();
-  const { teamid } = router.query;
   const { date } = useDate();
-  const taskListId = parseInt(teamid as string, 10) || undefined;
-
-  const { groupId, setTasks, setGroupId, setTaskLists, setTaskListId } =
-    useTaskListStore();
+  const {
+    groupId,
+    taskListId,
+    setTasks,
+    setGroupId,
+    setTaskLists,
+    setTaskListId,
+  } = useTaskListStore();
 
   // GET, taskList 및 tasks[]
   const { data: taskListData } = useQuery({
@@ -27,7 +28,8 @@ export default function TasksPage() {
         date: toKSTISOString(date),
       }),
     enabled: !!taskListId && !!date,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
   });
 
   // store, taskListData
@@ -48,7 +50,8 @@ export default function TasksPage() {
     queryKey: ['tasks', groupId],
     queryFn: () => getTaskLists({ groupId }),
     enabled: !!groupId,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
   });
 
   // store, taskListsData
@@ -62,7 +65,7 @@ export default function TasksPage() {
   if (taskListsError) return <div>리스트 페이지 로딩 에러</div>;
 
   return (
-    <main className="flex flex-col gap-6 px-4 pt-6 text-left md:px-6 xl:mx-auto xl:max-w-[1200px] xl:px-0 xl:pt-10">
+    <main className="flex flex-col gap-6 px-4 py-6 text-left md:px-6 xl:mx-auto xl:max-w-[1200px] xl:px-0 xl:pt-10">
       <TaskDate />
       <TaskList />
       <AddTaskButton />

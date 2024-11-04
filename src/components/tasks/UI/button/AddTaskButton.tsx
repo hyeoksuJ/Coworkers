@@ -1,7 +1,7 @@
 import { useModal } from '@hooks/useModal';
 import { useTaskListStore } from '@/src/stores/taskListStore';
 import Button from '@components/@shared/Button';
-import AddTaskModal from './AddTaskModal';
+import AddTaskModal from '../modal/AddTaskModal';
 
 export default function AddTaskButton() {
   const { isOpen, onOpen, onClose } = useModal();

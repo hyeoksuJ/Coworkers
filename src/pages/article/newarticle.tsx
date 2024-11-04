@@ -11,6 +11,9 @@ export default function NewArticle() {
   const [content, setContent] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [image, setImage] = useState<string>('');
+  const [isTitleError, setIsTitleError] = useState<boolean>(false);
+  const [isContentError, setIsContentError] = useState<boolean>(false);
+
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useModal();
   const mutation = useNewArticle();
@@ -27,23 +30,27 @@ export default function NewArticle() {
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setTitle(value);
+    setIsTitleError(value.length > 50);
   };
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     setContent(value);
+    setIsContentError(value.length > 2000);
   };
 
   const handleImageChange = (response: string) => {
     setImage(response);
   };
 
+  const disabled = isTitleError || isContentError;
+
   return (
     <div className="mx-4 mt-10 max-w-[1200px] xl:mx-auto">
       <header className="flex items-center justify-between">
         <h1 className="text-2lg-medium md:text-xl-bold">게시글 쓰기</h1>
         <div className="w-[184px] max-md:hidden">
-          <Button size="full" onClick={handleSubmit}>
+          <Button disabled={disabled} size="full" onClick={handleSubmit}>
             등록
           </Button>
         </div>
@@ -60,6 +67,8 @@ export default function NewArticle() {
               value: title,
               onChange: handleTitleChange,
             }}
+            isError={isTitleError}
+            errorMessage="제목은 50자 내외입니다."
           />
         </div>
         <div>
@@ -72,6 +81,8 @@ export default function NewArticle() {
               value: content,
               onChange: handleContentChange,
             }}
+            isError={isContentError}
+            errorMessage="내용은 2000자 내외입니다."
           />
         </div>
         <div>

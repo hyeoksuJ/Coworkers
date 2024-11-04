@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 import ICON_PATHS from '@constants/iconPaths';
 
-export default function Pagination() {
+export default function DatePagination() {
   const { date, setDate } = useDate();
 
   // 이전 날짜로 이동

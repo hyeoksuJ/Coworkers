@@ -19,14 +19,15 @@ import type { TaskRequestBody } from '@/src/types/tasks/taskDto';
 import SideBar from '@components/@shared/SideBar';
 import { TaskComments } from './TaskComments';
 
-interface TaskSideBarProps {
+interface TaskDetailsProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function TaskSideBar({ isOpen, onClose }: TaskSideBarProps) {
+export function TaskDetails({ isOpen, onClose }: TaskDetailsProps) {
   const router = useRouter();
-  const { taskId } = router.query;
+  const { query } = router;
+  const { taskId } = query;
   const { date } = useDate();
   const {
     taskCompletionStatus,
@@ -49,6 +50,7 @@ export function TaskSideBar({ isOpen, onClose }: TaskSideBarProps) {
         date: toKSTISOString(date),
       }),
     enabled: !!taskId && !!date,
+    staleTime: Infinity,
   });
 
   // store
@@ -110,7 +112,7 @@ export function TaskSideBar({ isOpen, onClose }: TaskSideBarProps) {
 
       {task ? (
         <>
-          <section className="mx-5 flex flex-col gap-4 pt-4">
+          <section className="mx-5 flex flex-col gap-4">
             <h1 className="text-xl-bold text-text-primary">{task.name}</h1>
             <ul className="flex items-center text-md-medium text-text-primary">
               <li className="flex flex-1 items-center gap-3">
@@ -141,7 +143,7 @@ export function TaskSideBar({ isOpen, onClose }: TaskSideBarProps) {
               <li>{task.frequency}</li>
             </ul>
           </section>
-          <section className="mx-5 my-4 pb-32 md:pb-48 xl:pb-60">
+          <section className="mx-5 my-4 pb-32 md:pb-48 xl:pb-60 ">
             <p>{task.description}</p>
           </section>
           <TaskComments />

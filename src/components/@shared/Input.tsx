@@ -104,6 +104,8 @@ export function IconInput({
 }
 
 export function ScrollTextArea({
+  isError = false,
+  errorMessage = '',
   placeholder = '',
   label = '',
   textareaProps,
@@ -114,15 +116,22 @@ export function ScrollTextArea({
       <label htmlFor="input" className="mb-3 text-lg-medium text-text-primary">
         {label}
       </label>
-      <div className="relative min-h-[100px] w-full overflow-hidden rounded-[12px] bg-background-secondary outline outline-[1px] outline-[#343E4E] focus-within:outline-none focus-within:outline-brand-primary">
+      <div
+        className={`relative min-h-[100px] w-full overflow-hidden rounded-[12px] bg-background-secondary p-[15px] outline outline-[1px] ${isError ? 'outline-status-danger' : 'outline-[#343E4E]'} focus-within:outline-none focus-within:outline-brand-primary`}
+      >
         <textarea
-          className={`min-h-[100px] w-full resize-none overflow-auto rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary  focus:outline-none 
-            ${styles.textarea}`}
+          className={`min-h-[100px] w-full resize-none overflow-auto rounded-[12px] bg-background-secondary  text-lg-regular text-text-primary  focus:outline-none 
+             ${isError ? styles.isErrorScroll : styles.textarea}`}
           id="textarea"
           placeholder={placeholder}
           {...textareaProps}
         />
       </div>
+      {isError && (
+        <p className="mt-[10px] text-md-medium text-status-danger">
+          {errorMessage}
+        </p>
+      )}
     </div>
   );
 }

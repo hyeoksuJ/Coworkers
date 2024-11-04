@@ -89,15 +89,15 @@ export default function BestCard({ keyword }: BestCardProps) {
                     </span>
                   </div>
                   <div className=" flex justify-between">
-                    <div>
-                      <h3 className="mb-3 text-md-medium md:text-2lg-medium">
+                    <div className="flex-1 overflow-hidden">
+                      <h3 className="mb-3 max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-md-medium md:text-2lg-medium">
                         {card.title}
                       </h3>
                       <span className="text-xs-regular text-slate-400 md:text-md-medium">
                         {dayjs(card.createdAt).format('YYYY.MM.DD')}
                       </span>
                     </div>
-                    <div className="h-16 w-16 overflow-hidden rounded-lg">
+                    <div className="ml-2 h-16 w-16 overflow-hidden rounded-lg">
                       <Image
                         src={card.image}
                         width={64}

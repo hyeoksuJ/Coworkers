@@ -7,15 +7,16 @@ import { useTaskListStore } from '@/src/stores/taskListStore';
 import { postTask, TaskUrlParams } from '@/src/api/tasks/taskAPI';
 import { toKSTISOString } from '@utils/toKSTISOString';
 
+import ToggleIcon from '@icons/toggle.svg';
 import Button from '@components/@shared/Button';
 import Dropdown, { Option } from '@components/@shared/Dropdown';
-import { Input, ScrollTextArea } from '@components/@shared/Input';
 import { TASK_REQUEST_INIT } from '@constants/initValues';
-import ToggleIcon from '@icons/toggle.svg';
 import type { TaskRequestBody } from '@/src/types/tasks/taskDto';
 
-import WeeklySelector from './WeeklySelector';
-import Calender from './Calender';
+import DescriptionTextArea from './UI/input/DescriptionTextArea';
+import NameInput from './UI/input/NameInput';
+import WeeklySelector from './UI/WeeklySelector';
+import Calender from './UI/Calender';
 
 interface AddTaskFormProps {
   onClose: () => void;
@@ -133,12 +134,10 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 ">
-      <Input
+      <NameInput
         label="할 일 제목"
         placeholder="할 일 제목을 입력해주세요."
-        inputProps={{
-          ...register('name', { required: '제목은 필수 입력 사항입니다.' }),
-        }}
+        register={register}
         isError={!!errors.name}
         errorMessage={errors.name?.message}
       />
@@ -166,12 +165,13 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
       {selectedFrequency.label === 'WEEKLY' && (
         <WeeklySelector onChange={handleWeeklyDaysChange} />
       )}
-      <ScrollTextArea
+      <DescriptionTextArea
         label="할 일 메모"
         placeholder="메모를 입력해주세요."
-        textareaProps={{
-          ...register('description'),
-        }}
+        register={register}
+        registerValue="description"
+        isError={!!errors.description}
+        errorMessage={errors.description?.message}
       />
       <Button size="full" type="submit" disabled={!isValid}>
         만들기

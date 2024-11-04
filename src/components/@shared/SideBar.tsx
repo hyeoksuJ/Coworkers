@@ -78,7 +78,7 @@ export default function SideBar({
       }
     ),
 
-    closeButton: clsx('absolute top-4', {
+    closeButton: clsx('absolute mt-4', {
       'right-4': position === 'left',
       'left-4': position === 'right',
     }),
@@ -94,12 +94,16 @@ export default function SideBar({
       ref={sideBarRef}
       className={`${classes.sidebar} ${styles.sidebarScroll}`}
     >
-      <div className="sticky top-0">
+      <div className="sticky top-0 z-10 h-4 bg-gray-800">
         <button type="button" className={classes.closeButton} onClick={onClose}>
           <XIcon />
         </button>
       </div>
-      <div className="mt-10 h-full">{children}</div>
+      <div
+        className={`mt-10 h-[calc(100%-64px)] overflow-y-auto ${styles.sidebarScroll}`}
+      >
+        {children}
+      </div>
       <div className={classes.completeButtonWrapper}>
         {button === 'completebutton' ? (
           <Button

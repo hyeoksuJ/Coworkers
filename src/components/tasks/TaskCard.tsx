@@ -12,10 +12,10 @@ import Image from 'next/image';
 
 import EditDropdown, { editOption } from '@components/team/EditDropdown';
 import Link from 'next/link';
-import EditTaskModal from './UI/EditTaskModal';
-import DeleteTaskModal from './UI/DeleteTaskModal';
-import { TaskSideBar } from './TaskSideBar';
-import CheckBox from './CheckBox';
+import EditTaskModal from './UI/modal/EditTaskModal';
+import DeleteTaskModal from './UI/modal/DeleteTaskModal';
+import { TaskDetails } from './TaskDetails';
+import CheckBox from './UI/CheckBox';
 
 interface TaskCardProps {
   task: TaskDto;
@@ -25,25 +25,36 @@ export default function TaskCard({ task }: TaskCardProps) {
   const { taskCompletionStatus, setTaskId, isSidebarOpen, setSidebarOpen } =
     useTaskListStore();
   const router = useRouter();
-  const { query, pathname } = router;
-
-  const params = new URLSearchParams(query as Record<string, string>);
-  params.set('taskId', String(task.id));
+  const { query } = router;
+  const { teamid, taskListId } = query;
 
   // 각 모달의 상태 독립적으로 관리
   const editModal = useModal();
   const deleteModal = useModal();
 
-  // 드롭다운의 Option 및 모달 상태 전달
+  // 드롭다운 핸들러
   const { handleOptionSelect } = useDropdownModals(editOption, [
     editModal,
     deleteModal,
   ]);
 
-  // 드롭다운 옵션 선택 시 taskId 설정
   const handleDropdownSelection = (option: any) => {
     handleOptionSelect(option);
     setTaskId(task.id);
+  };
+
+  // 사이드바 핸들러
+  const handleCloseTaskDetails = () => {
+    setSidebarOpen(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { taskId, teamid: teamIdFromQuery, ...restQuery } = query;
+    router.push({
+      pathname: `/${teamid}/tasks`,
+      query: {
+        ...restQuery,
+        taskListId,
+      },
+    });
   };
 
   const isChecked = taskCompletionStatus[task.id]?.done ?? task.doneAt !== null;
@@ -59,7 +70,10 @@ export default function TaskCard({ task }: TaskCardProps) {
             doneAt={task.doneAt}
           />
           <Link
-            href={`${pathname}?${params.toString()}`}
+            href={{
+              pathname: `/${teamid}/tasks`,
+              query: { taskListId, taskId: task.id },
+            }}
             onClick={() => setSidebarOpen(!isSidebarOpen)}
           >
             <h1
@@ -68,9 +82,9 @@ export default function TaskCard({ task }: TaskCardProps) {
               {task.name}
             </h1>
           </Link>
-          <TaskSideBar
+          <TaskDetails
             isOpen={isSidebarOpen}
-            onClose={() => setSidebarOpen(false)}
+            onClose={handleCloseTaskDetails}
           />
         </div>
         <div className="flex flex-grow justify-end gap-2 md:ml-2 md:justify-between">

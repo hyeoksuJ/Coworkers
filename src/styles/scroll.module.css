@@ -65,6 +65,19 @@
   background: transparent; /* 스크롤바 트랙 색상 */
 }
 
+.isErrorScroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.isErrorScroll::-webkit-scrollbar-thumb {
+  background-color: #dc2626;
+  border-radius: 10px;
+}
+
+.isErrorScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 /* 모바일 전용 스크롤바 스타일 */
 @media (max-width: 768px) {
   .taskListScroll::-webkit-scrollbar {

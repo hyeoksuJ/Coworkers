@@ -1,8 +1,8 @@
 import { formatTaskListDate } from '@utils/getFormattedDate';
 import { useDate } from '@/src/contexts/DateContext';
-import Pagination from '../Pagination';
-import CalenderButton from '../UI/CalenderButton';
-import AddTaskListButton from '../UI/AddTaskListButton';
+import DatePagination from '../UI/DatePagination';
+import CalenderButton from '../UI/button/CalenderButton';
+import AddTaskListButton from '../UI/button/AddTaskListButton';
 
 export default function TaskDate() {
   const { date } = useDate();
@@ -14,7 +14,7 @@ export default function TaskDate() {
       <div className="flex justify-between">
         <div className="flex gap-3">
           <p className="text-lg-medium">{formattedDate}</p>
-          <Pagination />
+          <DatePagination />
           <CalenderButton />
         </div>
         <AddTaskListButton />

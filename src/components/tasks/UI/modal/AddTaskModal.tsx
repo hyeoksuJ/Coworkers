@@ -1,5 +1,5 @@
 import { Modal } from '@components/@shared/Modal';
-import AddTaskForm from '../AddTaskForm';
+import AddTaskForm from '../../AddTaskForm';
 
 interface AddTaskModalProps {
   isOpen: boolean;

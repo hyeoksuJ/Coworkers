@@ -57,6 +57,7 @@ export default function ArticleImageInput({
           ref={fileInput}
           style={{ display: 'none' }}
           onChange={onChange}
+          accept="image/jpg, image/jpeg, image/png, image/gif, image/svg+xml"
         />
         <button
           type="button"

@@ -28,7 +28,7 @@ interface Card {
 
 export default function ArticleCard({ keyword }: ArticleCardProps) {
   const [orderBy, setorderBy] = useState('recent');
-
+  const { query } = useRouter();
   const {
     data: cards,
     isError,
@@ -38,12 +38,24 @@ export default function ArticleCard({ keyword }: ArticleCardProps) {
   } = useCards(10, orderBy, keyword || '');
   const router = useRouter();
 
+  useEffect(() => {
+    if (query.orderBy) {
+      setorderBy(query.orderBy as string);
+    } else {
+      setorderBy('recent');
+    }
+  }, [query.orderBy]);
+
   const handleDetalCard = (id: number) => {
     router.push(`article/${id}`);
   };
 
   const handleSelect = (value: string) => {
     setorderBy(value);
+    router.push({
+      pathname: router.pathname,
+      query: { ...query, orderBy: value },
+    });
   };
 
   const { ref, inView } = useInView();
@@ -73,7 +85,7 @@ export default function ArticleCard({ keyword }: ArticleCardProps) {
         const pageKey = page.map((pageCard: Card) => pageCard.id).join('-');
         return (
           <div className="mb-4" key={pageKey}>
-            <ul className="grid gap-4 xl:grid-cols-2">
+            <ul className="grid grid-cols-1 gap-4 xl:grid-cols-2">
               {page.map((card: Card) => (
                 <li key={card.id}>
                   <article className="relative h-[178px] w-full rounded-xl border border-background-tertiary bg-background-secondary">
@@ -82,15 +94,15 @@ export default function ArticleCard({ keyword }: ArticleCardProps) {
                       onClick={() => handleDetalCard(card.id)}
                     >
                       <div className=" mb-10 flex justify-between">
-                        <div className="w-[230px] overflow-hidden md:w-[480px]">
-                          <h3 className=" mb-3 max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-md-medium md:text-2lg-medium">
+                        <div className="flex-1 overflow-hidden pr-4">
+                          <h3 className="mb-3 max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-md-medium md:text-2lg-medium">
                             {card.title}
                           </h3>
                           <span className="text-xs-regular text-slate-400 md:text-md-medium">
                             {dayjs(card.createdAt).format('YYYY.MM.DD')}
                           </span>
                         </div>
-                        <div className="h-16 w-16 overflow-hidden rounded-lg">
+                        <div className="h-16 w-16 flex-none rounded-lg">
                           <Image
                             src={card.image}
                             width={64}

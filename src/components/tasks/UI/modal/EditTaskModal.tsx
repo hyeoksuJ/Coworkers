@@ -1,5 +1,4 @@
 import Button from '@components/@shared/Button';
-import { Input, ScrollTextArea } from '@components/@shared/Input';
 import { Modal } from '@components/@shared/Modal';
 
 import { patchTask, TaskUrlParams } from '@/src/api/tasks/taskAPI';
@@ -8,6 +7,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { TASK_REQUEST_INIT } from '@constants/initValues';
 import type { TaskRequestBody } from '@/src/types/tasks/taskDto';
+import NameInput from '../input/NameInput';
+import DescriptionTextArea from '../input/DescriptionTextArea';
 
 interface EditTaskModal {
   isOpen: boolean;
@@ -25,7 +26,7 @@ export default function EditTaskModal({
   const {
     register,
     handleSubmit,
-    formState: { isValid },
+    formState: { errors, isValid },
   } = useForm<TaskRequestBody['patch']>({
     mode: 'onChange',
     defaultValues: {
@@ -93,21 +94,20 @@ export default function EditTaskModal({
           fontSize="14"
           className="gap-4"
         >
-          <Input
+          <NameInput
             label="할 일 제목"
-            placeholder="제목을 입력해주세요."
-            inputProps={{
-              ...register('name', { required: '제목은 필수 입력 사항입니다.' }),
-            }}
+            placeholder="할 일 제목을 입력해주세요."
+            register={register}
+            isError={!!errors.name}
+            errorMessage={errors.name?.message}
           />
-          <ScrollTextArea
+          <DescriptionTextArea
             label="할 일 메모"
             placeholder="메모를 입력해주세요."
-            textareaProps={{
-              ...register('description', {
-                required: '제목은 필수 입력 사항입니다.',
-              }),
-            }}
+            register={register}
+            registerValue="description"
+            isError={!!errors.description}
+            errorMessage={errors.description?.message}
           />
         </Modal.Content>
       </Modal.Wrapper>

@@ -13,6 +13,7 @@ interface TaskListStore {
   isSidebarOpen: boolean; // task의 sidebar 상태
   comments: CommentDto[]; // task의 comments[] 데이터
   commentId: number;
+  editingCommentId: number | undefined;
   SelectedCommentId: number;
   taskCompletionStatus: {
     [taskId: number]: {
@@ -37,6 +38,7 @@ interface TaskListStore {
   setSidebarOpen: (isOpen: boolean) => void;
   setComments: (comments: CommentDto[]) => void;
   setCommentId: (commentId: number) => void;
+  setEditingCommentId: (commentId: number | undefined) => void;
   setSelectedCommentId: (commentId: number) => void;
 }
 
@@ -129,7 +131,7 @@ const initialTask: TaskDto = {
 const initialComments = [
   {
     id: 0,
-    writer: {
+    user: {
       image: null,
       nickname: '',
       id: 0,
@@ -153,6 +155,7 @@ export const useTaskListStore = create<TaskListStore>((set) => ({
   isSidebarOpen: false,
   comments: initialComments,
   commentId: 0,
+  editingCommentId: undefined,
   SelectedCommentId: 0,
 
   setGroupId: (groupId: number) => set({ groupId }),
@@ -182,5 +185,7 @@ export const useTaskListStore = create<TaskListStore>((set) => ({
   setSidebarOpen: (isOpen) => set({ isSidebarOpen: isOpen }),
   setComments: (comments: CommentDto[]) => set({ comments }),
   setCommentId: (commentId: number) => set({ commentId }),
+  setEditingCommentId: (commentId: number | undefined) =>
+    set({ editingCommentId: commentId }),
   setSelectedCommentId: (commentId: number) => set({ taskId: commentId }),
 }));

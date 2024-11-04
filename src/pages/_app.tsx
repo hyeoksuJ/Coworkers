@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { DateProvider } from '@/src/contexts/DateContext';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import Head from 'next/head';
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,18 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Head>
+        <link rel="icon" href="/favicon.png" />
+        <meta name="description" content="함께 만들어가는 투두 리스트" />
+        <meta property="og:title" content="Coworkers" />
+        <meta property="og:description" content="함께 만들어가는 투두 리스트" />
+        <meta property="og:image" content="/images/landing_train_pc.png" />
+        <meta
+          property="og:url"
+          content="https://dev-coworkers-seven.vercel.app/"
+        />
+        <title>Coworkers</title>
+      </Head>
       <DateProvider>
         <NavBar />
         <Component {...pageProps} />

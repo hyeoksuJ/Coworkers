@@ -3,6 +3,7 @@ import Image from 'next/image';
 import UserProfileIcon from '@icons/profile_small.svg';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 import {
   getComments,
   postComment,
@@ -11,18 +12,36 @@ import {
   CommentUrlParams,
 } from '@/src/api/tasks/commentAPI';
 import { useTaskListStore } from '@/src/stores/taskListStore';
+import getSortedDate from '@utils/getSortedDate';
 import getTimeAgo from '@utils/getTimeAgo';
 
 import { AutoTextArea } from '@components/@shared/Input';
 import EditDropdown from '@components/team/EditDropdown';
 import type { CommentRequestBody } from '@/src/types/tasks/commentDto';
+import DescriptionTextArea from './UI/input/DescriptionTextArea';
 
 export function TaskComments() {
   const queryClient = useQueryClient();
   const [commentInput, setCommentInput] = useState('');
-  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const [editedCommentContent, setEditedCommentContent] = useState<string>('');
-  const { comments, setComments, taskId, setCommentId } = useTaskListStore();
+  const {
+    comments,
+    setComments,
+    taskId,
+    editingCommentId,
+    setEditingCommentId,
+    setCommentId,
+  } = useTaskListStore();
+  const {
+    register,
+    setValue,
+    getValues,
+    formState: { errors, isValid },
+  } = useForm<CommentRequestBody['patch']>({
+    mode: 'onChange',
+    defaultValues: {
+      content: '',
+    },
+  });
 
   // GET, comments
   const { data: commentsData } = useQuery({
@@ -32,16 +51,17 @@ export function TaskComments() {
         taskId,
       }),
     enabled: !!taskId,
+    staleTime: Infinity,
   });
 
-  // store
   useEffect(() => {
     if (commentsData) {
-      setComments(commentsData);
+      const sortedComments = getSortedDate(commentsData, 'createdAt');
+      setComments(sortedComments);
     }
   }, [commentsData, setComments]);
 
-  // POST, comment 생성
+  // POST, comment
   const { mutate: createComment } = useMutation({
     mutationFn: async ({
       params,
@@ -64,9 +84,7 @@ export function TaskComments() {
     setCommentInput(e.target.value);
   };
 
-  const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const handleCommentSubmit = async () => {
     if (commentInput.trim()) {
       try {
         await createComment({
@@ -112,7 +130,7 @@ export function TaskComments() {
         (comment) => comment.id === commentId
       );
       if (commentToEdit) {
-        setEditedCommentContent(commentToEdit.content);
+        setValue('content', commentToEdit.content);
       }
     }
   };
@@ -136,17 +154,17 @@ export function TaskComments() {
     },
   });
 
-  const handleEditSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
-    commentId: number
-  ) => {
-    e.preventDefault();
+  const handleEditSubmit = async () => {
+    const content = getValues('content');
+    if (!content) return;
+
     try {
       await editComment({
-        params: { taskId, commentId },
-        data: { content: editedCommentContent },
+        params: { taskId, commentId: editingCommentId },
+        data: { content },
       });
-      setEditingCommentId(null);
+      setEditingCommentId(undefined);
+      setValue('content', '');
     } catch (error) {
       console.error('댓글 수정 오류:', error);
     }
@@ -175,6 +193,7 @@ export function TaskComments() {
                         width={10}
                         height={10}
                         className="h-3"
+                        quality={100}
                       />
                     }
                     onSelect={(option) =>
@@ -185,39 +204,48 @@ export function TaskComments() {
               )}
               {editingCommentId === comment.id ? (
                 <form
-                  className="flex gap-3"
-                  onSubmit={(e) => handleEditSubmit(e, comment.id)}
+                  className="flex w-full gap-3"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleEditSubmit();
+                  }}
                 >
-                  <textarea
-                    value={editedCommentContent}
+                  <DescriptionTextArea
                     placeholder={comment.content}
-                    onChange={(e) => setEditedCommentContent(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                      }
-                    }}
-                    required
-                    className="h-auto w-full resize-none overflow-hidden rounded-md bg-background-secondary p-3 text-md-medium outline-dashed outline-2 outline-background-tertiary focus:outline-text-default"
+                    register={register}
+                    registerValue="content"
+                    isError={!!errors.content}
+                    errorMessage={String(errors.content?.message)}
                   />
-                  <button
-                    type="submit"
-                    className="my-auto h-9 w-14 rounded-md border-[1px] border-background-tertiary bg-text-default px-2 py-1 text-xs-medium text-white hover:border-brand-primary hover:bg-brand-primary"
-                  >
-                    수정
-                  </button>
+                  <div className="mb-auto mt-3 flex flex-col gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setEditingCommentId(undefined)}
+                      className="my-auto h-9 w-14 rounded-md border-[1px] border-background-tertiary bg-text-default px-2 py-1 text-xs-medium text-white hover:border-status-danger hover:bg-status-danger"
+                    >
+                      취소
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={!isValid}
+                      className={`my-auto h-9 w-14 rounded-md border-[1px] px-2 py-1 text-xs-medium text-white 
+                      ${!isValid ? 'border-background-tertiary bg-text-default ' : 'border-brand-primary bg-brand-primary  hover:bg-brand-secondary'}`}
+                    >
+                      수정
+                    </button>
+                  </div>
                 </form>
               ) : (
-                <p className="pr-4 text-md-regular">{comment.content}</p>
+                <p className="pr-4 text-md-regular ">{comment.content}</p>
               )}
               <div className="flex">
                 <div className="flex flex-1 items-center gap-4">
-                  {comment.writer && (
+                  {comment.user && (
                     <>
-                      {comment.writer.image ? (
+                      {comment.user.image ? (
                         <Image
                           alt="유저 프로필 이미지"
-                          src={comment.writer.image}
+                          src={comment.user.image}
                           width={32}
                           height={32}
                           className="h-8 w-8 rounded-full"
@@ -226,11 +254,11 @@ export function TaskComments() {
                         <UserProfileIcon />
                       )}
                       <span className="text-md-medium">
-                        {comment.writer.nickname}
+                        {comment.user.nickname}
                       </span>
                     </>
                   )}
-                  {!comment.writer && <UserProfileIcon />}
+                  {!comment.user && <UserProfileIcon />}
                 </div>
                 <span className="my-auto text-md-regular text-text-default">
                   {getTimeAgo(comment.createdAt)}

@@ -1,7 +1,7 @@
 import { useModal } from '@hooks/useModal';
 import { useTeamStore } from '@/src/stores/teamStore';
 import { Option } from '@components/@shared/Dropdown';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -10,6 +10,7 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
+  TouchSensor,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -69,7 +70,13 @@ export default function TaskList() {
   const listCount = displayedTaskList.length;
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
+    }),
+    useSensor(TouchSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -94,24 +101,28 @@ export default function TaskList() {
     },
   });
 
-  // 드래그 시작 시 스크롤바 외부의 터치를 막기 위한 이벤트 핸들러
-  const handleTouchStart = (e: TouchEvent) => {
-    const touch = e.touches[0];
-    const scrollableElement = scrollableRef.current;
+  const handleTouchStart = useCallback(
+    (e: TouchEvent) => {
+      if (isDragging) {
+        const touch = e.touches[0];
+        const scrollableElement = scrollableRef.current;
 
-    if (scrollableElement) {
-      const scrollbarWidth =
-        scrollableElement.offsetWidth - scrollableElement.clientWidth;
+        if (scrollableElement) {
+          const scrollbarWidth =
+            scrollableElement.offsetWidth - scrollableElement.clientWidth;
 
-      // 터치 위치가 스크롤바가 있는 영역이 아닐 경우 스크롤을 막습니다.
-      if (
-        touch.clientX < scrollableElement.clientWidth ||
-        touch.clientX > scrollableElement.clientWidth + scrollbarWidth
-      ) {
-        e.preventDefault(); // 스크롤 막기
+          // 터치 위치가 스크롤바가 있는 영역이 아닐 경우 스크롤을 막습니다.
+          if (
+            touch.clientX < scrollableElement.clientWidth ||
+            touch.clientX > scrollableElement.clientWidth + scrollbarWidth
+          ) {
+            e.preventDefault(); // 스크롤 막기
+          }
+        }
       }
-    }
-  };
+    },
+    [isDragging]
+  ); // isDragging 의존성 배열에 추가
 
   const handleDragStart = () => {
     // 일정 시간 후 드래그로 간주
@@ -123,49 +134,48 @@ export default function TaskList() {
     if (clickTimeout !== null) {
       clearTimeout(clickTimeout);
     }
-    if (isDragging) {
-      const { active, over } = event;
-      setIsDragging(false);
-      setClickTimeout(null); // 타이머 초기화
 
-      if (over) {
-        const newIndex = displayedTaskList.findIndex(
-          (item) => item.id === over.id
-        );
-        const oldIndex = displayedTaskList.findIndex(
-          (item) => item.id === active.id
-        );
+    const { active, over } = event;
+    setIsDragging(false);
+    setClickTimeout(null); // 타이머 초기화
 
-        if (oldIndex !== -1 && newIndex !== -1 && active.id !== over.id) {
-          // 드래그 후 순서 변경
-          const updatedItems = arrayMove(
-            [...displayedTaskList],
-            oldIndex,
-            newIndex
-          ); // 새 배열 생성
+    if (over) {
+      const newIndex = displayedTaskList.findIndex(
+        (item) => item.id === over.id
+      );
+      const oldIndex = displayedTaskList.findIndex(
+        (item) => item.id === active.id
+      );
 
-          // UI 즉시 업데이트
-          setDisplayedTaskList(updatedItems);
+      if (oldIndex !== -1 && newIndex !== -1 && active.id !== over.id) {
+        // 드래그 후 순서 변경
+        const updatedItems = arrayMove(
+          [...displayedTaskList],
+          oldIndex,
+          newIndex
+        ); // 새 배열 생성
 
-          // 서버 요청
-          patchOrderMutation.mutate(
-            {
-              groupId: Number(id),
-              taskListId: Number(active.id),
-              displayIndex: newIndex,
+        // UI 즉시 업데이트
+        setDisplayedTaskList(updatedItems);
+
+        // 서버 요청
+        patchOrderMutation.mutate(
+          {
+            groupId: Number(id),
+            taskListId: Number(active.id),
+            displayIndex: newIndex,
+          },
+          {
+            onSuccess: () => {
+              // 요청이 성공한 경우 쿼리 무효화
+              queryClient.invalidateQueries({ queryKey: ['group', id] });
             },
-            {
-              onSuccess: () => {
-                // 요청이 성공한 경우 쿼리 무효화
-                queryClient.invalidateQueries({ queryKey: ['group', id] });
-              },
-              onError: () => {
-                // 요청 실패 시 이전 상태로 복구
-                setDisplayedTaskList(taskLists);
-              },
-            }
-          );
-        }
+            onError: () => {
+              // 요청 실패 시 이전 상태로 복구
+              setDisplayedTaskList(taskLists);
+            },
+          }
+        );
       }
     }
   };
@@ -191,16 +201,18 @@ export default function TaskList() {
 
   useEffect(() => {
     const scrollableElement = scrollableRef.current;
+
     if (scrollableElement) {
       scrollableElement.addEventListener('touchstart', handleTouchStart);
     }
 
     return () => {
+      // 컴포넌트가 언마운트되거나, 타이머가 실행되기 전에 리스너를 제거
       if (scrollableElement) {
         scrollableElement.removeEventListener('touchstart', handleTouchStart);
       }
     };
-  }, []);
+  }, [handleTouchStart]);
 
   return (
     <section>
