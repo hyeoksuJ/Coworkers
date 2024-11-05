@@ -34,7 +34,7 @@ export default function NavBarTeam({ data }: { data: User }) {
   const defaultButton = {
     label: '팀 메뉴',
     component: (
-      <Button bgColor="transparent" border="white" size="full" height={40}>
+      <Button size="full" height={40}>
         + 팀 추가하기
       </Button>
     ),
@@ -119,7 +119,7 @@ export default function NavBarTeam({ data }: { data: User }) {
       setSelectedTeam({
         label: '팀 메뉴',
         component: (
-          <Button bgColor="transparent" border="white" size="full" height={40}>
+          <Button size="full" height={40}>
             + 팀 추가하기
           </Button>
         ),
@@ -173,7 +173,7 @@ export default function NavBarTeam({ data }: { data: User }) {
               ))}
               <Button
                 bgColor="transparent"
-                border="white"
+                border="green"
                 size="full"
                 height={40}
                 fontSize="14"

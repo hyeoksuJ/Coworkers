@@ -40,7 +40,7 @@ export default function TeamBanner() {
     } // '삭제하기'를 선택했을 때
   };
   return (
-    <div className="flex items-center justify-between rounded-[12px] border border-border-primary border-opacity-10 bg-slate-50 bg-opacity-10 bg-[url('/images/thumbnail_team.png')] bg-contain bg-[90%] bg-no-repeat px-[24px] py-[15px]">
+    <div className="flex items-center justify-between rounded-[12px] border border-border-primary border-opacity-10 bg-background-secondary bg-[url('/images/thumbnail_team.png')] bg-contain bg-[90%] bg-no-repeat px-[24px] py-[15px]">
       <div className="flex items-center gap-[15px]">
         <div
           className="relative h-[45px] w-[45px] shrink-0 cursor-pointer rounded-[16px] bg-border-primary"

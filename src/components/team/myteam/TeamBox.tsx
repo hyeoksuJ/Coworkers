@@ -19,7 +19,7 @@ export default function TeamBox({
   return (
     <div className="w-full">
       <Link href={`/${groupId}`}>
-        <div className="flex w-full grid-cols-[100px_1fr] gap-[10px] rounded-[12px] bg-background-tertiary px-[10px] py-[20px] hover:brightness-110 md:gap-[20px] md:p-[20px] ">
+        <div className="flex w-full grid-cols-[100px_1fr] gap-[10px] rounded-[12px] bg-background-secondary px-[10px] py-[20px] hover:brightness-110 md:gap-[20px] md:p-[20px] ">
           <img
             src={image}
             alt="팀 프로필 이미지"
@@ -29,7 +29,7 @@ export default function TeamBox({
             <p className="mr-[10px] overflow-hidden text-ellipsis whitespace-nowrap text-md-bold md:text-lg-bold">
               {teamName}
             </p>
-            <p className="text-[9px] text-text-secondary md:text-xs-regular">
+            <p className="text-[11px] text-text-secondary md:text-xs-regular">
               최근 활동 : {lastActiveAt}
             </p>
           </div>
