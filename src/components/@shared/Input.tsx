@@ -28,7 +28,7 @@ export function Input({
       </label>
       <input
         className={`h-[48px] w-full rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary outline outline-[1px]
-            focus:outline-none focus:outline-brand-primary ${isError ? 'outline-status-danger' : 'outline-[#343E4E]'}`}
+            focus:outline-none focus:outline-brand-primary ${isError ? 'outline-status-danger' : 'outline-[#2C2C2C]'}`}
         id="input"
         placeholder={placeholder}
         {...inputProps}
@@ -49,7 +49,7 @@ export function SearchInput({
 }: InputProps) {
   return (
     <div
-      className="flex h-[48px] w-full items-center gap-[5px] rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary outline outline-[1px] outline-[#343E4E]
+      className="flex h-[48px] w-full items-center gap-[5px] rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary outline outline-[1px] outline-[#2C2C2C]
             focus-within:outline-none focus-within:outline-brand-primary"
       {...props}
     >
@@ -83,7 +83,7 @@ export function IconInput({
       <div className="relative ">
         <input
           className={`h-[48px] w-full rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary outline outline-[1px]
-            focus:outline-none focus:outline-brand-primary ${isError ? 'outline-status-danger' : 'outline-[#343E4E]'}`}
+            focus:outline-none focus:outline-brand-primary ${isError ? 'outline-status-danger' : 'outline-[#2C2C2C]'}`}
           id="input"
           placeholder={placeholder}
           {...inputProps}
@@ -117,7 +117,7 @@ export function ScrollTextArea({
         {label}
       </label>
       <div
-        className={`relative min-h-[100px] w-full overflow-hidden rounded-[12px] bg-background-secondary p-[15px] outline outline-[1px] ${isError ? 'outline-status-danger' : 'outline-[#343E4E]'} focus-within:outline-none focus-within:outline-brand-primary`}
+        className={`relative min-h-[100px] w-full overflow-hidden rounded-[12px] bg-background-secondary p-[15px] outline outline-[1px] ${isError ? 'outline-status-danger' : 'outline-[#2C2C2C]'} focus-within:outline-none focus-within:outline-brand-primary`}
       >
         <textarea
           className={`min-h-[100px] w-full resize-none overflow-auto rounded-[12px] bg-background-secondary  text-lg-regular text-text-primary  focus:outline-none 

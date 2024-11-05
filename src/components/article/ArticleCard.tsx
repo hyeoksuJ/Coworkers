@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import ArrayDropdown from '@components/article/ArrayDropdown';
 import { useCards } from '@hooks/article/useArticleCard';
-import NetworkError from '@components/@shared/NetworkError';
 import { useInView } from 'react-intersection-observer';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import HeartIcon from 'public/icons/heart.svg';
+import LoadingSpinner from '@components/@shared/LoadingSpinner';
+import UserNotFound from '@components/@shared/UserNotFound';
 
 interface ArticleCardProps {
   keyword: string;
@@ -31,6 +32,7 @@ export default function ArticleCard({ keyword }: ArticleCardProps) {
   const { query } = useRouter();
   const {
     data: cards,
+    isLoading,
     isError,
     fetchNextPage,
     hasNextPage,
@@ -66,13 +68,8 @@ export default function ArticleCard({ keyword }: ArticleCardProps) {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isError) {
-    return (
-      <div>
-        <NetworkError />
-      </div>
-    );
-  }
+  if (isLoading) return <LoadingSpinner />;
+  if (isError) return <UserNotFound />;
 
   return (
     <>

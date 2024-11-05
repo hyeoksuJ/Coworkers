@@ -157,9 +157,9 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
           options={frequencyOptions}
           onSelect={handleFrequencySelect}
           triggerIcon={<ToggleIcon />}
-          triggerClass="bg-slate-900 text-md-medium text-text-default flex gap-2  py-2 px-[10px] rounded-xl items-center h-[44px]"
+          triggerClass="bg-background-secondary border border-background-tertiary text-md-medium text-text-default flex gap-2  py-2 px-[10px] rounded-xl items-center h-[44px]"
           optionsWrapClass="bg-background-secondary mt-2 rounded-xl border border-brand-primary shadow-[0_2px_10px_rgba(0,0,0,0.5)] overflow-hidden"
-          optionClass="px-4 rounded-xl md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-start hover:bg-slate-900 hover:rounded-none hover:text-text-default"
+          optionClass="px-4 rounded-xl md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-start hover:bg-background-tertiary hover:rounded-none hover:text-text-default"
         />
       </div>
       {selectedFrequency.label === 'WEEKLY' && (
