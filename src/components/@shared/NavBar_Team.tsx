@@ -3,7 +3,7 @@ import { useModal } from '@hooks/useModal';
 import AddTeamModal from '@components/team/AddTeamModal';
 import { useRouter } from 'next/router';
 import { useTeamStore } from '@/src/stores/teamStore';
-import PCLogo from 'public/images/logo_pc.png';
+import PCLogo from 'public/images/donut_logo3.png';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Dropdown, { Option } from '@components/@shared/Dropdown';

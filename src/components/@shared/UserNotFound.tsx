@@ -14,9 +14,9 @@ export default function UserNotFound() {
         />
       </div>
       <p className="mt-[20px] text-center text-[20px]">
-        유저 정보를 찾을 수 없어요.
+        찾을 수 없는 페이지입니다.
       </p>
-      <Link href="/signin">
+      <Link href="/">
         <Button
           width={200}
           height={48}
@@ -26,7 +26,7 @@ export default function UserNotFound() {
           fontSize="14"
           className="mx-auto mt-[50px]"
         >
-          로그인 하러 가기
+          홈으로 가기
         </Button>
       </Link>
     </div>

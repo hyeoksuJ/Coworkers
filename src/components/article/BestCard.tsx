@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import ArrowRightIcon from 'public/icons/arrow_right.svg';
 import NetworkError from '@components/@shared/NetworkError';
 import { useRouter } from 'next/router';
-import Heart from './Heart';
+import HeartIcon from 'public/icons/heart.svg';
 
 interface BestCardProps {
   keyword: string;
@@ -122,14 +122,12 @@ export default function BestCard({ keyword }: BestCardProps) {
                     </span>
                   </div>
                   <div className="flex items-center gap-1">
+                    <HeartIcon />
                     <span className="text-xs-regular text-slate-400 md:text-md-medium">
                       {card.likeCount}
                     </span>
                   </div>
                 </div>
-              </div>
-              <div className="absolute bottom-[15px] right-[30px]">
-                <Heart articleId={card.id} />
               </div>
             </article>
           </li>

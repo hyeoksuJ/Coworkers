@@ -22,14 +22,14 @@ div.calenderWrapper {
 
 /* 날짜, 일 */
 div.selectedDay {
-  background-color: #10b981;
+  background-color: #ff5580;
   border-radius: 8px;
-  color: #1e293b;
+  color: #1e1e1e;
 }
 
 .today {
-  color: #10b981;
-  background-color: #1e293b;
+  color: #ff5580;
+  background-color: #1e1e1e;
 }
 
 .day {
@@ -38,5 +38,5 @@ div.selectedDay {
 
 .disabledDay {
   pointer-events: none;
-  color: #64748b;
+  color: #757575;
 }

@@ -4,7 +4,7 @@
 }
 
 .textarea::-webkit-scrollbar-thumb {
-  background-color: #10b981; /* 스크롤바 색상 */
+  background-color: #e0e0e0; /* 스크롤바 색상 */
   border-radius: 10px; /* 둥글게 만들기 */
 }
 
@@ -31,7 +31,7 @@
 }
 
 .sidebarScroll::-webkit-scrollbar-thumb {
-  background-color: #10b981; /* 스크롤바 색상 */
+  background-color: #e0e0e0; /* 스크롤바 색상 */
   border-radius: 10px; /* 둥글게 만들기 */
 }
 
@@ -44,7 +44,7 @@
 }
 
 .dropdownScroll::-webkit-scrollbar-thumb {
-  background-color: #10b981; /* 스크롤바 색상 */
+  background-color: #e0e0e0; /* 스크롤바 색상 */
   border-radius: 10px; /* 둥글게 만들기 */
 }
 
@@ -57,7 +57,7 @@
 }
 
 .taskListScroll::-webkit-scrollbar-thumb {
-  background-color: #10b981; /* 스크롤바 색상 */
+  background-color: #e0e0e0; /* 스크롤바 색상 */
   border-radius: 10px; /* 둥글게 만들기 */
 }
 
@@ -70,7 +70,7 @@
 }
 
 .isErrorScroll::-webkit-scrollbar-thumb {
-  background-color: #dc2626;
+  background-color: #ff4c4c;
   border-radius: 10px;
 }
 

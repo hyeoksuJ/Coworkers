@@ -1,15 +1,21 @@
 import { useEffect } from 'react';
 import { useDate } from '@/src/contexts/DateContext';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import { useTaskListStore } from '@/src/stores/taskListStore';
 import { getTaskLists, getTaskList } from '@/src/api/tasks/taskListAPI';
-import TaskDate from '@components/tasks/Layout/TaskDate';
-import TaskList from '@components/tasks/Layout/TaskList';
+import TaskDate from '@components/tasks/TaskDate';
+import TaskList from '@components/tasks/TaskList';
 import AddTaskButton from '@components/tasks/UI/button/AddTaskButton';
+import LoadingSpinner from '@components/@shared/LoadingSpinner';
+import UserNotFound from '@components/@shared/UserNotFound';
 import { toKSTISOString } from '@utils/toKSTISOString';
 
 export default function TasksPage() {
   const { date } = useDate();
+  const router = useRouter();
+  const { query } = router;
+  const { teamid } = query;
   const {
     groupId,
     taskListId,
@@ -20,7 +26,7 @@ export default function TasksPage() {
   } = useTaskListStore();
 
   // GET, taskList 및 tasks[]
-  const { data: taskListData } = useQuery({
+  const { data: taskListData, isError: taskListError } = useQuery({
     queryKey: ['tasks', taskListId, toKSTISOString(date)],
     queryFn: () =>
       getTaskList({
@@ -47,7 +53,7 @@ export default function TasksPage() {
     isLoading: taskListsLoading,
     isError: taskListsError,
   } = useQuery({
-    queryKey: ['tasks', groupId],
+    queryKey: ['tasks', groupId, teamid],
     queryFn: () => getTaskLists({ groupId }),
     enabled: !!groupId,
     refetchOnWindowFocus: false,
@@ -61,8 +67,14 @@ export default function TasksPage() {
     }
   }, [taskListsData, setTaskLists]);
 
-  if (taskListsLoading) return <div>리스트 페이지 로딩 중...</div>;
-  if (taskListsError) return <div>리스트 페이지 로딩 에러</div>;
+  const isError = taskListError || taskListsError;
+
+  if (taskListsLoading) {
+    return <LoadingSpinner />;
+  }
+  if (isError) {
+    return <UserNotFound />;
+  }
 
   return (
     <main className="flex flex-col gap-6 px-4 py-6 text-left md:px-6 xl:mx-auto xl:max-w-[1200px] xl:px-0 xl:pt-10">

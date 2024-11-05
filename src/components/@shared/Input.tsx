@@ -164,7 +164,7 @@ export function AutoTextArea({
   }, [value]); // value가 변경될 때마다 높이 조정
   return (
     <form
-      className="relative flex min-h-[49px] w-full items-center overflow-auto border-b-[1px] border-t-[1px] border-[#343E4E] bg-transparent pl-[15px] text-lg-regular text-text-primary focus:border-brand-primary focus:outline-none "
+      className="relative flex min-h-[49px] w-full items-center overflow-auto border-b-[1px] border-t-[1px] border-background-tertiary bg-transparent pl-[15px] text-lg-regular text-text-primary focus:border-brand-primary focus:outline-none "
       onSubmit={onSubmit}
     >
       <textarea

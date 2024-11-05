@@ -44,7 +44,7 @@ export default function TaskBar({ name, tasks, id, isDragging }: TaskBarProps) {
   );
 
   // 찾은 taskList의 색상을 가져오거나 기본 색상을 사용
-  const taskListColor = currentTaskList ? currentTaskList.color : '#0eaf6f'; // 기본 색상
+  const taskListColor = currentTaskList ? currentTaskList.color : '#FF6F91'; // 기본 색상
 
   return (
     <div
@@ -83,8 +83,8 @@ export default function TaskBar({ name, tasks, id, isDragging }: TaskBarProps) {
               ) : (
                 <CircleGraph
                   backgroundColor="#ffffff"
-                  gradientColorStart="#10B981"
-                  gradientColorEnd="#10B981"
+                  gradientColorStart="#FF5580"
+                  gradientColorEnd="#FF5580"
                   radius={6}
                   percentage={doneRate}
                   strokeWidth={3}

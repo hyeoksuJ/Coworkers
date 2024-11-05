@@ -187,16 +187,23 @@ export default function CommentList() {
                   <span className="break-words text-md-regular text-text-primary md:text-lg-regular">
                     {comment.content}
                   </span>
-                  <Dropdown
-                    options={basic(
-                      comment.id,
-                      comment.writer.id,
-                      comment.content
-                    )}
-                    triggerIcon={<SmallKebabIcon />}
-                    optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
-                    optionClass="rounded-[12px] md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
-                  />
+                  <div
+                    className={clsx({
+                      hidden: UserData?.id !== comment.writer.id,
+                      block: UserData?.id === comment.writer.id,
+                    })}
+                  >
+                    <Dropdown
+                      options={basic(
+                        comment.id,
+                        comment.writer.id,
+                        comment.content
+                      )}
+                      triggerIcon={<SmallKebabIcon />}
+                      optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
+                      optionClass="rounded-[12px] md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
+                    />
+                  </div>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">

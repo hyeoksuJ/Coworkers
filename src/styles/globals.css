@@ -4,7 +4,7 @@
 
 @layer utilities {
   .bg-background-primary {
-    @apply bg-[#0F172A];
+    @apply bg-[#121212];
   }
 }
 
@@ -18,7 +18,7 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #10b981; /* 스크롤바 색상 */
+  background-color: #e0e0e0; /* 스크롤바 색상 */
   border-radius: 10px; /* 둥글게 만들기 */
 }
 
@@ -31,7 +31,7 @@ body::-webkit-scrollbar-track {
 }
 
 .gradient-text-brand {
-  background: linear-gradient(to right, #10b981, #a3e635);
+  background: linear-gradient(to right, #ff5580, #ffaa80);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -39,7 +39,7 @@ body::-webkit-scrollbar-track {
 .gradient-border {
   position: relative;
   border-radius: 40px;
-  background: #0f172a;
+  background: #121212;
 }
 
 .gradient-border::before {
@@ -49,7 +49,7 @@ body::-webkit-scrollbar-track {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to right, #10b981, #a3e635); /* 그라데이션 색상 */
+  background: linear-gradient(to right, #ff5580, #ffaa80); /* 그라데이션 색상 */
   z-index: -1;
   border-radius: 40px;
   padding: 1px;
@@ -69,10 +69,10 @@ body::-webkit-scrollbar-track {
   font-size: 14px;
   line-height: 17px;
   padding: 16px;
-  background-color: #1e293b;
+  background-color: #1e1e1e;
   color: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  border-color: #10b981;
+  border-color: #ff5580;
   border-width: 1px;
 }
 
@@ -81,7 +81,7 @@ div.react-datepicker__month {
 }
 
 div.react-datepicker__header {
-  background-color: #1e293b;
+  background-color: #1e1e1e;
   border: none;
   justify-content: space-between;
   align-items: center;
@@ -101,8 +101,8 @@ div.react-datepicker__header {
 /* isInput Layout*/
 div.react-datepicker-popper[data-placement^='bottom']
   .react-datepicker__triangle {
-  fill: #10b981;
-  color: #10b981;
+  fill: #ff5580;
+  color: #ff5580;
 }
 
 div.react-datepicker-popper .react-datepicker__triangle {
@@ -111,9 +111,9 @@ div.react-datepicker-popper .react-datepicker__triangle {
 
 /* input */
 .react-datepicker__input-container input {
-  background-color: #1e293b;
+  background-color: #1e1e1e;
   border-color: #343e4e;
-  color: #9ca3af;
+  color: #e0e0e0;
   border-radius: 12px;
   border-width: 1px;
   padding: 16px 16px;
@@ -123,7 +123,7 @@ div.react-datepicker-popper .react-datepicker__triangle {
 }
 
 .react-datepicker__input-container input:focus {
-  border-color: #10b981;
+  border-color: #ff5580;
 }
 
 .react-datepicker__tab-loop div.react-datepicker-popper {
@@ -146,17 +146,17 @@ div.react-datepicker,
 div.react-datepicker__day--keyboard-selected,
 div.react-datepicker__day--selected {
   border-radius: 24px;
-  background-color: #1e293b;
+  background-color: #1e1e1e;
 }
 
 div.react-datepicker__day--disabled {
-  color: #64748b;
+  color: #ffffff;
 }
 
 .react-datepicker__month div.react-datepicker__day:hover {
-  background-color: #0f172a;
+  background-color: #121212;
   border-radius: 8px;
-  color: #64748b;
+  color: #ffffff;
 }
 
 @font-face {

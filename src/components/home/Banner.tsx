@@ -36,7 +36,7 @@ export default function Banner() {
       <div className="absolute top-[55px] flex w-full flex-col items-center gap-1 text-center md:top-[100px] md:gap-2 xl:top-[84px] xl:gap-5">
         <div className="flex h-full items-center gap-1 md:gap-4 xl:gap-6">
           <h1 className="text-xl-semibold text-teal-50 md:text-4xl-semibold xl:text-5xl-semibold">
-            함께 만들어가는 투두 리스트
+            팀워크로 빚은 아이디어의 도넛
           </h1>
           <Image
             alt="작업 도구 아이콘"
@@ -47,7 +47,7 @@ export default function Banner() {
           />
         </div>
         <h1 className="gradient-text-brand text-3xl-semibold md:text-5xl-semibold xl:h-40 xl:text-[64px]">
-          CoTRAIN
+          DO&apos;NUT
         </h1>
       </div>
     </section>

@@ -10,10 +10,13 @@ import { useTaskListStore } from '@/src/stores/taskListStore';
 import useDropdownModals from '@hooks/useDropdownModals';
 import Image from 'next/image';
 
-import EditDropdown, { editOption } from '@components/team/EditDropdown';
+import TaskEditDropdown, {
+  editOption,
+} from '@components/tasks/UI/TaskEditDropdown';
 import Link from 'next/link';
 import EditTaskModal from './UI/modal/EditTaskModal';
 import DeleteTaskModal from './UI/modal/DeleteTaskModal';
+import DeleteRecurringModal from './UI/modal/DeleteRecurringModal';
 import { TaskDetails } from './TaskDetails';
 import CheckBox from './UI/CheckBox';
 
@@ -30,12 +33,14 @@ export default function TaskCard({ task }: TaskCardProps) {
 
   // 각 모달의 상태 독립적으로 관리
   const editModal = useModal();
-  const deleteModal = useModal();
+  const deleteTaskModal = useModal();
+  const deleteRecurringModal = useModal();
 
   // 드롭다운 핸들러
   const { handleOptionSelect } = useDropdownModals(editOption, [
     editModal,
-    deleteModal,
+    deleteTaskModal,
+    deleteRecurringModal,
   ]);
 
   const handleDropdownSelection = (option: any) => {
@@ -93,7 +98,7 @@ export default function TaskCard({ task }: TaskCardProps) {
             <span>{task.commentCount}</span>
           </div>
           {!isSidebarOpen && (
-            <EditDropdown
+            <TaskEditDropdown
               triggerIcon={
                 <Image
                   src="/icons/kebab_large.svg"
@@ -113,11 +118,19 @@ export default function TaskCard({ task }: TaskCardProps) {
               done={task.doneAt !== null}
             />
           )}
-          {deleteModal.isOpen && (
+          {deleteTaskModal.isOpen && (
             <DeleteTaskModal
-              isOpen={deleteModal.isOpen}
-              onClose={deleteModal.onClose}
+              isOpen={deleteTaskModal.isOpen}
+              onClose={deleteTaskModal.onClose}
               taskName={task.name}
+            />
+          )}
+          {deleteRecurringModal.isOpen && (
+            <DeleteRecurringModal
+              isOpen={deleteRecurringModal.isOpen}
+              onClose={deleteRecurringModal.onClose}
+              taskName={task.name}
+              taskRecurringId={task.recurringId}
             />
           )}
         </div>

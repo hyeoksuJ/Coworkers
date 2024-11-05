@@ -8,6 +8,7 @@ import NetworkError from '@components/@shared/NetworkError';
 import Dropdown, { Option } from '@components/@shared/Dropdown';
 import { useUserData } from '@hooks/mysetting/useUserData';
 import { useModal } from '@hooks/useModal';
+import clsx from 'clsx';
 import CommentForm from './CommentForm';
 import CardDeleteModal from './ArticleCardDeletModal';
 import Heart from './Heart';
@@ -84,12 +85,19 @@ export default function DetailCard() {
           <span className="text-lg-medium md:text-2lg-medium">
             {data?.title}
           </span>
-          <Dropdown
-            options={basic}
-            triggerIcon={<LargeKebabIcon />}
-            optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
-            optionClass="rounded-[12px] md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
-          />
+          <div
+            className={clsx({
+              hidden: data?.writer.id !== UserData?.id,
+              block: data?.writer.id === UserData?.id,
+            })}
+          >
+            <Dropdown
+              options={basic}
+              triggerIcon={<LargeKebabIcon />}
+              optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
+              optionClass="rounded-[12px] md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
+            />
+          </div>
         </div>
         <hr className="my-4 opacity-10" />
         <div className="flex items-center justify-between">
@@ -117,9 +125,9 @@ export default function DetailCard() {
           </div>
         </div>
       </header>
-      <div className="flex">
-        <div className="mr-8 border-r-2 border-r-slate-800 pr-8">
-          <div className=" relative h-[220px] w-[220px] ">
+      <div className="flex flex-col">
+        <div className="mb-4 flex justify-center md:justify-start">
+          <div className=" relative h-[200px] w-[200px] md:h-[240px] md:w-[240px] ">
             <Image
               src={data?.image || '/icons/profile_large.svg'}
               layout="fill"

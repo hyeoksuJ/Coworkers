@@ -67,7 +67,7 @@ export default function SideBar({
 
   const classes = {
     sidebar: clsx(
-      'fixed z-20 h-auto transform overflow-y-auto bg-gray-800 text-white transition-transform ',
+      'fixed z-20 h-auto transform overflow-y-auto bg-background-secondary text-white transition-transform ',
       {
         'inset-y-0 left-0 w-52': position === 'left',
         'bottom-0 right-0 top-[66px] min-w-[375px] border border-border-primary border-opacity-10':
@@ -94,7 +94,7 @@ export default function SideBar({
       ref={sideBarRef}
       className={`${classes.sidebar} ${styles.sidebarScroll}`}
     >
-      <div className="sticky top-0 z-10 h-4 bg-gray-800">
+      <div className="sticky top-0 z-10 h-4 bg-background-secondary">
         <button type="button" className={classes.closeButton} onClick={onClose}>
           <XIcon />
         </button>

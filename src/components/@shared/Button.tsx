@@ -23,7 +23,7 @@ export default function Button({
   children,
   width = 136,
   height = 48,
-  disabledBgColor = '#94A3B8',
+  disabledBgColor = '#B0BEC5',
   className,
   style,
   disabled,
@@ -34,7 +34,7 @@ export default function Button({
     {
       'bg-brand-primary hover:bg-interaction-hover active:bg-interaction-pressed':
         !disabled && bgColor === 'green',
-      'bg-status-danger hover:bg-[#b31919] active:bg-[#921414]':
+      'bg-status-danger hover:bg-[#FF4C4C] active:bg-[#c83a3a]':
         !disabled && bgColor === 'red',
       'bg-background-inverse hover:text-black active:brightness-90':
         !disabled && bgColor === 'white',

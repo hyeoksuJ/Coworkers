@@ -16,7 +16,7 @@ export default function NetworkError() {
         height={100}
       />
       <span className="text-2xl-bold">네트워크 에러</span>
-      <Button onClick={handleReload} className="mt-4 bg-amber-400">
+      <Button onClick={handleReload} className="mt-4 bg-brand-tertiary">
         재시도
       </Button>
     </div>

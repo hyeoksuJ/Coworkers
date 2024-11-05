@@ -20,7 +20,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com', // 구글 프로필 이미지 도메인 추가
         port: '', // 특정 포트를 허용하려면 설정
-        pathname: '/Coworkers/**', // 모든 경로를 허용
+        pathname: '/**', // 모든 경로를 허용
       },
       {
         protocol: 'http',
