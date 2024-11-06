@@ -20,13 +20,13 @@ import {
 } from '@dnd-kit/sortable';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchTaskListOrder } from '@/src/api/tasks/taskListAPI';
-import Image from 'next/image';
 import styles from '@styles/scroll.module.css';
 import TaskBar from './TaskBar';
 import AddTaskListModal from './AddTaskListModal';
 import EditDropdown from '../EditDropdown';
 import EditTaskListModal from './EditTaskListModal';
 import DeleteTaskListModal from './DeleteTaskListModal';
+import { moreIcon } from '../MoreIcon';
 
 export default function TaskList() {
   const scrollableRef = useRef<HTMLDivElement | null>(null);
@@ -179,18 +179,6 @@ export default function TaskList() {
       }
     }
   };
-
-  const moreIcon = (
-    <div className="relative flex w-[20px] items-center">
-      <Image
-        src="/icons/kebab_large.svg"
-        alt="더보기 아이콘"
-        width={4}
-        height={20}
-        className="mx-auto"
-      />
-    </div>
-  );
 
   useEffect(() => {
     // taskLists가 업데이트될 때 displayedTaskList도 업데이트

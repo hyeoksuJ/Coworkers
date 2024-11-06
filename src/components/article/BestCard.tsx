@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import ArrowRightIcon from 'public/icons/arrow_right.svg';
 import NetworkError from '@components/@shared/NetworkError';
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
-import HeartIcon from 'public/icons/heart.svg';
+import Heart from './Heart';
 
 interface BestCardProps {
   keyword: string;
@@ -76,60 +77,64 @@ export default function BestCard({ keyword }: BestCardProps) {
       <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {cards?.map((card) => (
           <li key={card.id}>
-            <article className=" relative h-[178px] w-full rounded-xl border border-background-tertiary bg-background-secondary">
-              <div
-                className="mx-4 mb-4 mt-[9.5px] flex cursor-pointer flex-col"
-                onClick={() => handleDetalCard(card.id)}
-              >
-                <div className="mb-6">
-                  <div className=" mb-[13.5px] flex items-center">
-                    <IcmediaIcon />
-                    <span className="text-md-semibold md:text-lg-semibold">
-                      Best
-                    </span>
-                  </div>
-                  <div className=" flex justify-between">
-                    <div className="flex-1 overflow-hidden">
-                      <h3 className="mb-3 max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-md-medium md:text-2lg-medium">
-                        {card.title}
-                      </h3>
-                      <span className="text-xs-regular text-slate-400 md:text-md-medium">
-                        {dayjs(card.createdAt).format('YYYY.MM.DD')}
+            <motion.div whileHover={{ scale: 1.03 }}>
+              <article className=" relative h-[178px] w-full rounded-xl border border-background-tertiary bg-background-secondary">
+                <div
+                  className="mx-4 mb-4 mt-[9.5px] flex cursor-pointer flex-col"
+                  onClick={() => handleDetalCard(card.id)}
+                >
+                  <div className="mb-6">
+                    <div className=" mb-[13.5px] flex items-center">
+                      <IcmediaIcon />
+                      <span className="text-md-semibold md:text-lg-semibold">
+                        Best
                       </span>
                     </div>
-                    <div className="ml-2 h-16 w-16 overflow-hidden rounded-lg">
+                    <div className=" flex justify-between">
+                      <div className="flex-1 overflow-hidden">
+                        <h3 className="mb-3 max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-md-medium md:text-2lg-medium">
+                          {card.title}
+                        </h3>
+                        <span className="text-xs-regular text-slate-400 md:text-md-medium">
+                          {dayjs(card.createdAt).format('YYYY.MM.DD')}
+                        </span>
+                      </div>
+                      <div className="ml-2 h-16 w-16 overflow-hidden rounded-lg">
+                        <Image
+                          src={card.image}
+                          width={64}
+                          height={64}
+                          alt="게시글 이미지"
+                          className="rounded-lg"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
                       <Image
-                        src={card.image}
-                        width={64}
-                        height={64}
+                        src="/icons/profile_large.svg"
+                        width={32}
+                        height={32}
                         alt="게시글 이미지"
-                        className="rounded-lg"
+                        className="rounded-full"
                       />
+                      <span className="text-xs-medium md:text-md-medium">
+                        {card.writer.nickname}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs-regular text-slate-400 md:text-md-medium">
+                        {card.likeCount}
+                      </span>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src="/icons/profile_large.svg"
-                      width={32}
-                      height={32}
-                      alt="게시글 이미지"
-                      className="rounded-full"
-                    />
-                    <span className="text-xs-medium md:text-md-medium">
-                      {card.writer.nickname}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <HeartIcon />
-                    <span className="text-xs-regular text-slate-400 md:text-md-medium">
-                      {card.likeCount}
-                    </span>
-                  </div>
+                <div className="absolute bottom-[15px] right-[30px]">
+                  <Heart articleId={card.id} />
                 </div>
-              </div>
-            </article>
+              </article>
+            </motion.div>
           </li>
         ))}
       </ul>

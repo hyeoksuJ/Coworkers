@@ -48,7 +48,7 @@ export default function Button({
       'rounded-[12px]': shape === 'square',
       'rounded-[40px]': shape === 'round',
       'text-text-primary': fontColor === 'white',
-      'text-text-default': fontColor === 'gray',
+      'text-[#000000]': fontColor === 'gray',
       'text-brand-primary': fontColor === 'green',
       'text-lg-semibold': fontSize === '16',
       'text-md-semibold': fontSize === '14',

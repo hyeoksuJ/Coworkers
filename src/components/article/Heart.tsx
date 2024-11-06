@@ -1,9 +1,11 @@
 import { useDetailCard } from '@hooks/article/useCommentAdd';
 import { authAxiosInstance } from '@libs/axios/axiosInstance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
 import HeartIcon from 'public/icons/heart.svg';
 import HertRedIcon from 'public/icons/heartRed.svg';
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeartProps {
   articleId: number | undefined;
@@ -11,12 +13,11 @@ interface HeartProps {
 
 export default function Heart({ articleId }: HeartProps) {
   const queryClient = useQueryClient();
-
+  const [isVisible, setIsVisible] = useState(false);
+  const [likedPost, setLikedPost] = useState(false);
   const { data } = useDetailCard({
     articleId: Number(articleId),
   });
-
-  const [likedPost, setLikedPost] = useState(false);
 
   useEffect(() => {
     if (data?.isLiked !== undefined) {
@@ -48,17 +49,45 @@ export default function Heart({ articleId }: HeartProps) {
     },
   });
 
+  const handleAnimation = () => {
+    setIsVisible(true);
+
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 1000);
+  };
+
   const toggleLike = () => {
     if (likedPost) {
       unlikeMutation.mutate();
     } else {
       likeMutation.mutate();
+      handleAnimation();
     }
   };
 
   return (
-    <button onClick={toggleLike} type="button">
-      {likedPost ? <HertRedIcon /> : <HeartIcon />}
-    </button>
+    <>
+      <button onClick={toggleLike} type="button">
+        {likedPost ? <HertRedIcon /> : <HeartIcon />}
+      </button>
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
+            className="fixed bottom-1/2 left-1/2"
+          >
+            <Image
+              alt="하트 클릭 애니메이션"
+              src="/icons/heartRed.svg"
+              width={200}
+              height={200}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

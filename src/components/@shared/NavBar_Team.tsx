@@ -205,7 +205,7 @@ export default function NavBarTeam({ data }: { data: User }) {
               triggerClass="flex gap-[12px] items-center text-text-primary"
               triggerIcon={<ArrowDown />}
               optionsWrapClass="mt-[30px] flex p-[16px] rounded-[12px]"
-              optionClass="px[8px] py-[7px] rounded-[8px] w-[186px] h-[46px] hover:bg-background-tertiary"
+              optionClass="px-[8px] py-[7px] rounded-[8px] w-[186px] h-[46px] hover:bg-background-tertiary"
             />
             <AddTeamModal isOpen={addIsOpen} onClose={addCloseModal} />
           </div>

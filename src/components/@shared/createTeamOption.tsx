@@ -37,7 +37,7 @@ export const createTeamOption = (
 export const createMenuOption = (): Option => ({
   label: '팀 메뉴',
   component: (
-    <Button bgColor="transparent" border="white" size="full" height={40}>
+    <Button bgColor="transparent" border="green" size="full" height={40}>
       + 팀 추가하기
     </Button>
   ),

@@ -32,15 +32,18 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Head>
         <link rel="icon" href="/favicon.png" />
-        <meta name="description" content="함께 만들어가는 투두 리스트" />
-        <meta property="og:title" content="Coworkers" />
-        <meta property="og:description" content="함께 만들어가는 투두 리스트" />
-        <meta property="og:image" content="/images/landing_train_pc.png" />
+        <meta name="description" content="팀워크로 빚은 아이디어의 도넛" />
+        <meta property="og:title" content="DO'NUT" />
+        <meta
+          property="og:description"
+          content="팀워크로 빚은 아이디어의 도넛"
+        />
+        <meta property="og:image" content="/images/thumbnail.png" />
         <meta
           property="og:url"
           content="https://dev-coworkers-seven.vercel.app/"
         />
-        <title>Coworkers</title>
+        <title>DO&apos;NUT</title>
       </Head>
       <DateProvider>
         <NavBar />
