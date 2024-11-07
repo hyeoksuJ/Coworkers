@@ -1,10 +1,12 @@
 import { postSignIn, postSignUp } from '@/src/api/auth/authAPI';
+import { patchUserImage } from '@/src/api/auth/imageAPI';
 import { useUserStore } from '@/src/stores/useUserStore';
 import Button from '@components/@shared/Button';
 import { IconInput, Input } from '@components/@shared/Input';
 import NonVisibleIcon from '@icons/visibility_off.svg';
 import VisibleIcon from '@icons/visibility_on.svg';
 import { useMutation } from '@tanstack/react-query';
+import getRandomDonut from '@utils/getRandomDonut';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -136,10 +138,22 @@ export default function SignUpForm() {
   // 회원가입 mutation
   const signUpMutation = useMutation({
     mutationFn: async () => {
-      await postSignUp(email, nickname, password, passwordConfirmation);
+      const signUpReponse = await postSignUp(
+        email,
+        nickname,
+        password,
+        passwordConfirmation
+      );
+      return signUpReponse;
     },
-    onSuccess: () => {
-      // 회원가입 성공 시 로그인 시도
+    onSuccess: async (data) => {
+      const { accessToken, refreshToken, user } = data;
+      setTokens(accessToken, refreshToken);
+      // 회원가입 성공 시 랜덤 도넛 프로필 지정 및 로그인 시도
+      if (user.image === null) {
+        const randomProfileImage = getRandomDonut();
+        await patchUserImage(randomProfileImage);
+      }
       signInMutation.mutate();
     },
     onError: (error) => {

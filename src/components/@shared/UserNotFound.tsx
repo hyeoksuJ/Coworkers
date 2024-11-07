@@ -20,9 +20,9 @@ export default function UserNotFound() {
         <Button
           width={200}
           height={48}
-          bgColor="transparent"
+          bgColor="white"
           border="white"
-          fontColor="white"
+          fontColor="gray"
           fontSize="14"
           className="mx-auto mt-[50px]"
         >
