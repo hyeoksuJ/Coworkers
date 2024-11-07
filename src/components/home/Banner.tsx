@@ -32,6 +32,7 @@ export default function Banner() {
         width={width}
         height={height}
         className="w-full"
+        quality={100}
       />
       <div className="absolute top-[55px] flex w-full flex-col items-center gap-1 text-center md:top-[100px] md:gap-2 xl:top-[84px] xl:gap-5">
         <div className="flex h-full items-center gap-1 md:gap-4 xl:gap-6">
@@ -44,6 +45,7 @@ export default function Banner() {
             width={56}
             height={56}
             className="h-7 w-7 md:h-12 md:w-12 xl:h-14 xl:w-14"
+            quality={100}
           />
         </div>
         <h1 className="gradient-text-brand text-3xl-semibold md:text-5xl-semibold xl:h-40 xl:text-[64px]">

@@ -13,7 +13,7 @@ export const createTeamOption = (
   id: membership.group.id,
   component: (
     <div
-      className="flex items-center justify-between overflow-hidden"
+      className="flex items-center justify-between overflow-hidden  rounded-[8px] py-[7px] hover:bg-background-tertiary"
       onClick={() => onSelect(membership.groupId)}
     >
       <div className="flex items-center justify-between gap-3 overflow-hidden text-ellipsis whitespace-nowrap">

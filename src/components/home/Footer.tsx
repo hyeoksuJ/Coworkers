@@ -35,6 +35,7 @@ export default function Footer() {
         layout="fill"
         objectFit="cover"
         className="absolute inset-0 h-full"
+        quality={100}
       />
     </footer>
   );

@@ -102,7 +102,7 @@ export default function ArticleCard({ keyword }: ArticleCardProps) {
                               {dayjs(card.createdAt).format('YYYY.MM.DD')}
                             </span>
                           </div>
-                          <div className="h-16 w-16 flex-none rounded-lg">
+                          <div className="h-16 w-16 flex-none overflow-hidden rounded-lg">
                             <Image
                               src={card.image}
                               width={64}

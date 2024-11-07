@@ -40,6 +40,7 @@ export default function Content() {
               width={48}
               height={48}
               className="rounded-xl shadow-[0_0_12px_2px_rgba(0,0,0,0.25)]"
+              quality={100}
             />
             <h2 className="flex flex-col gap-1">
               그룹으로 <span> 할 일을 관리해요 </span>
@@ -51,6 +52,7 @@ export default function Content() {
             width={291}
             height={338}
             className="md:order-1 md:pt-[81px]"
+            quality={100}
           />
         </div>
       </div>
@@ -62,6 +64,7 @@ export default function Content() {
             width={291}
             height={338}
             className="md:order-2 md:pb-[81px]"
+            quality={100}
           />
           <div className="flex-start my-12 flex w-full flex-col gap-4 md:order-1 md:w-40 md:items-end xl:w-52">
             <Image
@@ -70,6 +73,7 @@ export default function Content() {
               width={48}
               height={48}
               className="rounded-xl shadow-[0_0_12px_2px_rgba(0,0,0,0.25)]"
+              quality={100}
             />
             <h2 className="flex flex-col gap-1 md:text-end">
               간단하게 멤버들을 <span> 초대해요 </span>
@@ -85,6 +89,7 @@ export default function Content() {
             width={291}
             height={338}
             className="md:pb-[81px]"
+            quality={100}
           />
           <div className="flex-start my-12 flex w-full flex-col gap-4 md:w-40 xl:w-52">
             <Image
@@ -93,6 +98,7 @@ export default function Content() {
               width={48}
               height={48}
               className="rounded-xl shadow-[0_0_12px_2px_rgba(0,0,0,0.25)]"
+              quality={100}
             />
             <h2 className="flex flex-col gap-1">
               할 일도 간편하게 <span> 체크해요 </span>

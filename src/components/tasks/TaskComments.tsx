@@ -14,6 +14,7 @@ import {
 import { useTaskListStore } from '@/src/stores/taskListStore';
 import getSortedDate from '@utils/getSortedDate';
 import getTimeAgo from '@utils/getTimeAgo';
+import ClickMotion from '@components/@shared/animation/ClickMotion';
 
 import { AutoTextArea } from '@components/@shared/Input';
 import EditDropdown from '@components/team/EditDropdown';
@@ -184,7 +185,7 @@ export function TaskComments() {
             <li key={comment.id} className="relative flex flex-col gap-4">
               {/* 드롭다운, 수정 모드일 경우 렌더링 X */}
               {editingCommentId !== comment.id && (
-                <div className="absolute -top-1 right-0">
+                <ClickMotion className="absolute -top-1 right-0">
                   <EditDropdown
                     triggerIcon={
                       <Image
@@ -200,7 +201,7 @@ export function TaskComments() {
                       handleDropdownSelection(option, comment.id)
                     }
                   />
-                </div>
+                </ClickMotion>
               )}
               {editingCommentId === comment.id ? (
                 <form
@@ -260,7 +261,7 @@ export function TaskComments() {
                   )}
                   {!comment.user && <UserProfileIcon />}
                 </div>
-                <span className="my-auto text-md-regular text-text-default">
+                <span className="my-auto text-md-regular text-text-disabled">
                   {getTimeAgo(comment.createdAt)}
                 </span>
               </div>

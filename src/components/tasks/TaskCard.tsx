@@ -10,6 +10,8 @@ import { useTaskListStore } from '@/src/stores/taskListStore';
 import useDropdownModals from '@hooks/useDropdownModals';
 import Image from 'next/image';
 
+import CardMotion from '@components/@shared/animation/CardMotion';
+import ClickMotion from '@components/@shared/animation/ClickMotion';
 import TaskEditDropdown, {
   editOption,
 } from '@components/tasks/UI/TaskEditDropdown';
@@ -22,9 +24,10 @@ import CheckBox from './UI/CheckBox';
 
 interface TaskCardProps {
   task: TaskDto;
+  index: number;
 }
 
-export default function TaskCard({ task }: TaskCardProps) {
+export default function TaskCard({ task, index }: TaskCardProps) {
   const { taskCompletionStatus, setTaskId, isSidebarOpen, setSidebarOpen } =
     useTaskListStore();
   const router = useRouter();
@@ -65,9 +68,12 @@ export default function TaskCard({ task }: TaskCardProps) {
   const isChecked = taskCompletionStatus[task.id]?.done ?? task.doneAt !== null;
 
   return (
-    <li className="flex flex-col gap-[10px] rounded-lg bg-background-secondary px-[14px] py-3 text-text-default">
-      <div className="flex">
-        <div className="flex gap-2">
+    <CardMotion
+      index={index}
+      className="flex flex-col gap-[10px] rounded-lg bg-background-secondary px-[14px] py-3 text-text-default"
+    >
+      <div className="flex items-center">
+        <div className="flex items-center">
           <CheckBox
             taskId={task.id}
             taskName={task.name}
@@ -82,34 +88,42 @@ export default function TaskCard({ task }: TaskCardProps) {
             onClick={() => setSidebarOpen(!isSidebarOpen)}
           >
             <h1
-              className={`text-text-primary ${isChecked ? 'line-through' : ''}`}
+              className={`ml-1 text-text-primary hover:text-text-secondary ${isChecked ? 'line-through' : ''}`}
             >
               {task.name}
             </h1>
           </Link>
-          <TaskDetails
-            isOpen={isSidebarOpen}
-            onClose={handleCloseTaskDetails}
-          />
+          {isSidebarOpen && (
+            <div>
+              <TaskDetails
+                isOpen={isSidebarOpen}
+                onClose={handleCloseTaskDetails}
+              />
+            </div>
+          )}
         </div>
-        <div className="flex flex-grow justify-end gap-2 md:ml-2 md:justify-between">
+        <div className="flex flex-grow justify-end gap-2 md:ml-2 md:flex-shrink md:justify-between">
           <div className="flex items-center gap-[2px]">
             <CommentIcon />
-            <span>{task.commentCount}</span>
+            <span className="text-md-medium text-text-tertiary">
+              {task.commentCount}
+            </span>
           </div>
           {!isSidebarOpen && (
-            <TaskEditDropdown
-              triggerIcon={
-                <Image
-                  src="/icons/kebab_large.svg"
-                  alt="더보기 아이콘"
-                  width={10}
-                  height={10}
-                  className="h-3"
-                />
-              }
-              onSelect={handleDropdownSelection}
-            />
+            <ClickMotion>
+              <TaskEditDropdown
+                triggerIcon={
+                  <Image
+                    src="/icons/kebab_large.svg"
+                    alt="더보기 아이콘"
+                    width={10}
+                    height={10}
+                    className="h-3"
+                  />
+                }
+                onSelect={handleDropdownSelection}
+              />
+            </ClickMotion>
           )}
           {editModal.isOpen && (
             <EditTaskModal
@@ -142,6 +156,6 @@ export default function TaskCard({ task }: TaskCardProps) {
         <RepeatIcon />
         <span>{task.frequency}</span>
       </div>
-    </li>
+    </CardMotion>
   );
 }

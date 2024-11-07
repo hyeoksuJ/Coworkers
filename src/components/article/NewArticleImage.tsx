@@ -70,7 +70,13 @@ export default function ArticleImageInput({
         >
           {profileImage ? (
             <div className="relative h-full w-full">
-              <div className="absolute z-20 flex h-full w-full items-center justify-center bg-black bg-opacity-20">
+              <Image
+                src={profileImage}
+                alt="프로필 이미지"
+                layout="fill"
+                className="absolute h-full w-full rounded-lg object-cover"
+              />
+              <div className="absolute flex h-full w-full items-center justify-center bg-black bg-opacity-20">
                 <Image
                   src="/icons/x_white.svg"
                   width={36}
@@ -78,12 +84,6 @@ export default function ArticleImageInput({
                   alt="게시글 이미지"
                 />
               </div>
-              <Image
-                src={profileImage}
-                alt="프로필 이미지"
-                layout="fill"
-                className="absolute z-10 h-full w-full rounded-lg object-cover"
-              />
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center gap-4">

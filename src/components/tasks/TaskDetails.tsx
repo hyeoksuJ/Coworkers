@@ -15,7 +15,9 @@ import {
   formatTaskWriterDate,
 } from '@utils/getFormattedDate';
 import type { TaskRequestBody } from '@/src/types/tasks/taskDto';
+import FadeInMotion from '@components/@shared/animation/FadeInMotion';
 
+import DonutLoadingSpinner from '@components/@shared/DonutLoadingSpinner';
 import SideBar from '@components/@shared/SideBar';
 import { TaskComments } from './TaskComments';
 
@@ -38,11 +40,7 @@ export function TaskDetails({ isOpen, onClose }: TaskDetailsProps) {
   } = useTaskListStore();
 
   // GET, task
-  const {
-    data: taskData,
-    isLoading: taskLoading,
-    isError: taskError,
-  } = useQuery({
+  const { data: taskData, isLoading: taskLoading } = useQuery({
     queryKey: ['tasks', taskId, toKSTISOString(date)],
     queryFn: () =>
       getTask({
@@ -105,13 +103,10 @@ export function TaskDetails({ isOpen, onClose }: TaskDetailsProps) {
       }
       clickEvent={handleCompleteClick}
     >
-      {taskLoading && <p className="mx-5 mt-14">Loading...</p>}
-      {taskError && (
-        <p className="mx-5 mt-14">세부 정보를 불러오지 못했습니다.</p>
-      )}
+      {taskLoading && <DonutLoadingSpinner className="my-52" />}
 
-      {task ? (
-        <>
+      {!taskLoading && task ? (
+        <FadeInMotion>
           <section className="mx-5 flex flex-col gap-4">
             <h1 className="text-xl-bold text-text-primary">{task.name}</h1>
             <ul className="flex items-center text-md-medium text-text-primary">
@@ -129,7 +124,7 @@ export function TaskDetails({ isOpen, onClose }: TaskDetailsProps) {
                 )}
                 <span>{task.writer.nickname}</span>
               </li>
-              <li className="text-text-secondary">
+              <li className="text-text-disabled">
                 {task.recurring?.createdAt
                   ? formatTaskWriterDate(task.recurring.createdAt)
                   : '날짜 없음'}
@@ -147,9 +142,9 @@ export function TaskDetails({ isOpen, onClose }: TaskDetailsProps) {
             <p>{task.description}</p>
           </section>
           <TaskComments />
-        </>
+        </FadeInMotion>
       ) : (
-        <p className="mx-5 mt-14">세부 정보가 없습니다.</p>
+        <p className="mx-5 mt-14" />
       )}
     </SideBar>
   );

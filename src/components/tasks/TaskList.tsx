@@ -1,9 +1,9 @@
 import Link from 'next/link';
-
 import { useEffect, useCallback, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useTaskListStore } from '@/src/stores/taskListStore';
 import getResponsiveValue from '@utils/getResponsiveValue';
+import TextButtonMotion from '@components/@shared/animation/TextButtonMotion';
 import TaskCard from './TaskCard';
 import ListPagination from './UI/ListPagination';
 
@@ -28,32 +28,29 @@ export default function TaskList() {
     [taskLists, setTasks]
   );
 
-  const getInitPage = useCallback(
-    (queryTaskListId: any) => {
-      const selectedIndex = taskLists.findIndex(
-        (taskList) => taskList.id === queryTaskListId
-      );
+  const getInitPage = (queryTaskListId: any) => {
+    const selectedIndex = taskLists.findIndex(
+      (taskList) => taskList.id === queryTaskListId
+    );
 
-      const newPage = Math.floor(selectedIndex / itemsPerPage) + 1;
-      setCurrentPage(newPage);
-    },
-    [taskLists, itemsPerPage, setCurrentPage]
-  );
+    const newPage = Math.floor(selectedIndex / itemsPerPage) + 1;
+    setCurrentPage(newPage);
+  };
 
   useEffect(() => {
     if (taskListId) {
-      setTaskListId(Number(taskListId));
-      fetchTasks(Number(taskListId));
-      getInitPage(Number(taskListId));
+      const id = Number(taskListId);
+      setTaskListId(id);
+      fetchTasks(id);
+      getInitPage(id);
     } else if (teamid) {
-      setTaskListId(Number(teamid));
-      getInitPage(Number(teamid));
+      const id = Number(teamid);
+      setTaskListId(id);
+      fetchTasks(id);
+      getInitPage(id);
     }
-  }, [getInitPage, taskListId, teamid, setTaskListId, fetchTasks, taskLists]);
-
-  useEffect(() => {
-    setTasks(tasks);
-  }, [tasks, setTasks]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [taskListId, teamid, setTaskListId, taskLists]);
 
   // 페이지당 항목 수 계산
   const updateItemsPerPage = useCallback(() => {
@@ -117,10 +114,10 @@ export default function TaskList() {
         {sliceTaskLists.map((taskList) => (
           <li
             key={taskList.id}
-            className={`max-w-[250px] overflow-hidden text-center ${
+            className={`max-w-[250px] overflow-hidden pt-1 text-center ${
               Number(taskListId) === taskList.id ||
               (taskListId === undefined && Number(teamid) === taskList.id)
-                ? 'border-b-[1px] border-b-white text-white'
+                ? 'rounded-full border-b-[6px] border-b-amber-950  bg-brand-secondary bg-opacity-30 px-2  text-white'
                 : 'text-text-default'
             }`}
           >
@@ -130,12 +127,14 @@ export default function TaskList() {
                 query: { taskListId: taskList.id },
               }}
             >
-              <button
-                type="button"
-                className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap pb-1"
-              >
-                {taskList.name}
-              </button>
+              <TextButtonMotion>
+                <button
+                  type="button"
+                  className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap pb-1"
+                >
+                  {taskList.name}
+                </button>
+              </TextButtonMotion>
             </Link>
           </li>
         ))}
@@ -149,7 +148,9 @@ export default function TaskList() {
       {tasks.length > 0 ? (
         <ul className="flex flex-col gap-4">
           {tasks.length > 0 &&
-            tasks.map((task) => <TaskCard key={task.id} task={task} />)}
+            tasks.map((task, index) => (
+              <TaskCard key={task.id} index={index} task={task} />
+            ))}
         </ul>
       ) : (
         <div className="text-text-md mt-80 text-center text-text-default sm:mt-48">

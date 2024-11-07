@@ -12,6 +12,7 @@ import Button from '@components/@shared/Button';
 import Dropdown, { Option } from '@components/@shared/Dropdown';
 import { TASK_REQUEST_INIT } from '@constants/initValues';
 import type { TaskRequestBody } from '@/src/types/tasks/taskDto';
+import SlideDownMotion from '@components/@shared/animation/SlideDownMotion';
 
 import DescriptionTextArea from './UI/input/DescriptionTextArea';
 import NameInput from './UI/input/NameInput';
@@ -143,12 +144,14 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
       />
       <div className="flex w-full flex-col">
         <h2 className="mb-3 text-text-primary">시작 날짜 및 시간</h2>
-        <Calender
-          isInput
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          onDateChange={handleDateChange}
-        />
+        <SlideDownMotion>
+          <Calender
+            isInput
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            onDateChange={handleDateChange}
+          />
+        </SlideDownMotion>
       </div>
       <div>
         <h2 className="mb-3 text-text-primary">반복 설정</h2>

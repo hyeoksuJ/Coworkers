@@ -19,6 +19,7 @@ export default function TasksPage() {
   const {
     groupId,
     taskListId,
+    taskId,
     setTasks,
     setGroupId,
     setTaskLists,
@@ -27,14 +28,13 @@ export default function TasksPage() {
 
   // GET, taskList 및 tasks[]
   const { data: taskListData, isError: taskListError } = useQuery({
-    queryKey: ['tasks', taskListId, toKSTISOString(date)],
+    queryKey: ['tasks', taskListId, taskId, toKSTISOString(date)],
     queryFn: () =>
       getTaskList({
         id: taskListId,
         date: toKSTISOString(date),
       }),
     enabled: !!taskListId && !!date,
-    refetchOnWindowFocus: false,
     staleTime: Infinity,
   });
 

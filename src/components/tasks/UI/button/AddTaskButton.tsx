@@ -5,19 +5,18 @@ import AddTaskModal from '../modal/AddTaskModal';
 
 export default function AddTaskButton() {
   const { isOpen, onOpen, onClose } = useModal();
-  const { isSidebarOpen } = useTaskListStore();
+  const { isSidebarOpen, tasks } = useTaskListStore();
 
   return (
     <>
       {!isSidebarOpen && (
-        <Button
-          bgColor="green"
-          shape="round"
-          className="fixed bottom-8 right-8 xl:bottom-12"
-          onClick={onOpen}
+        <div
+          className={`${tasks.length > 0 ? 'fixed bottom-8 right-8 xl:bottom-12' : 'flex justify-center'}`}
         >
-          + 할 일 추가
-        </Button>
+          <Button bgColor="green" shape="round" onClick={onOpen}>
+            + 할 일 추가
+          </Button>
+        </div>
       )}
 
       {isOpen && <AddTaskModal isOpen={isOpen} onClose={onClose} />}

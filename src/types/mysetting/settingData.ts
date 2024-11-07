@@ -44,7 +44,7 @@ export interface UserPasswordCheck {
 }
 
 export interface UserProfileChange {
-  image: File | string;
+  image: File | string | null;
 }
 
 export interface UserProfileNickname {

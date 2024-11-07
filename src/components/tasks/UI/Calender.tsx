@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import dayjs, { Dayjs } from 'dayjs';
 
 import { useDate } from '@/src/contexts/DateContext';
+import SlideDownMotion from '@components/@shared/animation/SlideDownMotion';
 import { Modal } from '@components/@shared/Modal';
 import Button from '@components/@shared/Button';
 import useViewportSize from '@hooks/useViewportSize';
@@ -93,39 +94,41 @@ export default function Calender({
 
   // 공통 DatePicker 컴포넌트
   const renderDatePicker = () => (
-    <DatePicker
-      inline={!isInput}
-      dateFormat="yyyy년 MM월 dd일"
-      selected={selectedDate.toDate()}
-      renderCustomHeader={renderCustomHeader}
-      calendarClassName={styles.calenderWrapper}
-      dayClassName={(date) => {
-        // 날짜 확인
-        const day = dayjs(date);
-        const isDisplayedMonth = day.isSame(displayedMonth, 'month');
-        const isToday = day.isSame(today, 'day');
-        const isBeforeToday = day.isBefore(today, 'day');
-        const isSelected =
-          day.isSame(selectedDate, 'month') &&
-          day.date() === selectedDate.date();
+    <SlideDownMotion>
+      <DatePicker
+        inline={!isInput}
+        dateFormat="yyyy년 MM월 dd일"
+        selected={selectedDate.toDate()}
+        renderCustomHeader={renderCustomHeader}
+        calendarClassName={styles.calenderWrapper}
+        dayClassName={(date) => {
+          // 날짜 확인
+          const day = dayjs(date);
+          const isDisplayedMonth = day.isSame(displayedMonth, 'month');
+          const isToday = day.isSame(today, 'day');
+          const isBeforeToday = day.isBefore(today, 'day');
+          const isSelected =
+            day.isSame(selectedDate, 'month') &&
+            day.date() === selectedDate.date();
 
-        if (!isDisplayedMonth) {
-          return styles.disabledDay;
-        }
-        if (isToday) {
-          return styles.today;
-        }
-        if (isSelected) {
-          return styles.selectedDay;
-        }
-        if (isInput && isBeforeToday) {
-          return styles.disabledDay;
-        }
-        return styles.day;
-      }}
-      filterDate={(date) => dayjs(date).isSame(displayedMonth, 'month')}
-      onChange={handleDateChange}
-    />
+          if (!isDisplayedMonth) {
+            return styles.disabledDay;
+          }
+          if (isToday) {
+            return styles.today;
+          }
+          if (isSelected) {
+            return styles.selectedDay;
+          }
+          if (isInput && isBeforeToday) {
+            return styles.disabledDay;
+          }
+          return styles.day;
+        }}
+        filterDate={(date) => dayjs(date).isSame(displayedMonth, 'month')}
+        onChange={handleDateChange}
+      />
+    </SlideDownMotion>
   );
 
   return (
