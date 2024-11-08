@@ -23,7 +23,7 @@ export default function Content() {
   return (
     <section className="mx-4 flex flex-col gap-8 text-2lg-medium text-white md:mx-6 xl:mx-auto xl:w-[996px] xl:text-2xl-medium">
       <div className="-mt-8 mb-6 flex w-full justify-center md:mb-14 md:mt-32 xl:mb-20 xl:mt-48">
-        <div className="w-64 rounded-[30px] border-[2px] border-background-tertiary shadow-[0_0_12px_2px_rgba(0,0,0,0.25)] md:w-80">
+        <div className="w-64 rounded-[30px] border-[2px] border-background-secondary shadow-[0_0_12px_2px_rgba(0,0,0,0.25)] md:w-80">
           <Button
             bgColor="gradient"
             shape="round"

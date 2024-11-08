@@ -1,6 +1,6 @@
 import { useState, ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import styles from '@styles/carAnimation.module.css';
+import styles from '@styles/sparkle.module.css';
 
 interface IconSparkleMotionProps {
   children: ReactNode;
