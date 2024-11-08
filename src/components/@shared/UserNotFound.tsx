@@ -5,7 +5,7 @@ import Button from './Button';
 export default function UserNotFound() {
   return (
     <div className="relative mt-[50px] flex flex-col items-center">
-      <div className="relative mx-auto mt-[100px] h-[120px] w-[160px]">
+      <div className="relative mx-auto mt-[100px] h-[120px] w-[160px] md:h-[180px] md:w-[240px]">
         <Image
           src="/images/user_not_found.png"
           alt="유저 정보 없음"

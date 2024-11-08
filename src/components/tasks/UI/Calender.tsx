@@ -4,6 +4,7 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import { useDate } from '@/src/contexts/DateContext';
 import SlideDownMotion from '@components/@shared/animation/SlideDownMotion';
+import ClickMotion from '@components/@shared/animation/ClickMotion';
 import { Modal } from '@components/@shared/Modal';
 import Button from '@components/@shared/Button';
 import useViewportSize from '@hooks/useViewportSize';
@@ -75,7 +76,9 @@ export default function Calender({
             setDisplayedMonth(dayjs(date).subtract(1, 'month'));
           }}
         >
-          <CalenderArrowLeft />
+          <ClickMotion>
+            <CalenderArrowLeft />
+          </ClickMotion>
         </button>
         <span>{dayjs(date).locale('en').format('MMMM YYYY')}</span>
         <button
@@ -86,7 +89,9 @@ export default function Calender({
             setDisplayedMonth(dayjs(date).add(1, 'month'));
           }}
         >
-          <CalenderArrowRight />
+          <ClickMotion>
+            <CalenderArrowRight />
+          </ClickMotion>
         </button>
       </div>
     );

@@ -40,6 +40,10 @@ export default function ListPagination({
         className="flex gap-2"
         disabled={currentPage === totalPages}
       >
+        <span className="rounded-full border-opacity-80  bg-background-secondary p-1 px-2 text-md-regular text-text-tertiary">
+          <span className="text-brand-primary">{currentPage} </span>/{' '}
+          {totalPages}
+        </span>
         <button
           type="button"
           onClick={onNextPage}

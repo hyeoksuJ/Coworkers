@@ -77,7 +77,7 @@ export default function TasksPage() {
   }
 
   return (
-    <main className="flex flex-col gap-6 px-4 py-6 text-left md:px-6 xl:mx-auto xl:max-w-[1200px] xl:px-0 xl:pt-10">
+    <main className="flex flex-col gap-6 px-4 py-10 text-left md:px-6 xl:mx-auto xl:max-w-[1200px] xl:px-0 xl:pt-12">
       <TaskDate />
       <TaskList />
       <AddTaskButton />

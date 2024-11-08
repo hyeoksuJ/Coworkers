@@ -7,6 +7,7 @@ interface TaskListStore {
   groupId?: number;
   taskListId: number | undefined;
   taskLists: TaskListDto[];
+  selectedTaskListName: string;
   tasks: TaskDto[]; // 선택된 taskList의 tasks[] 데이터
   task?: TaskDto; // 선택된 task 데이터
   taskId?: number | undefined; // 선택된 taskID
@@ -26,6 +27,7 @@ interface TaskListStore {
   setGroupId: (groupId: number) => void;
   setTaskLists: (taskLists: any) => void;
   setTaskListId: (id: number | undefined) => void;
+  setSelectedTaskListName: (selectedTaskListName: string) => void;
   setTasks: (tasks: TaskDto[]) => void;
   setTask: (task: TaskDto) => void;
   setTaskId: (taskId: number | undefined) => void;
@@ -146,6 +148,7 @@ export const useTaskListStore = create<TaskListStore>((set) => ({
   groupId: undefined,
   taskLists: initialTaskLists,
   taskListId: undefined,
+  selectedTaskListName: '',
   tasks: initialSelectedTasks,
   taskId: 0,
   task: initialTask,
@@ -161,6 +164,8 @@ export const useTaskListStore = create<TaskListStore>((set) => ({
   setGroupId: (groupId: number) => set({ groupId }),
   setTaskLists: (taskLists) => set({ taskLists }),
   setTaskListId: (id: number | undefined) => set({ taskListId: id }),
+  setSelectedTaskListName: (selectedTaskListName) =>
+    set({ selectedTaskListName }),
   setTasks: (tasks: TaskDto[]) => set({ tasks }),
   setTask: (task: TaskDto | undefined) => set({ task }),
   setTaskId: (taskId: number | undefined) => set({ taskId }),

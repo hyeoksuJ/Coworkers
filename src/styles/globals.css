@@ -150,13 +150,13 @@ div.react-datepicker__day--selected {
 }
 
 div.react-datepicker__day--disabled {
-  color: #ffffff;
+  color: #4f4f4f;
 }
 
 .react-datepicker__month div.react-datepicker__day:hover {
   background-color: #121212;
   border-radius: 8px;
-  color: #ffffff;
+  color: #ff6f91;
 }
 
 @font-face {

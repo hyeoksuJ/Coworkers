@@ -5,13 +5,15 @@ import { useTaskListStore } from '@/src/stores/taskListStore';
 import getResponsiveValue from '@utils/getResponsiveValue';
 import TextButtonMotion from '@components/@shared/animation/TextButtonMotion';
 import TaskCard from './TaskCard';
+import NoTaskCard from './UI/NoTaskCard';
 import ListPagination from './UI/ListPagination';
 
 export default function TaskList() {
   const router = useRouter();
   const { query } = router;
   const { teamid, taskListId } = query;
-  const { taskLists, setTaskListId, tasks, setTasks } = useTaskListStore();
+  const { setSelectedTaskListName, taskLists, setTaskListId, tasks, setTasks } =
+    useTaskListStore();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(0);
@@ -24,33 +26,39 @@ export default function TaskList() {
         (taskList) => taskList.id === queryTaskListId
       );
       setTasks(selectedList ? selectedList.tasks : []);
+      setSelectedTaskListName(selectedList ? selectedList.name : '');
     },
-    [taskLists, setTasks]
+    [taskLists, setTasks, setSelectedTaskListName]
   );
 
-  const getInitPage = (queryTaskListId: any) => {
-    const selectedIndex = taskLists.findIndex(
-      (taskList) => taskList.id === queryTaskListId
-    );
+  const getInitPage = (queryTaskListId: number | undefined) => {
+    if (queryTaskListId !== undefined && itemsPerPage > 0) {
+      const selectedIndex = taskLists.findIndex(
+        (taskList) => taskList.id === queryTaskListId
+      );
 
-    const newPage = Math.floor(selectedIndex / itemsPerPage) + 1;
-    setCurrentPage(newPage);
+      if (selectedIndex !== -1) {
+        const newPage = Math.floor(selectedIndex / itemsPerPage) + 1;
+        setCurrentPage(newPage);
+      }
+    }
   };
 
   useEffect(() => {
+    let id: number | undefined;
+
     if (taskListId) {
-      const id = Number(taskListId);
+      id = Number(taskListId);
       setTaskListId(id);
       fetchTasks(id);
-      getInitPage(id);
     } else if (teamid) {
-      const id = Number(teamid);
+      id = Number(teamid);
       setTaskListId(id);
       fetchTasks(id);
       getInitPage(id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [taskListId, teamid, setTaskListId, taskLists]);
+  }, [taskListId, teamid, setTaskListId, fetchTasks]);
 
   // 페이지당 항목 수 계산
   const updateItemsPerPage = useCallback(() => {
@@ -153,10 +161,7 @@ export default function TaskList() {
             ))}
         </ul>
       ) : (
-        <div className="text-text-md mt-80 text-center text-text-default sm:mt-48">
-          <p>아직 할 일이 없습니다.</p>
-          <p>할 일을 추가해보세요.</p>
-        </div>
+        <NoTaskCard />
       )}
     </section>
   );

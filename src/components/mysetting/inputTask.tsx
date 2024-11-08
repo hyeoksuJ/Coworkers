@@ -9,29 +9,19 @@ import clsx from 'clsx';
 import Button from '@components/@shared/Button';
 import getRandomDonut from '@utils/getRandomDonut';
 import Image from 'next/image';
-import { useModal } from '@hooks/useModal';
 import Dropdown, { Option } from '@components/@shared/Dropdown';
+import Snackbar from '@components/article/Snackbar';
+import SuccessIcon from 'public/icons/successicon.svg';
 import PasswordInput from './PasswordInput';
-import ShareModal from './ShareModal';
 
 export default function InputTask() {
+  const [imagenackBar, setImageSnackbar] = useState(false);
+  const [nickNamesnackBar, setNickNameSnackbar] = useState(false);
   const [profileNickname, setProfileNickname] = useState<string>('');
   const [ProfileImage, setProfileImage] = useState<string | JSX.Element>(
     <ProfileEditIcon />
   );
   const [isError, setIsError] = useState<boolean>(false);
-
-  const {
-    isOpen: NicknameCompleteIsOpen,
-    onOpen: NicknameCompleteOnOpen,
-    onClose: NicknameCompleteOnClose,
-  } = useModal();
-
-  const {
-    isOpen: ProfileCompleteIsOpen,
-    onOpen: ProfileCompleteOnOpen,
-    onClose: ProfileCompleteOnClose,
-  } = useModal();
 
   const fileInput = useRef<HTMLInputElement | null>(null);
 
@@ -41,11 +31,18 @@ export default function InputTask() {
 
   const mutationImage = useImageURL();
 
+  const handleImageClickSnackbar = () => {
+    setImageSnackbar(true);
+    setTimeout(() => {
+      setImageSnackbar(false);
+    }, 2000);
+  };
+
   // 프로필 업데이트 하는 핸들러 (PETCH)
   const handelImageChange = (imageURL: string) => {
     if (imageURL) {
       mutation.mutate({ image: imageURL });
-      ProfileCompleteOnOpen();
+      handleImageClickSnackbar();
     }
   };
 
@@ -53,10 +50,17 @@ export default function InputTask() {
     mutation.mutate({ image: Default });
   };
 
+  const handleClickSnackbar = () => {
+    setNickNameSnackbar(true);
+    setTimeout(() => {
+      setNickNameSnackbar(false);
+    }, 2000);
+  };
+
   const handelNicknameChangeSubmit = () => {
     if (profileNickname) {
       nicknameMutation.mutate({ nickname: profileNickname });
-      NicknameCompleteOnOpen();
+      handleClickSnackbar();
     }
   };
 
@@ -132,6 +136,7 @@ export default function InputTask() {
       fileInput.current.value = ''; // 파일 입력 필드 값 초기화
     }
     handleDefaultImageChange(getRandomDonut()); // 기본 이미지로 설정
+    handleImageClickSnackbar();
   };
 
   const basic: Option[] = [
@@ -215,16 +220,20 @@ export default function InputTask() {
       </div>
 
       <PasswordInput />
-      <ShareModal
-        isOpen={NicknameCompleteIsOpen}
-        onClose={NicknameCompleteOnClose}
-        ModalTaitle="닉네임 변경 완료"
-      />
-      <ShareModal
-        isOpen={ProfileCompleteIsOpen}
-        onClose={ProfileCompleteOnClose}
-        ModalTaitle="프로필 변경 완료"
-      />
+      {nickNamesnackBar && (
+        <Snackbar
+          icon={<SuccessIcon />}
+          message="닉네임 변경 완료"
+          type="success"
+        />
+      )}
+      {imagenackBar && (
+        <Snackbar
+          icon={<SuccessIcon />}
+          message="프로필 변경 완료"
+          type="success"
+        />
+      )}
     </main>
   );
 }

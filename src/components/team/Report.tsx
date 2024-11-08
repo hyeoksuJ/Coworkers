@@ -76,10 +76,12 @@ export default function Report() {
               </p>
             </div>
             <Image
-              width={50}
-              height={30}
-              src="/images/todo.png"
-              alt="얼굴 아이콘"
+              width={60}
+              height={40}
+              src="/images/pistachio.png"
+              alt="귀여운 딸기 도넛 아이콘"
+              quality={100}
+              className="mr-[-5px]"
             />
           </div>
           <div className="mt-[8px] flex h-[76.5px] w-full items-center justify-between rounded-[12px] bg-background-tertiary px-[16px]">
