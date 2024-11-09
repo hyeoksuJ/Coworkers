@@ -5,7 +5,7 @@ import { Input } from '@components/@shared/Input';
 import { Modal } from '@components/@shared/Modal';
 import { useValidation } from '@hooks/useValidation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { tagColors } from './tagColors';
 
 interface EditTaskListModalProps {
@@ -13,7 +13,11 @@ interface EditTaskListModalProps {
   onClose: () => void;
   initialTaskListName?: string;
   taskListId: number;
-  taskListColor: string;
+}
+
+interface StoredTaskList {
+  name: string;
+  color: string;
 }
 
 export default function EditTaskListModal({
@@ -21,7 +25,6 @@ export default function EditTaskListModal({
   onClose,
   initialTaskListName = '',
   taskListId,
-  taskListColor = '#A533FF',
 }: EditTaskListModalProps) {
   const [TaskListName, setTaskListName] = useState(initialTaskListName);
   const { id } = useTeamStore();
@@ -38,7 +41,7 @@ export default function EditTaskListModal({
   const teamData = queryClient.getQueryData<TeamStore>(['group', id]);
 
   // 바 색상 설정
-  const [selectedColor, setSelectedColor] = useState(taskListColor);
+  const [selectedColor, setSelectedColor] = useState('#A533FF');
 
   const handleColorClick = (color: string) => {
     setSelectedColor(color); // 선택한 색상 저장
@@ -59,6 +62,30 @@ export default function EditTaskListModal({
     }
   };
 
+  useEffect(() => {
+    const existingTaskListString = localStorage.getItem(`TaskLists_${id}`);
+    if (existingTaskListString) {
+      try {
+        const existingTaskLists: StoredTaskList[] = JSON.parse(
+          existingTaskListString
+        );
+
+        // TaskListName에 해당하는 색상을 찾아 selectedColor에 설정
+        const existingTask = existingTaskLists.find(
+          (task) => task.name === initialTaskListName
+        );
+        if (existingTask) {
+          setSelectedColor(existingTask.color);
+        }
+      } catch (error) {
+        console.error(
+          '로컬 스토리지에서 TaskLists를 파싱하는 중 오류 발생:',
+          error
+        );
+      }
+    }
+  }, [id, initialTaskListName]);
+
   // 할 일 목록 수정 Mutation
   const { mutate: editGroup } = useMutation({
     mutationFn: ({
@@ -69,7 +96,7 @@ export default function EditTaskListModal({
       groupId: number;
       listId: string;
       name: string;
-    }) => patchTaskList(groupId, listId, name),
+    }) => patchTaskList({ groupId, listId }, { name }),
     onSuccess: () => {
       onClose();
     },
@@ -150,7 +177,7 @@ export default function EditTaskListModal({
   const handleClose = () => {
     setTaskListName('');
     clearError('taskListName');
-    setSelectedColor(taskListColor);
+    setSelectedColor('');
     onClose();
   };
 

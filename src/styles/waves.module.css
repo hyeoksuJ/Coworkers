@@ -1,0 +1,28 @@
+@keyframes bounceWave {
+  0%,
+  30%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  70% {
+    transform: translateY(0);
+  }
+}
+.bounce {
+  animation: bounceWave 1s ease-in-out infinite;
+}
+.bounceDelay1 {
+  animation-delay: 0.05s;
+}
+.bounceDelay2 {
+  animation-delay: 0.1s;
+}
+.bounceDelay3 {
+  animation-delay: 0.15s;
+}
+.bounceDelay4 {
+  animation-delay: 0.2s;
+}

@@ -30,9 +30,10 @@ export default function SignInForm() {
 
   // 이메일 유효성 검사 함수
   const validateEmail = () => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email) {
       setEmailError('이메일은 필수 입력입니다.');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    } else if (!emailRegex.test(email)) {
       setEmailError('이메일 형식으로 작성해 주세요.');
     } else {
       setEmailError('');

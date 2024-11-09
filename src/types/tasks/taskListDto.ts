@@ -1,44 +1,25 @@
-// Response
-export interface UserDto {
-  image: string;
-  nickname: string;
-  id: number;
-}
+import type { TaskDto } from './taskDto';
 
-export interface TaskDto {
-  doneBy: {
-    user: UserDto;
+// Request
+export interface TaskListRequestBody {
+  post: {
+    name: string;
   };
-  writer: UserDto;
-  displayIndex: number;
-  commentCount: number;
-  deletedAt: string | null;
-  recurringId: number;
-  frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY';
-  updatedAt: string;
-  doneAt: string | null;
-  date: string;
-  description: string;
-  name: string;
-  id: number;
+  patch: {
+    name: string;
+  };
+  patchOrder: {
+    displayIndex: number;
+  };
 }
 
+// Response
 export interface TaskListDto {
   displayIndex: number;
   groupId: number;
   updatedAt: string;
   createdAt: string;
   name: string;
-  id: number;
+  id: number | undefined;
   tasks: TaskDto[];
-}
-
-// Request
-export interface TaskRequestDto {
-  name: string;
-  description: string | null;
-  startDate: string;
-  frequency: string;
-  weekDays?: number[];
-  monthDay?: number;
 }

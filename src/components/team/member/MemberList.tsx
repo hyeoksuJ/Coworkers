@@ -2,6 +2,7 @@ import { useModal } from '@hooks/useModal';
 import { useTeamStore } from '@/src/stores/teamStore';
 import MemberBox from './MemberBox';
 import InvitationModal from './InvitationModal';
+import styles from '../../../styles/scroll.module.css';
 
 export default function MemberList() {
   const { isOpen, onOpen, onClose } = useModal();
@@ -28,17 +29,19 @@ export default function MemberList() {
           <InvitationModal isOpen={isOpen} onClose={onClose} />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-[10px] md:grid-cols-3 md:gap-[24px]">
-        {members.map((member) => (
-          <MemberBox
-            key={member.userId}
-            userId={member.userId}
-            userName={member.userName}
-            userEmail={member.userEmail}
-            userImage={member.userImage}
-            role={member.role}
-          />
-        ))}
+      <div className={`max-h-[320px] overflow-y-auto ${styles.taskListScroll}`}>
+        <div className="grid grid-cols-2 gap-[10px] md:grid-cols-3 md:gap-[20px]">
+          {members.map((member) => (
+            <MemberBox
+              key={member.userId}
+              userId={member.userId}
+              userName={member.userName}
+              userEmail={member.userEmail}
+              userImage={member.userImage}
+              role={member.role}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -159,7 +159,7 @@ export default function PasswordChange({ onSubmit }: PasswordChangeProps) {
             fontSize="16"
             width={110}
             height={40}
-            border="gray"
+            border="none"
             onClick={closeErrorModlal}
           >
             닫기

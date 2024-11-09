@@ -1,28 +1,66 @@
 import ProfileEditIcon from 'public/icons/profile_edit.svg';
 import { useEffect, useRef, useState } from 'react';
 import { useUserData } from '@hooks/mysetting/useUserData';
-import NetworkError from '@components/@shared/NetworkError';
 import { useProfileChange } from '@hooks/mysetting/useProfileChange';
 import { useImageURL } from '@hooks/mysetting/useImageURL';
+import { useNicknameChange } from '@hooks/mysetting/useNicknameChange';
+import { Input } from '@components/@shared/Input';
+import clsx from 'clsx';
+import Button from '@components/@shared/Button';
+import getRandomDonut from '@utils/getRandomDonut';
 import Image from 'next/image';
+import Dropdown, { Option } from '@components/@shared/Dropdown';
+import Snackbar from '@components/article/Snackbar';
+import SuccessIcon from 'public/icons/successicon.svg';
 import PasswordInput from './PasswordInput';
 
 export default function InputTask() {
+  const [imagenackBar, setImageSnackbar] = useState(false);
+  const [nickNamesnackBar, setNickNameSnackbar] = useState(false);
+  const [profileNickname, setProfileNickname] = useState<string>('');
   const [ProfileImage, setProfileImage] = useState<string | JSX.Element>(
     <ProfileEditIcon />
   );
+  const [isError, setIsError] = useState<boolean>(false);
 
   const fileInput = useRef<HTMLInputElement | null>(null);
 
-  const { data, isLoading, isError } = useUserData();
+  const { data } = useUserData();
   const mutation = useProfileChange();
+  const nicknameMutation = useNicknameChange();
 
   const mutationImage = useImageURL();
+
+  const handleImageClickSnackbar = () => {
+    setImageSnackbar(true);
+    setTimeout(() => {
+      setImageSnackbar(false);
+    }, 2000);
+  };
 
   // 프로필 업데이트 하는 핸들러 (PETCH)
   const handelImageChange = (imageURL: string) => {
     if (imageURL) {
       mutation.mutate({ image: imageURL });
+      handleImageClickSnackbar();
+    }
+  };
+
+  const handleDefaultImageChange = (Default: string | null) => {
+    mutation.mutate({ image: Default });
+  };
+
+  const handleClickSnackbar = () => {
+    setNickNameSnackbar(true);
+    setTimeout(() => {
+      setNickNameSnackbar(false);
+    }, 2000);
+  };
+
+  const handelNicknameChangeSubmit = () => {
+    if (profileNickname) {
+      nicknameMutation.mutate({ nickname: profileNickname });
+      handleClickSnackbar();
     }
   };
 
@@ -59,13 +97,17 @@ export default function InputTask() {
     }
   }, [data]);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  useEffect(() => {
+    if (data) {
+      setProfileNickname(data.nickname);
+    }
+  }, [data]);
 
-  if (isError) {
-    return <NetworkError />;
-  }
+  const handleNicknameChang = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setProfileNickname(value);
+    setIsError(value.length > 10);
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -89,6 +131,45 @@ export default function InputTask() {
     }
   };
 
+  const resetToDefaultImage = () => {
+    if (fileInput.current) {
+      fileInput.current.value = ''; // 파일 입력 필드 값 초기화
+    }
+    handleDefaultImageChange(getRandomDonut()); // 기본 이미지로 설정
+    handleImageClickSnackbar();
+  };
+
+  const basic: Option[] = [
+    {
+      label: '프로필 이미지 변경',
+      component: (
+        <div
+          onClick={() => {
+            if (fileInput.current) {
+              fileInput.current.click();
+            }
+          }}
+        >
+          프로필 변경
+        </div>
+      ),
+    },
+    {
+      label: '기본 이미지 변경',
+      component: (
+        <div
+          onClick={() => {
+            if (fileInput.current) {
+              resetToDefaultImage();
+            }
+          }}
+        >
+          기본 이미지
+        </div>
+      ),
+    },
+  ];
+
   return (
     <main className="mx-6 flex max-w-[792px] flex-col gap-6">
       <div>
@@ -98,31 +179,61 @@ export default function InputTask() {
           style={{ display: 'none' }}
           onChange={onChange}
         />
-        <button
-          type="button"
-          onClick={() => {
-            if (fileInput.current) {
-              fileInput.current.click();
-            }
-          }}
-          className="relative rounded-full"
-        >
-          {ProfileImage}
-          <div className="absolute bottom-[-2px] right-[-2px] h-[25px] w-[25px]">
+        <div className="relative inline-block rounded-full">
+          <Dropdown
+            options={basic}
+            triggerIcon={ProfileImage}
+            optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
+            optionClass="rounded-[12px] md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
+          />
+
+          <div className="absolute bottom-[-2px] right-[-2px] mb-[6.5px] h-[25px] w-[25px]">
             <Image src="/icons/button_edit.svg" alt="수정 버튼 아이콘" fill />
           </div>
-        </button>
-      </div>
-      <div className="flex w-full flex-col">
-        <span className="mb-3 text-lg-medium text-text-primary">이름</span>
-        <div
-          className="h-[48px] w-full rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary outline outline-[1px]
-            outline-[#343E4E] focus:outline-none"
-        >
-          {data?.nickname}
         </div>
       </div>
+      <div className="relative flex w-full flex-col">
+        <Input
+          label="이름"
+          inputProps={{
+            onChange: handleNicknameChang,
+            value: profileNickname,
+          }}
+          isError={isError}
+          errorMessage="이름은 10글자 내외입니다."
+        />
+        <div
+          className={clsx('absolute bottom-[16px] right-3', {
+            hidden: isError === true,
+            block: isError === false,
+          })}
+        >
+          <Button
+            onClick={handelNicknameChangeSubmit}
+            fontSize="14"
+            width={70}
+            height={20}
+          >
+            변경하기
+          </Button>
+        </div>
+      </div>
+
       <PasswordInput />
+      {nickNamesnackBar && (
+        <Snackbar
+          icon={<SuccessIcon />}
+          message="닉네임 변경 완료"
+          type="success"
+        />
+      )}
+      {imagenackBar && (
+        <Snackbar
+          icon={<SuccessIcon />}
+          message="프로필 변경 완료"
+          type="success"
+        />
+      )}
     </main>
   );
 }

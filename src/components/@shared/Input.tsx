@@ -28,7 +28,7 @@ export function Input({
       </label>
       <input
         className={`h-[48px] w-full rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary outline outline-[1px]
-            focus:outline-none focus:outline-brand-primary ${isError ? 'outline-status-danger' : 'outline-[#343E4E]'}`}
+            focus:outline-none focus:outline-brand-primary ${isError ? 'outline-status-danger' : 'outline-[#2C2C2C]'}`}
         id="input"
         placeholder={placeholder}
         {...inputProps}
@@ -49,7 +49,7 @@ export function SearchInput({
 }: InputProps) {
   return (
     <div
-      className="flex h-[48px] w-full items-center gap-[5px] rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary outline outline-[1px] outline-[#343E4E]
+      className="flex h-[48px] w-full items-center gap-[5px] rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary outline outline-[1px] outline-[#2C2C2C]
             focus-within:outline-none focus-within:outline-brand-primary"
       {...props}
     >
@@ -83,7 +83,7 @@ export function IconInput({
       <div className="relative ">
         <input
           className={`h-[48px] w-full rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary outline outline-[1px]
-            focus:outline-none focus:outline-brand-primary ${isError ? 'outline-status-danger' : 'outline-[#343E4E]'}`}
+            focus:outline-none focus:outline-brand-primary ${isError ? 'outline-status-danger' : 'outline-[#2C2C2C]'}`}
           id="input"
           placeholder={placeholder}
           {...inputProps}
@@ -104,6 +104,8 @@ export function IconInput({
 }
 
 export function ScrollTextArea({
+  isError = false,
+  errorMessage = '',
   placeholder = '',
   label = '',
   textareaProps,
@@ -114,15 +116,22 @@ export function ScrollTextArea({
       <label htmlFor="input" className="mb-3 text-lg-medium text-text-primary">
         {label}
       </label>
-      <div className="relative min-h-[100px] w-full overflow-hidden rounded-[12px] bg-background-secondary outline outline-[1px] outline-[#343E4E] focus-within:outline-none focus-within:outline-brand-primary">
+      <div
+        className={`relative min-h-[100px] w-full overflow-hidden rounded-[12px] bg-background-secondary p-[15px] outline outline-[1px] ${isError ? 'outline-status-danger' : 'outline-[#2C2C2C]'} focus-within:outline-none focus-within:outline-brand-primary`}
+      >
         <textarea
-          className={`min-h-[100px] w-full resize-none overflow-auto rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary  focus:outline-none 
-            ${styles.textarea}`}
+          className={`min-h-[100px] w-full resize-none overflow-auto bg-background-secondary  text-lg-regular text-text-primary  focus:outline-none 
+             ${isError ? styles.isErrorScroll : styles.textarea}`}
           id="textarea"
           placeholder={placeholder}
           {...textareaProps}
         />
       </div>
+      {isError && (
+        <p className="mt-[10px] text-md-medium text-status-danger">
+          {errorMessage}
+        </p>
+      )}
     </div>
   );
 }
@@ -155,7 +164,7 @@ export function AutoTextArea({
   }, [value]); // value가 변경될 때마다 높이 조정
   return (
     <form
-      className="relative flex min-h-[49px] w-full items-center overflow-auto border-b-[1px] border-t-[1px] border-[#343E4E] bg-transparent pl-[15px] text-lg-regular text-text-primary focus:border-brand-primary focus:outline-none "
+      className="relative flex min-h-[49px] w-full items-center overflow-auto border-b-[1px] border-t-[1px] border-background-tertiary bg-transparent pl-[15px] text-lg-regular text-text-primary focus:border-brand-primary focus:outline-none "
       onSubmit={onSubmit}
     >
       <textarea

@@ -1,13 +1,24 @@
 import Dropdown, { Option } from '@components/@shared/Dropdown';
 import Toggle from '@icons/toggle.svg';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 interface ArrayDropdownProps {
   onSelect: (value: string) => void;
 }
 
 export default function ArrayDropdown({ onSelect }: ArrayDropdownProps) {
+  const router = useRouter();
+  const { query } = router;
   const [selectedFilter, setSelectedFilter] = useState<Option | null>(null);
+
+  useEffect(() => {
+    if (query.orderBy === 'like') {
+      setSelectedFilter({ label: '인기순', component: <div>인기순</div> });
+    } else {
+      setSelectedFilter({ label: '최신순', component: <div>최신순</div> });
+    }
+  }, [query.orderBy]);
 
   const handleSelectFilter = (option: Option) => {
     setSelectedFilter(option);

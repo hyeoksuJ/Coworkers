@@ -4,7 +4,7 @@
 }
 
 .textarea::-webkit-scrollbar-thumb {
-  background-color: #10b981; /* 스크롤바 색상 */
+  background-color: #e0e0e0; /* 스크롤바 색상 */
   border-radius: 10px; /* 둥글게 만들기 */
 }
 
@@ -31,7 +31,7 @@
 }
 
 .sidebarScroll::-webkit-scrollbar-thumb {
-  background-color: #10b981; /* 스크롤바 색상 */
+  background-color: #e0e0e0; /* 스크롤바 색상 */
   border-radius: 10px; /* 둥글게 만들기 */
 }
 
@@ -44,10 +44,61 @@
 }
 
 .dropdownScroll::-webkit-scrollbar-thumb {
-  background-color: #10b981; /* 스크롤바 색상 */
+  background-color: #e0e0e0; /* 스크롤바 색상 */
   border-radius: 10px; /* 둥글게 만들기 */
 }
 
 .dropdownScroll::-webkit-scrollbar-track {
   background: transparent; /* 스크롤바 트랙 색상 */
+}
+
+.taskListScroll::-webkit-scrollbar {
+  width: 5px; /* 스크롤바 너비 */
+}
+
+.taskListScroll::-webkit-scrollbar-thumb {
+  background-color: #e0e0e0; /* 스크롤바 색상 */
+  border-radius: 10px; /* 둥글게 만들기 */
+}
+
+.taskListScroll::-webkit-scrollbar-track {
+  background: transparent; /* 스크롤바 트랙 색상 */
+}
+
+.isErrorScroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.isErrorScroll::-webkit-scrollbar-thumb {
+  background-color: #ff4c4c;
+  border-radius: 10px;
+}
+
+.isErrorScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ContributionsScroll::-webkit-scrollbar {
+  height: 5px; /* 스크롤바 너비 */
+}
+
+.ContributionsScroll::-webkit-scrollbar-thumb {
+  background-color: #e0e0e0; /* 스크롤바 색상 */
+  border-radius: 10px; /* 둥글게 만들기 */
+}
+
+.ContributionsScroll::-webkit-scrollbar-track {
+  background: transparent; /* 스크롤바 트랙 색상 */
+}
+
+/* 모바일 전용 스크롤바 스타일 */
+@media (max-width: 768px) {
+  .taskListScroll::-webkit-scrollbar {
+    width: 12px; /* 모바일에서는 스크롤바 숨기기 */
+  }
+
+  .taskListScroll {
+    /* 스크롤이 필요한 요소의 다른 스타일 */
+    -webkit-overflow-scrolling: touch; /* 부드러운 스크롤링 */
+  }
 }

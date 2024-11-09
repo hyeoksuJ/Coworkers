@@ -20,3 +20,25 @@ export const fetchCommentCard = async ({
   );
   return response.data;
 };
+
+// 댓글 삭제
+export const fetchCommentDelete = async (commentId: string | null) => {
+  const response = await authAxiosInstance.delete(`comments/${commentId}`);
+  return response.data;
+};
+
+interface fetchCommentPatchProps {
+  commentId: string;
+  content: string;
+}
+
+// 댓글 수정
+export const fetchCommentPatch = async ({
+  commentId,
+  content,
+}: fetchCommentPatchProps) => {
+  const response = await authAxiosInstance.patch(`comments/${commentId}`, {
+    content,
+  });
+  return response.data;
+};

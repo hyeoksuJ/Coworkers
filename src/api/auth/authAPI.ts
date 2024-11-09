@@ -33,14 +33,27 @@ export const postRefreshToken = async (refreshToken: string) => {
   return response.data;
 };
 
-// 간편 로그인 API
-export const postOAuthProvider = async (
-  provider: 'GOOGLE' | 'KAKAO',
-  state: string,
+// 구글 로그인 API
+export const postSignInGoogle = async (
   redirectUri: string,
-  token: string
+  token: string | string[],
+  state?: string
 ) => {
-  const response = await publicAxiosInstance.post(`auth/signIn/${provider}`, {
+  const response = await publicAxiosInstance.post('auth/signIn/GOOGLE', {
+    state,
+    redirectUri,
+    token,
+  });
+  return response.data;
+};
+
+// 카카오 로그인 API
+export const postSignInKakao = async (
+  redirectUri: string,
+  token: string | string[],
+  state?: string
+) => {
+  const response = await publicAxiosInstance.post('auth/signIn/KAKAO', {
     state,
     redirectUri,
     token,

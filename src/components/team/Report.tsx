@@ -30,12 +30,12 @@ export default function Report() {
     <section className="w-full">
       <p className="my-[20px] text-lg-medium">리포트</p>
       <div className="flex h-[217px] items-center justify-between gap-[15px] rounded-[12px] bg-background-secondary pr-[10px] md:gap-[30px] md:px-[24px]">
-        <div className="flex items-center gap-[20px]">
+        <div className="relative flex items-center gap-[20px]">
           <div className="hidden md:block">
             <CircleGraph
-              backgroundColor="#334155"
-              gradientColorStart="#10B981"
-              gradientColorEnd="#A3E635"
+              backgroundColor="#2C2C2C"
+              gradientColorStart="#FF5580"
+              gradientColorEnd="#FFAA80"
               radius={60}
               percentage={doneRate}
               strokeWidth={30}
@@ -43,9 +43,9 @@ export default function Report() {
           </div>
           <div className="ml-[5px] md:hidden">
             <CircleGraph
-              backgroundColor="#334155"
-              gradientColorStart="#10B981"
-              gradientColorEnd="#A3E635"
+              backgroundColor="#2C2C2C"
+              gradientColorStart="#FF5580"
+              gradientColorEnd="#FFAA80"
               radius={50}
               percentage={doneRate}
               strokeWidth={25}
@@ -54,6 +54,11 @@ export default function Report() {
               additionalTextColor="#ffffff"
             />
           </div>
+          {doneRate === 100 && (
+            <div className="absolute left-[10px] h-[140px] w-[140px] md:h-[160px] md:w-[160px]">
+              <Image fill src="/images/graph_done.png" alt="100% 아이콘" />
+            </div>
+          )}
           <div className="hidden md:block md:text-md-medium">
             <p>오늘의</p>
             <p>진행상황</p>
@@ -71,10 +76,12 @@ export default function Report() {
               </p>
             </div>
             <Image
-              width={50}
-              height={30}
-              src="/images/todo.png"
-              alt="얼굴 아이콘"
+              width={60}
+              height={40}
+              src="/images/pistachio.png"
+              alt="귀여운 딸기 도넛 아이콘"
+              quality={100}
+              className="mr-[-5px]"
             />
           </div>
           <div className="mt-[8px] flex h-[76.5px] w-full items-center justify-between rounded-[12px] bg-background-tertiary px-[16px]">

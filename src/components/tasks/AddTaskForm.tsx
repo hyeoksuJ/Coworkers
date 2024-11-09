@@ -2,16 +2,22 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Dayjs } from 'dayjs';
 import { useDate } from '@/src/contexts/DateContext';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTaskListStore } from '@/src/stores/taskListStore';
+import { postTask, TaskUrlParams } from '@/src/api/tasks/taskAPI';
+import { toKSTISOString } from '@utils/toKSTISOString';
 
+import ToggleIcon from '@icons/toggle.svg';
 import Button from '@components/@shared/Button';
 import Dropdown, { Option } from '@components/@shared/Dropdown';
-import { Input, ScrollTextArea } from '@components/@shared/Input';
-import { REQUEST_INIT } from '@constants/initValues';
-import ToggleIcon from '@icons/toggle.svg';
-import type { TaskRequestDto } from '@/src/types/tasks/taskListDto';
+import { TASK_REQUEST_INIT } from '@constants/initValues';
+import type { TaskRequestBody } from '@/src/types/tasks/taskDto';
+import SlideDownMotion from '@components/@shared/animation/SlideDownMotion';
 
-import WeeklySelector from './WeeklySelector';
-import Calender from './Calender';
+import DescriptionTextArea from './UI/input/DescriptionTextArea';
+import NameInput from './UI/input/NameInput';
+import WeeklySelector from './UI/WeeklySelector';
+import Calender from './UI/Calender';
 
 interface AddTaskFormProps {
   onClose: () => void;
@@ -25,7 +31,9 @@ const frequencyOptions: Option[] = [
 ];
 
 export default function AddTaskForm({ onClose }: AddTaskFormProps) {
-  const { date: contextDate, getCurrentMonth } = useDate();
+  const queryClient = useQueryClient();
+  const { inputDate, getCurrentMonth } = useDate();
+  const { groupId, taskListId } = useTaskListStore();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFrequency, setSelectedFrequency] = useState<Option>(
     frequencyOptions[0]
@@ -35,38 +43,81 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
     handleSubmit,
     setValue,
     formState: { errors, isValid },
-  } = useForm<TaskRequestDto>({
+  } = useForm<TaskRequestBody['post']>({
     mode: 'onChange',
     defaultValues: {
-      ...REQUEST_INIT.TASK,
-      startDate: contextDate.toISOString(),
+      ...TASK_REQUEST_INIT.POST,
+      startDate: toKSTISOString(inputDate),
     },
   });
 
-  /* 폼 제출 처리 */
-  const onSubmit = async (data: TaskRequestDto) => {
-    console.log(data);
+  // 폼 데이터 필터링
+  const filterTaskFormData = (
+    data: TaskRequestBody['post']
+  ): TaskRequestBody['post'] => {
+    const taskFormData: TaskRequestBody['post'] = {
+      name: data.name,
+      description: data.description,
+      startDate: data.startDate,
+      frequencyType: selectedFrequency.label || 'ONCE',
+    };
+    if (selectedFrequency.label === 'WEEKLY') {
+      if (data.weekDays) {
+        taskFormData.weekDays = data.weekDays;
+      }
+    } else if (selectedFrequency.label === 'MONTHLY') {
+      taskFormData.monthDay = data.monthDay;
+    }
+    return taskFormData;
+  };
 
-    // TODO: post apiCall 추가
+  const { mutate: createTask } = useMutation({
+    mutationFn: async ({
+      params,
+      data,
+    }: {
+      params: TaskUrlParams;
+      data: TaskRequestBody['post'];
+    }) => {
+      return postTask(params, data);
+    },
+    onSuccess: () => {
+      onClose();
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks', taskListId] });
+    },
+    onError: (error) => {
+      console.error('createTask 실패:', error);
+    },
+  });
+
+  // 폼 데이터 제출 처리
+  const onSubmit = async (data: any) => {
+    const taskFormData = filterTaskFormData(data);
+    await createTask({
+      params: { groupId, taskListId },
+      data: taskFormData,
+    });
     onClose();
   };
 
-  /* 설정된 값 초기화 */
+  // 설정된 값 초기화
   const resetValues = (frequency: string | undefined) => {
-    if (frequency !== 'WEEKLY') {
+    if (frequency === 'WEEKLY') {
+      setValue('weekDays', []);
+    } else {
       setValue('weekDays', [0]);
     }
     if (frequency === 'MONTHLY') {
       setValue('monthDay', getCurrentMonth());
-    } else {
-      setValue('monthDay', 0);
     }
   };
 
-  /* 이벤트 핸들러 */
+  // 이벤트 핸들러
   const handleFrequencySelect = (option: Option) => {
     setSelectedFrequency(option);
-    setValue('frequency', option.label || '', { shouldValidate: true });
+    setValue('frequencyType', option.label || '', { shouldValidate: true });
 
     resetValues(option.label);
   };
@@ -84,23 +135,23 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 ">
-      <Input
+      <NameInput
         label="할 일 제목"
         placeholder="할 일 제목을 입력해주세요."
-        inputProps={{
-          ...register('name', { required: '제목은 필수 입력 사항입니다.' }),
-        }}
+        register={register}
         isError={!!errors.name}
         errorMessage={errors.name?.message}
       />
       <div className="flex w-full flex-col">
         <h2 className="mb-3 text-text-primary">시작 날짜 및 시간</h2>
-        <Calender
-          isInput
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          onDateChange={handleDateChange}
-        />
+        <SlideDownMotion>
+          <Calender
+            isInput
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            onDateChange={handleDateChange}
+          />
+        </SlideDownMotion>
       </div>
       <div>
         <h2 className="mb-3 text-text-primary">반복 설정</h2>
@@ -109,20 +160,21 @@ export default function AddTaskForm({ onClose }: AddTaskFormProps) {
           options={frequencyOptions}
           onSelect={handleFrequencySelect}
           triggerIcon={<ToggleIcon />}
-          triggerClass="bg-slate-900 text-md-medium text-text-default flex gap-2  py-2 px-[10px] rounded-xl items-center h-[44px]"
+          triggerClass="bg-background-secondary border border-background-tertiary text-md-medium text-text-default flex gap-2  py-2 px-[10px] rounded-xl items-center h-[44px]"
           optionsWrapClass="bg-background-secondary mt-2 rounded-xl border border-brand-primary shadow-[0_2px_10px_rgba(0,0,0,0.5)] overflow-hidden"
-          optionClass="px-4 rounded-xl md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-start hover:bg-slate-900 hover:rounded-none hover:text-text-default"
+          optionClass="px-4 rounded-xl md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-start hover:bg-background-tertiary hover:rounded-none hover:text-text-default"
         />
       </div>
       {selectedFrequency.label === 'WEEKLY' && (
         <WeeklySelector onChange={handleWeeklyDaysChange} />
       )}
-      <ScrollTextArea
+      <DescriptionTextArea
         label="할 일 메모"
         placeholder="메모를 입력해주세요."
-        textareaProps={{
-          ...register('description'),
-        }}
+        register={register}
+        registerValue="description"
+        isError={!!errors.description}
+        errorMessage={errors.description?.message}
       />
       <Button size="full" type="submit" disabled={!isValid}>
         만들기

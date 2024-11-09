@@ -5,6 +5,7 @@ import Image from 'next/image';
 import EditDropdown from '../EditDropdown';
 import EditTeamModal from './EditTeamModal';
 import DeleteTeamModal from './DeleteTeamModal';
+import ProfileImageModal from '../member/ProfileImageModal';
 
 export default function TeamBanner() {
   const { teamName, imageUrl } = useTeamStore();
@@ -21,6 +22,12 @@ export default function TeamBanner() {
     onClose: deleteCloseModal,
   } = useModal();
 
+  const {
+    isOpen: IsProfileModalOpen,
+    onClose: ProfileModalClose,
+    onOpen: ProfileModalOpen,
+  } = useModal();
+
   const gearIcon = (
     <Image width={24} height={24} src="/icons/gear.svg" alt="톱니바퀴 아이콘" />
   );
@@ -33,14 +40,17 @@ export default function TeamBanner() {
     } // '삭제하기'를 선택했을 때
   };
   return (
-    <div className="flex items-center justify-between rounded-[12px] border border-border-primary border-opacity-10 bg-slate-50 bg-opacity-10 bg-[url('/images/thumbnail_team.png')] bg-contain bg-[90%] bg-no-repeat px-[24px] py-[15px]">
+    <div className="flex items-center justify-between rounded-[12px] border border-border-primary border-opacity-10 bg-background-secondary bg-[url('/images/thumbnail_team.png')] bg-contain bg-[90%] bg-no-repeat px-[24px] py-[15px]">
       <div className="flex items-center gap-[15px]">
-        <div className="relative h-[45px] w-[45px] shrink-0 rounded-[16px] bg-border-primary">
+        <div
+          className="relative h-[45px] w-[45px] shrink-0 cursor-pointer rounded-[16px] bg-border-primary"
+          onClick={ProfileModalOpen}
+        >
           <Image
             src={imageUrl || '/icons/profile_default.png'}
             alt="팀 프로필 이미지"
             fill
-            style={{ objectFit: 'cover' }}
+            className="rounded-[16px] object-cover"
           />
         </div>
         <p className="break-words break-all text-xl-bold">{teamName}</p>
@@ -49,6 +59,11 @@ export default function TeamBanner() {
       <EditDropdown triggerIcon={gearIcon} onSelect={handleSelect} />
       <EditTeamModal isOpen={editIsOpen} onClose={editCloseModal} />
       <DeleteTeamModal isOpen={deleteIsOpen} onClose={deleteCloseModal} />
+      <ProfileImageModal
+        isOpen={IsProfileModalOpen}
+        onClose={ProfileModalClose}
+        img={imageUrl || '/icons/profile_large.svg'}
+      />
     </div>
   );
 }

@@ -3,14 +3,49 @@ import { useCommentCards } from '@hooks/article/useCommentCard';
 import NetworkError from '@components/@shared/NetworkError';
 import { useRouter } from 'next/router';
 import { useInView } from 'react-intersection-observer';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import dayjs from 'dayjs';
+import Dropdown, { Option } from '@components/@shared/Dropdown';
+import { useModal } from '@hooks/useModal';
+import { useUserData } from '@hooks/mysetting/useUserData';
+import { useCommentEdit } from '@hooks/article/useCommentEdit';
+import styles from '@styles/scroll.module.css';
+import CommentDeletMoal from './CommentDeletModal';
+import NoAccessModal from './NoAccessModal';
+
+interface Comment {
+  id: string;
+  content: string;
+  writer: {
+    id: number;
+    nickname: string;
+  };
+}
 
 export default function CommentList() {
+  const [isEditing, setIsEditing] = useState<string | null>(null);
+  const [content, setContent] = useState<string>('');
   const router = useRouter();
   const { articleId } = router.query;
+  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
+    null
+  );
+  const { data: UserData } = useUserData();
+  const mutation = useCommentEdit();
+
+  const {
+    isOpen: NoAccessModalIsOpen,
+    onClose: NoAccessModalCloseModa,
+    onOpen: NoAccessModalOpenModal,
+  } = useModal();
+
+  const {
+    isOpen: CommentDeleteIsOpen,
+    onOpen: CommentDeleteOpenModal,
+    onClose: CommentDeleteCloseModal,
+  } = useModal();
 
   const {
     data,
@@ -23,6 +58,22 @@ export default function CommentList() {
     limit: 2,
     articleId,
   });
+
+  const comments = useMemo(() => {
+    return data?.pages.flatMap((page) => page.list) || [];
+  }, [data]);
+
+  useEffect(() => {
+    const initialEditingState = comments.reduce(
+      (acc, comment) => {
+        acc[comment.id] = false;
+        return acc;
+      },
+      {} as { [key: string]: boolean }
+    );
+
+    setIsEditing(initialEditingState);
+  }, [comments]);
 
   const { ref, inView } = useInView();
 
@@ -44,42 +95,186 @@ export default function CommentList() {
     );
   }
 
-  const comments = data?.pages.flatMap((page) => page.list) || [];
+  const handleEdit = (commentId: string, commentContent: string) => {
+    setIsEditing(commentId);
+    setContent(commentContent);
+  };
+
+  const handleEditSumit = (commentId: string) => {
+    mutation.mutate({ content, commentId });
+    setIsEditing(null);
+  };
+
+  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+  };
+
+  const handleSelect = (
+    option: Option,
+    commentId: string,
+    comment: Comment | number,
+    commentContent: string
+  ) => {
+    if (option.label === '삭제하기') {
+      if (UserData?.id === comment) {
+        setSelectedCommentId(commentId);
+        CommentDeleteOpenModal();
+      } else {
+        NoAccessModalOpenModal();
+      }
+    } else {
+      handleEdit(commentId, commentContent);
+    }
+  };
+
+  if (comments.length === 0) {
+    return (
+      <p className="flex h-[30vh] items-center justify-center text-md-medium text-text-default">
+        아직 댓글이 없습니다.
+      </p>
+    );
+  }
+
+  const basic = (
+    commentId: string,
+    comment: Comment,
+    commentContent: string
+  ): Option[] => [
+    {
+      label: '수정하기',
+      component: (
+        <div
+          onClick={() =>
+            handleSelect(
+              { label: '수정하기', component: null },
+              commentId,
+              comment,
+              commentContent
+            )
+          }
+        >
+          수정하기
+        </div>
+      ),
+    },
+    {
+      label: '삭제하기',
+      component: (
+        <div
+          onClick={() =>
+            handleSelect(
+              { label: '삭제하기', component: null },
+              commentId,
+              comment,
+              commentContent
+            )
+          }
+        >
+          삭제하기
+        </div>
+      ),
+    },
+  ];
 
   return (
     <>
       {comments.map((comment) => (
-        <article
-          key={comment.id}
-          className="mb-4 rounded-xl bg-background-secondary"
-        >
-          <div className="flex flex-col gap-12 px-6 py-5 ">
-            <div className="flex justify-between">
-              <span className="break-words text-md-regular text-text-primary md:text-lg-regular">
-                {comment.content}
-              </span>
-              <SmallKebabIcon />
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <Image
-                  src={comment.writer.image}
-                  width={32}
-                  height={32}
-                  alt="프로필이미지"
-                  className="rounded-full"
-                />
-                <span className="ml-[12px] mr-2 border-r-[1px] border-slate-700/60 pr-2  text-xs-medium text-text-primary md:text-md-medium ">
-                  {comment.writer.nickname}
-                </span>
-                <span className="text-xs-medium text-slate-400 md:text-md-medium">
-                  {dayjs(comment.createdAt).format('YYYY.MM.DD')}
-                </span>
+        <div key={comment.id}>
+          {isEditing !== comment.id ? (
+            <article className="mb-4 rounded-xl bg-background-secondary">
+              <div className="flex flex-col gap-12 px-6 py-5 ">
+                <div className="flex justify-between">
+                  <span className="break-words text-md-regular text-text-primary md:text-lg-regular">
+                    {comment.content}
+                  </span>
+                  <div
+                    className={clsx({
+                      hidden: UserData?.id !== comment.writer.id,
+                      block: UserData?.id === comment.writer.id,
+                    })}
+                  >
+                    <Dropdown
+                      options={basic(
+                        comment.id,
+                        comment.writer.id,
+                        comment.content
+                      )}
+                      triggerIcon={<SmallKebabIcon />}
+                      optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
+                      optionClass="rounded-[12px] md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Image
+                      src={comment.writer.image || '/icons/profile_large.svg'}
+                      width={32}
+                      height={32}
+                      alt="프로필이미지"
+                      className="rounded-full"
+                    />
+                    <span className="ml-[12px] mr-2 border-r-[1px] border-slate-700/60 pr-2  text-xs-medium text-text-primary md:text-md-medium ">
+                      {comment.writer.nickname}
+                    </span>
+                    <span className="text-xs-medium text-slate-400 md:text-md-medium">
+                      {dayjs(comment.createdAt).format('YYYY.MM.DD')}
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </article>
+              <CommentDeletMoal
+                isOpen={CommentDeleteIsOpen}
+                onClose={CommentDeleteCloseModal}
+                commentId={selectedCommentId}
+              />
+              <NoAccessModal
+                isOpen={NoAccessModalIsOpen}
+                onClose={NoAccessModalCloseModa}
+              />
+            </article>
+          ) : (
+            <article className="mb-4 h-[148px] rounded-xl bg-background-secondary">
+              <div className="flex flex-col px-6 py-5">
+                <div className="relative h-[63px] w-full overflow-hidden rounded-[12px] bg-background-secondary outline outline-[1px] outline-[#343E4E] focus-within:outline-none focus-within:outline-brand-primary">
+                  <textarea
+                    className={`min-h-[30px] w-full resize-none overflow-auto rounded-[12px] bg-background-secondary p-[15px] text-lg-regular text-text-primary  focus:outline-none 
+            ${styles.textarea}`}
+                    id="texterea"
+                    value={content}
+                    onChange={handleTextAreaChange}
+                  />
+                </div>
+                <div className="mt-2 flex justify-between">
+                  <div className="flex items-center">
+                    <Image
+                      src={comment.writer.image || '/icons/profile_large.svg'}
+                      width={32}
+                      height={32}
+                      alt="프로필이미지"
+                      className="rounded-full"
+                    />
+                    <span className="ml-[12px] mr-2 border-r-[1px] border-slate-700/60 pr-2  text-xs-medium text-text-primary md:text-md-medium ">
+                      {comment.writer.nickname}
+                    </span>
+                    <span className="text-xs-medium text-slate-400 md:text-md-medium">
+                      {dayjs(comment.createdAt).format('YYYY.MM.DD')}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleEditSumit(comment.id)}
+                    className=" w-16 rounded-xl bg-brand-primary text-md-bold hover:bg-interaction-hover active:bg-interaction-pressed md:h-[38px] md:w-[110px]"
+                  >
+                    수정하기
+                  </button>
+                </div>
+              </div>
+            </article>
+          )}
+        </div>
       ))}
+
       <div
         ref={ref}
         className={clsx({

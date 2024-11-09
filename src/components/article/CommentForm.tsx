@@ -1,7 +1,7 @@
 import Button from '@components/@shared/Button';
 import { ScrollTextArea } from '@components/@shared/Input';
 import { Modal } from '@components/@shared/Modal';
-import { useCommentAdd } from '@hooks/article/useArticleDetail';
+import { useCommentAdd } from '@hooks/article/useCommentAdd';
 import { useModal } from '@hooks/useModal';
 import { useState } from 'react';
 

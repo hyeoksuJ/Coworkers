@@ -1,5 +1,12 @@
 // store.ts
+import { ReactNode } from 'react';
 import { create } from 'zustand';
+
+interface Option {
+  label?: string;
+  id?: number;
+  component: ReactNode;
+}
 
 export interface MemberProps {
   role: string;
@@ -40,7 +47,7 @@ export interface TaskProps {
   writer: Writer; // 태스크 작성자
   doneBy: DoneBy; // 완료한 사용자
   commentCount: number; // 댓글 수
-  frequency: string; // 반복 주기 ('ONCE' 등)
+  frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'ONCE'; // 반복 주기 ('ONCE' 등)
 }
 
 export interface TaskListProps {
@@ -70,6 +77,8 @@ export interface TeamStore {
   imageUrl: string;
   members: MemberProps[];
   taskLists: TaskListProps[];
+  selectedTeam: Option | null;
+  setSelectedTeam: (team: Option | null) => void;
   setTeamData: (data: TeamDataProps) => void;
   setTeamName: (name: string) => void;
   setImageUrl: (url: string) => void;
@@ -84,6 +93,8 @@ export const useTeamStore = create<TeamStore>((set) => ({
   imageUrl: '',
   members: [],
   taskLists: [],
+  selectedTeam: null,
+  setSelectedTeam: (team) => set({ selectedTeam: team }),
   setTeamData: (data) =>
     set({
       id: data.id.toString(),

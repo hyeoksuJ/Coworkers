@@ -30,7 +30,10 @@ export const useUserStore = create<UserState>()(
       updateUser: (user) => set({ user }),
       setTokens: (accessToken, refreshToken) =>
         set({ accessToken, refreshToken }),
-      logout: () => set({ user: null, accessToken: null, refreshToken: null }),
+      logout: () => {
+        set({ user: null, accessToken: null, refreshToken: null });
+        localStorage.removeItem('userStorage');
+      },
     }),
     {
       name: 'userStorage', // localStorage에 저장될 키 이름

@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import ReactDOM from 'react-dom';
 import styles from '../../styles/scroll.module.css';
 
 export interface Option {
@@ -36,6 +37,7 @@ export default function Dropdown({
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   const handleToggle = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -63,52 +65,61 @@ export default function Dropdown({
 
   // 드롭다운이 화면 밖으로 나갈 때 위치 조정
   useEffect(() => {
-    if (isOpen && dropdownRef.current) {
+    if (isOpen && dropdownRef.current && triggerRef.current) {
       const dropdownRect = dropdownRef.current.getBoundingClientRect();
-      const overflowRight = dropdownRect.right > window.innerWidth;
-      const overflowLeft = dropdownRect.left < 0;
+      const triggerRect = triggerRef.current.getBoundingClientRect();
+      const dropdownWidth = dropdownRect.width;
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
 
-      if (overflowRight) {
-        dropdownRef.current.style.left = 'auto';
-        dropdownRef.current.style.right = '0'; // 우측 정렬
-      }
+      // 드롭다운을 트리거 버튼 아래로 위치 조정
+      dropdownRef.current.style.top = `${triggerRect.bottom + scrollY}px`; // 트리거 버튼 바로 아래
+      dropdownRef.current.style.left = `${triggerRect.left}px`; // 트리거 버튼 왼쪽과 맞춤
 
-      if (overflowLeft) {
-        dropdownRef.current.style.left = '0'; // 좌측 정렬
-        dropdownRef.current.style.right = 'auto';
+      // 트리거의 위치에 따라 드롭다운 정렬 결정
+      if (triggerRect.left + dropdownWidth > window.innerWidth) {
+        // 드롭다운이 화면을 넘어간다면
+        dropdownRef.current.style.left = 'auto'; // 좌측 정렬 초기화
+        dropdownRef.current.style.right = '20px'; // 우측 정렬
+      } else {
+        // 기본 좌측 정렬
+        dropdownRef.current.style.left = `${triggerRect.left}px`; // 트리거 버튼 왼쪽과 맞춤
+        dropdownRef.current.style.right = 'auto'; // 우측 정렬 초기화
       }
     }
-  }, [isOpen]);
+  }, [isOpen, dropdownRef]);
 
   return (
     <div className="relative">
       <button
         type="button"
         onClick={handleToggle}
-        className={`${triggerClass}`}
+        className={`${triggerClass} relative`}
+        ref={triggerRef}
       >
         {initialOption && !selected
           ? initialOption.label
           : selected?.label || ''}
         {triggerIcon}
       </button>
-      {isOpen && (
-        <div
-          ref={dropdownRef}
-          className={`${optionsWrapClass} absolute z-50 flex max-h-[200px] flex-col overflow-y-auto bg-background-secondary text-text-primary ${styles.dropdownScroll}`}
-        >
-          {options.map((option) => (
-            <button
-              key={option.label}
-              type="button"
-              onClick={() => handleSelect(option)}
-              className={`${optionClass}`}
-            >
-              {option.component}
-            </button>
-          ))}
-        </div>
-      )}
+      {isOpen &&
+        ReactDOM.createPortal(
+          <div
+            ref={dropdownRef}
+            className={`${optionsWrapClass} absolute z-50 flex max-h-[200px] w-fit flex-col overflow-y-auto bg-background-secondary text-text-primary ${styles.dropdownScroll}`}
+          >
+            {options.map((option) => (
+              <button
+                key={option.label}
+                type="button"
+                onClick={() => handleSelect(option)}
+                className={`${optionClass}`}
+              >
+                {option.component}
+              </button>
+            ))}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

@@ -3,22 +3,34 @@ import UserIcon from 'public/icons/user.svg';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useUserData } from '@hooks/mysetting/useUserData';
+import clsx from 'clsx';
+import PCLogo from 'public/images/donut_logo3.png';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useUserStore } from '@/src/stores/useUserStore';
 import NavBarTeam from './NavBar_Team';
 
 export default function NavBar() {
   const router = useRouter();
+  const { logout } = useUserStore();
   const [isLogoOnlyPage, setIsLogoOnlyPage] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const { data } = useUserData();
   const handleLogout = () => {
-    localStorage.removeItem('userStorage');
+    logout();
     router.push('/signin');
   };
 
   useEffect(() => {
     setIsClient(true);
-    const logoOnlyPages = ['/signin', 'signup', 'addteam', '/'];
-    // 팀참여하기 페이지, 비밀번호 재설정페이지 추가 필요
+    const logoOnlyPages = [
+      '/signin',
+      '/signup',
+      '/addteam',
+      '/',
+      '/oauth/signup/google',
+      '/oauth/signup/kakao',
+    ];
     setIsLogoOnlyPage(logoOnlyPages.includes(router.pathname));
   }, [router.pathname]);
 
@@ -85,23 +97,34 @@ export default function NavBar() {
     },
   ];
 
-  if (!data) {
-    // data가 없을 경우 컴포넌트 렌더링을 하지 않음
-    return null;
-  }
-
   return (
     <header className=" flex h-16 items-center justify-center border-b border-border-primary border-opacity-10 bg-background-secondary px-6">
       <nav className="flex h-8 w-[1200px]  items-center justify-between text-text-primary max-xl:w-full max-md:w-full ">
         <div className="flex items-center gap-10 max-md:gap-5">
-          <NavBarTeam data={data} />
+          {isLogoOnlyPage ? (
+            <Link href="/">
+              <div className="block max-xl:hidden">
+                <Image src={PCLogo} alt="로고" width={158} height={32} />
+              </div>
+              <div className="hidden max-xl:block">
+                <Image src={PCLogo} alt="로고" width={102} height={20} />
+              </div>
+            </Link>
+          ) : (
+            data && <NavBarTeam data={data} />
+          )}
         </div>
         {!isLogoOnlyPage && (
           <div>
             <Dropdown
               options={basic}
               triggerIcon={
-                <div className="flex items-center gap-2">
+                <div
+                  className={clsx({
+                    'flex items-center gap-2': data,
+                    hidden: !data,
+                  })}
+                >
                   <UserIcon />
                   <span className="max-xl:hidden">
                     {data?.nickname || '이름'}

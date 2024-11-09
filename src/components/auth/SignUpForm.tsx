@@ -1,10 +1,12 @@
 import { postSignIn, postSignUp } from '@/src/api/auth/authAPI';
+import { patchUserImage } from '@/src/api/auth/imageAPI';
 import { useUserStore } from '@/src/stores/useUserStore';
 import Button from '@components/@shared/Button';
 import { IconInput, Input } from '@components/@shared/Input';
 import NonVisibleIcon from '@icons/visibility_off.svg';
 import VisibleIcon from '@icons/visibility_on.svg';
 import { useMutation } from '@tanstack/react-query';
+import getRandomDonut from '@utils/getRandomDonut';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -28,21 +30,24 @@ export default function SignUpForm() {
 
   // 이메일 유효성 검사 함수
   const validateEmail = () => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email) {
       setEmailError('이메일은 필수 입력입니다.');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    } else if (email.length > 50) {
+      setEmailError('이메일은 50자 이내로 작성해 주세요.');
+    } else if (!emailRegex.test(email)) {
       setEmailError('이메일 형식으로 작성해 주세요.');
     } else {
       setEmailError('');
     }
   };
 
-  // 닉네임 유효성 검사 함수
+  // 이름 유효성 검사 함수
   const validateNickname = () => {
     if (!nickname) {
-      setNicknameError('닉네임은 필수 입력입니다.');
-    } else if (nickname.length > 20) {
-      setNicknameError('닉네임은 최대 20자까지 가능합니다.');
+      setNicknameError('이름은 필수 입력입니다.');
+    } else if (nickname.length > 10) {
+      setNicknameError('이름은 10글자 이내로 작성해 주세요.');
     } else {
       setNicknameError('');
     }
@@ -50,13 +55,13 @@ export default function SignUpForm() {
 
   // 비밀번호 유효성 검사 함수
   const validatePassword = () => {
+    const passwordRegex =
+      /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/;
     if (!password) {
       setPasswordError('비밀번호는 필수 입력입니다.');
     } else if (password.length < 8) {
       setPasswordError('비밀번호는 최소 8자 이상입니다.');
-    } else if (
-      !/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).+$/.test(password)
-    ) {
+    } else if (!passwordRegex.test(password)) {
       setPasswordError('비밀번호는 숫자, 영문, 특수문자가 포함되어야 합니다.');
     } else {
       setPasswordError('');
@@ -133,10 +138,22 @@ export default function SignUpForm() {
   // 회원가입 mutation
   const signUpMutation = useMutation({
     mutationFn: async () => {
-      await postSignUp(email, nickname, password, passwordConfirmation);
+      const signUpReponse = await postSignUp(
+        email,
+        nickname,
+        password,
+        passwordConfirmation
+      );
+      return signUpReponse;
     },
-    onSuccess: () => {
-      // 회원가입 성공 시 로그인 시도
+    onSuccess: async (data) => {
+      const { accessToken, refreshToken, user } = data;
+      setTokens(accessToken, refreshToken);
+      // 회원가입 성공 시 랜덤 도넛 프로필 지정 및 로그인 시도
+      if (user.image === null) {
+        const randomProfileImage = getRandomDonut();
+        await patchUserImage(randomProfileImage);
+      }
       signInMutation.mutate();
     },
     onError: (error) => {
@@ -145,7 +162,7 @@ export default function SignUpForm() {
           setEmailError('이미 사용중인 이메일입니다.');
         }
         if (error.response?.data.message === '이미 사용중인 닉네임입니다.') {
-          setNicknameError('이미 사용중인 닉네임입니다.');
+          setNicknameError('이미 사용중인 이름입니다.');
         }
         console.error('회원가입 중 에러 발생:', error);
       }

@@ -38,11 +38,19 @@ export default function SideBar({
   // 사이드바 밖 부분을 클릭시 닫기위한 로직
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        sideBarRef.current &&
-        !sideBarRef.current.contains(event.target as Node)
-      ) {
-        onClose();
+      // 사이드바의 크기와 위치를 정확하게 측정 후 닫기
+      if (sideBarRef.current) {
+        const { left, right, top, bottom } =
+          sideBarRef.current.getBoundingClientRect();
+        const isOutside =
+          event.clientX < left ||
+          event.clientX > right ||
+          event.clientY < top ||
+          event.clientY > bottom;
+
+        if (isOutside) {
+          onClose();
+        }
       }
     };
 
@@ -59,7 +67,7 @@ export default function SideBar({
 
   const classes = {
     sidebar: clsx(
-      'fixed z-20 h-auto transform overflow-y-auto bg-gray-800 text-white transition-transform ',
+      'fixed z-20 h-auto transform overflow-y-auto bg-background-secondary text-white transition-transform ',
       {
         'inset-y-0 left-0 w-52': position === 'left',
         'bottom-0 right-0 top-[66px] min-w-[375px] border border-border-primary border-opacity-10':
@@ -70,7 +78,7 @@ export default function SideBar({
       }
     ),
 
-    closeButton: clsx('absolute top-4', {
+    closeButton: clsx('absolute mt-4', {
       'right-4': position === 'left',
       'left-4': position === 'right',
     }),
@@ -86,22 +94,27 @@ export default function SideBar({
       ref={sideBarRef}
       className={`${classes.sidebar} ${styles.sidebarScroll}`}
     >
-      <div className="sticky top-0">
+      <div className="sticky top-0 z-10 h-4 bg-background-secondary">
         <button type="button" className={classes.closeButton} onClick={onClose}>
           <XIcon />
         </button>
       </div>
-      <div className="mt-10 h-full">{children}</div>
+      <div
+        className={`mt-10 h-[calc(100%-64px)] overflow-y-auto ${styles.sidebarScroll}`}
+      >
+        {children}
+      </div>
       <div className={classes.completeButtonWrapper}>
         {button === 'completebutton' ? (
-          <Button width={138} height={40} shape="round">
-            <div
-              onClick={clickEvent}
-              className="flex items-center justify-center gap-1"
-            >
-              <CheckWhiteIcon />
-              <span>완료하기</span>
-            </div>
+          <Button
+            className="flex items-center justify-center gap-1"
+            width={138}
+            height={40}
+            shape="round"
+            onClick={clickEvent}
+          >
+            <CheckWhiteIcon />
+            <span>완료하기</span>
           </Button>
         ) : (
           <Button
@@ -112,14 +125,11 @@ export default function SideBar({
             height={40}
             border="green"
             shape="round"
+            onClick={clickEvent}
+            className="flex items-center justify-center gap-1"
           >
-            <div
-              onClick={clickEvent}
-              className="flex items-center justify-center gap-1"
-            >
-              <CheckGreenIcon />
-              <span>완료 취소하기</span>
-            </div>
+            <CheckGreenIcon />
+            <span>완료 취소하기</span>
           </Button>
         )}
       </div>

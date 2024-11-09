@@ -1,21 +1,22 @@
-import Dropdown, { Option } from '@components/@shared/Dropdown';
 import CheckBoxIconActiveIcon from 'public/icons/checkbox_active.svg';
-import KebabIcon from 'public/icons/kebab_small.svg';
 import dayjs from 'dayjs';
 import { useTask } from '@hooks/myhistory/useTask';
 import Task from '@/src/types/myhistory/TaskType';
-import { useDeleteTask } from '@hooks/myhistory/useDeleteTask';
-import { useState } from 'react';
-import SideBar from '@components/@shared/SideBar';
 import NetworkError from '@components/@shared/NetworkError';
 
 export default function MyTask() {
-  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const mutation = useDeleteTask();
-
   const { data: taskResponse, isLoading, isError } = useTask();
 
-  const tasks = Array.isArray(taskResponse) ? taskResponse.filter(Boolean) : []; // taskResponse가 배열이 아닐 경우 배열로 감싸기
+  // 타입 가드를 정의, data가 어떤 형태든 검사할수 있도록 하려고 any타입으로 지정함
+  // data가 { tasksDone: Task[] }이런 구조를 가지고 있는지 확인함
+  const hasTasksDone = (data: any): data is { tasksDone: Task[] } => {
+    return data && Array.isArray(data.tasksDone);
+  };
+
+  // 타입 가드를 사용하여 검사 후 `tasks` 가져오기!!
+  const tasks = hasTasksDone(taskResponse)
+    ? taskResponse.tasksDone.filter(Boolean)
+    : [];
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -32,10 +33,6 @@ export default function MyTask() {
       </p>
     );
   }
-
-  const handelDeleteTask = (id: number) => {
-    mutation.mutate(id);
-  };
 
   // 날짜 내림차순으로 정렬
   const sortedTasks = [...tasks].sort((a, b) => {
@@ -63,27 +60,11 @@ export default function MyTask() {
     {} as Record<string, Task[]>
   );
 
-  const handleEditTask = () => {
-    setIsSideBarOpen(true); // 사이드바 열기
-  };
-
-  const handleCloseSideBar = () => {
-    setIsSideBarOpen(false); // 사이드바 닫기
-  };
-
-  const basic = (taskId: number): Option[] => [
-    { label: '수정', component: <div onClick={handleEditTask}>수정하기</div> },
-    {
-      label: '삭제',
-      component: <div onClick={() => handelDeleteTask(taskId)}>삭제하기</div>,
-    },
-  ];
-
   return (
     <div className="flex flex-col gap-6  ">
       {Object.keys(groupedTasks).map((date) => (
         <div key={date}>
-          <h2 className="mb-4 text-lg-medium">{date}</h2>
+          <h2 className="mb-4 text-lg-bold">{date}</h2>
           {groupedTasks[date].map((taskItem) => (
             <div
               key={taskItem.id}
@@ -91,27 +72,12 @@ export default function MyTask() {
             >
               <div className="flex items-center gap-1.5  ">
                 <CheckBoxIconActiveIcon />
-                <span className="line-through">{taskItem.description}</span>
+                <span className="line-through">{taskItem.name}</span>
               </div>
-
-              <Dropdown
-                options={basic(taskItem.id)}
-                triggerIcon={<KebabIcon />}
-                optionsWrapClass=" mt-2 rounded-[12px] border border-background-tertiary"
-                optionClass="rounded-[12px] md:w-[120px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
-              />
             </div>
           ))}
         </div>
       ))}
-      <SideBar
-        position="right"
-        onClose={handleCloseSideBar}
-        isOpen={isSideBarOpen}
-        button="cancelbutton"
-      >
-        사이드바
-      </SideBar>
     </div>
   );
 }

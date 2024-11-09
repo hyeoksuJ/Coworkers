@@ -5,7 +5,7 @@ import ArticleCard from '@components/article/ArticleCard';
 import BestCard from '@components/article/BestCard';
 import { useRouter } from 'next/router';
 import PlusIcon from 'public/icons/plus.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ArticlePage() {
   const [value, setValue] = useState('');
@@ -23,8 +23,19 @@ export default function ArticlePage() {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       setSearchTerm(value);
+      router.push(`/article?q=${value}`);
     }
   };
+
+  useEffect(() => {
+    if (router.query.q) {
+      setSearchTerm(router.query.q as string);
+      setValue(router.query.q as string); // 검색어 입력 필드도 업데이트
+    } else {
+      setSearchTerm('');
+      setValue('');
+    }
+  }, [router.query.q]);
 
   return (
     <div className="mx-4 mt-8 max-w-[1200px] xl:mx-auto">

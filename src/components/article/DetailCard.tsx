@@ -1,15 +1,18 @@
 import LargeKebabIcon from 'public/icons/kebab_large.svg';
 import CommentIcon from 'public/icons/comment.svg';
-import HeartIcon from 'public/icons/heart.svg';
-import { useDetailCard } from '@hooks/article/useArticleDetail';
+import { useDetailCard } from '@hooks/article/useCommentAdd';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import NetworkError from '@components/@shared/NetworkError';
 import Dropdown, { Option } from '@components/@shared/Dropdown';
+import { useUserData } from '@hooks/mysetting/useUserData';
 import { useModal } from '@hooks/useModal';
+import clsx from 'clsx';
 import CommentForm from './CommentForm';
-import CardDeleteModal from './CommentCardDeletModal';
+import CardDeleteModal from './ArticleCardDeletModal';
+import Heart from './Heart';
+import NoAccessModal from './NoAccessModal';
 
 export default function DetailCard() {
   const router = useRouter();
@@ -20,9 +23,17 @@ export default function DetailCard() {
     onClose: DeleteCloseModal,
   } = useModal();
 
+  const { data: UserData } = useUserData();
+
   const { data, isLoading, isError } = useDetailCard({
     articleId: Number(articleId),
   });
+
+  const {
+    isOpen: NoAccessModalIsOpen,
+    onClose: NoAccessModalCloseModa,
+    onOpen: NoAccessModalOpenModal,
+  } = useModal();
 
   if (isLoading) return <p>Loading...</p>;
   if (isError)
@@ -34,9 +45,13 @@ export default function DetailCard() {
 
   const handleSelect = (option: Option) => {
     if (option.label === '삭제하기') {
-      DeleteOpenModal();
+      if (UserData?.id === data?.writer.id) {
+        DeleteOpenModal();
+      } else {
+        NoAccessModalOpenModal();
+      }
     } else {
-      router.push('/article/newarticle');
+      router.push(`/article/edit/${articleId}`);
     }
   };
 
@@ -70,24 +85,23 @@ export default function DetailCard() {
           <span className="text-lg-medium md:text-2lg-medium">
             {data?.title}
           </span>
-          <Dropdown
-            options={basic}
-            triggerIcon={<LargeKebabIcon />}
-            optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
-            optionClass="rounded-[12px] md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
-          />
+          <div
+            className={clsx({
+              hidden: data?.writer.id !== UserData?.id,
+              block: data?.writer.id === UserData?.id,
+            })}
+          >
+            <Dropdown
+              options={basic}
+              triggerIcon={<LargeKebabIcon />}
+              optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
+              optionClass="rounded-[12px] md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
+            />
+          </div>
         </div>
         <hr className="my-4 opacity-10" />
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <Image
-              src={data?.image || '/icons/profile_large.svg'}
-              width={32}
-              height={32}
-              alt="게시글 이미지"
-              className="rounded-lg"
-            />
-
             <span className="ml-[6px] mr-2 border-r-[1px] border-slate-700/60 pr-2  text-xs-medium text-text-primary md:text-md-medium ">
               {data?.writer.nickname}
             </span>
@@ -103,7 +117,7 @@ export default function DetailCard() {
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <HeartIcon />
+              <Heart articleId={data?.id} />
               <span className="text-xs-regular text-slate-400 md:text-md-medium">
                 {data?.likeCount}
               </span>
@@ -111,9 +125,23 @@ export default function DetailCard() {
           </div>
         </div>
       </header>
-      <p className="break-words text-md-medium text-text-secondary md:text-lg-medium">
-        {data?.content}
-      </p>
+      <div className="flex flex-col">
+        <div className="mb-4 flex justify-center md:justify-start">
+          <div className=" relative h-[200px] w-[200px] md:h-[240px] md:w-[240px] ">
+            <Image
+              src={data?.image || '/icons/profile_large.svg'}
+              layout="fill"
+              alt="게시글 이미지"
+              className="rounded-lg"
+            />
+          </div>
+        </div>
+        <div className="w-full">
+          <p className="w-full break-all text-md-medium text-text-secondary md:text-lg-medium">
+            {data?.content}
+          </p>
+        </div>
+      </div>
       <div className="flex flex-col justify-between">
         <CommentForm articleId={Number(articleId)} />
       </div>
@@ -121,6 +149,10 @@ export default function DetailCard() {
         isOpen={DeleteIsOpen}
         onClose={DeleteCloseModal}
         articleId={articleId}
+      />
+      <NoAccessModal
+        isOpen={NoAccessModalIsOpen}
+        onClose={NoAccessModalCloseModa}
       />
     </>
   );

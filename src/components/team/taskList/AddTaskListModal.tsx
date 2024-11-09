@@ -56,7 +56,7 @@ export default function AddTaskListModal({
   // 그룹 생성 Mutation
   const { mutate: createTaskList } = useMutation({
     mutationFn: ({ id, name }: { id: number; name: string }) =>
-      postTaskList(id, name),
+      postTaskList({ groupId: id }, { name }),
     onSuccess: () => {
       setTaskListName('');
       onClose();
