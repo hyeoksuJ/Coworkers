@@ -15,10 +15,10 @@ export default function Snackbar({ icon, message, type }: SnackbarProps) {
       exit={{ opacity: 0 }} // 종료 상태: 투명해지며 아래로 이동
       transition={{ duration: 0.5 }} // 애니메이션 지속 시간
       className={clsx(
-        'fixed left-1/2 top-20 z-50 flex h-[50px] w-[190px] -translate-x-1/2 transform items-center rounded-lg border px-5 py-[13px] text-[#32a68a]',
+        'fixed left-1/2 top-20 z-50 flex h-[50px] w-[200px] -translate-x-1/2 transform items-center rounded-lg border px-5 py-[13px] ',
         {
-          'border-[#4cbfa4] bg-[#eef9f6]': type === 'success',
-          'border-[#d14343] bg-[#fbeded]': type === 'error',
+          'border-[#4cbfa4] bg-[#eef9f6] text-[#32a68a]': type === 'success',
+          'border-[#d14343] bg-[#fbeded] text-[#d14343]': type === 'error',
         }
       )}
     >

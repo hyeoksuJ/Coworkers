@@ -1,5 +1,4 @@
 import Dropdown, { Option } from '@components/@shared/Dropdown';
-import UserIcon from 'public/icons/user.svg';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useUserData } from '@hooks/mysetting/useUserData';
@@ -9,6 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useUserStore } from '@/src/stores/useUserStore';
 import NavBarTeam from './NavBar_Team';
+import TextButtonMotion from './animation/TextButtonMotion';
 
 export default function NavBar() {
   const router = useRouter();
@@ -121,14 +121,24 @@ export default function NavBar() {
               triggerIcon={
                 <div
                   className={clsx({
-                    'flex items-center gap-2': data,
+                    'flex items-center gap-2 ': data,
                     hidden: !data,
                   })}
                 >
-                  <UserIcon />
-                  <span className="max-xl:hidden">
-                    {data?.nickname || '이름'}
-                  </span>
+                  <div className="h-[35px] w-[35px] overflow-hidden rounded-xl">
+                    <Image
+                      src={data?.image ?? '/icons/user.svg'}
+                      alt="로고"
+                      width={40}
+                      height={40}
+                      className="rounded-lg"
+                    />
+                  </div>
+                  <TextButtonMotion>
+                    <span className="max-xl:hidden">
+                      {data?.nickname || '이름'}
+                    </span>
+                  </TextButtonMotion>
                 </div>
               }
               optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"

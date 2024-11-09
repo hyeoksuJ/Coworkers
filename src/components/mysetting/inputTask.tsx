@@ -12,11 +12,13 @@ import Image from 'next/image';
 import Dropdown, { Option } from '@components/@shared/Dropdown';
 import Snackbar from '@components/article/Snackbar';
 import SuccessIcon from 'public/icons/successicon.svg';
+import ErrorIcon from 'public/icons/erroricon.svg';
 import PasswordInput from './PasswordInput';
 
 export default function InputTask() {
   const [imagenackBar, setImageSnackbar] = useState(false);
   const [nickNamesnackBar, setNickNameSnackbar] = useState(false);
+  const [nickNameErrorSnackBar, setNickNameErrorSnackBar] = useState(false);
   const [profileNickname, setProfileNickname] = useState<string>('');
   const [ProfileImage, setProfileImage] = useState<string | JSX.Element>(
     <ProfileEditIcon />
@@ -35,6 +37,13 @@ export default function InputTask() {
     setImageSnackbar(true);
     setTimeout(() => {
       setImageSnackbar(false);
+    }, 2000);
+  };
+
+  const handleNicknameErrorSnackbar = () => {
+    setNickNameErrorSnackBar(true);
+    setTimeout(() => {
+      setNickNameErrorSnackBar(false);
     }, 2000);
   };
 
@@ -61,6 +70,9 @@ export default function InputTask() {
     if (profileNickname) {
       nicknameMutation.mutate({ nickname: profileNickname });
       handleClickSnackbar();
+    }
+    if (data?.nickname === profileNickname) {
+      handleNicknameErrorSnackbar();
     }
   };
 
@@ -232,6 +244,13 @@ export default function InputTask() {
           icon={<SuccessIcon />}
           message="프로필 변경 완료"
           type="success"
+        />
+      )}
+      {nickNameErrorSnackBar && (
+        <Snackbar
+          icon={<ErrorIcon />}
+          message="동일한 이름입니다."
+          type="error"
         />
       )}
     </main>
