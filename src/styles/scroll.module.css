@@ -78,6 +78,19 @@
   background: transparent;
 }
 
+.ContributionsScroll::-webkit-scrollbar {
+  height: 5px; /* 스크롤바 너비 */
+}
+
+.ContributionsScroll::-webkit-scrollbar-thumb {
+  background-color: #e0e0e0; /* 스크롤바 색상 */
+  border-radius: 10px; /* 둥글게 만들기 */
+}
+
+.ContributionsScroll::-webkit-scrollbar-track {
+  background: transparent; /* 스크롤바 트랙 색상 */
+}
+
 /* 모바일 전용 스크롤바 스타일 */
 @media (max-width: 768px) {
   .taskListScroll::-webkit-scrollbar {
