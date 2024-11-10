@@ -21,6 +21,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchTaskListOrder } from '@/src/api/tasks/taskListAPI';
 import styles from '@styles/scroll.module.css';
+import Image from 'next/image';
 import TaskBar from './TaskBar';
 import AddTaskListModal from './AddTaskListModal';
 import EditDropdown from '../EditDropdown';
@@ -29,6 +30,8 @@ import DeleteTaskListModal from './DeleteTaskListModal';
 import { moreIcon } from '../MoreIcon';
 
 export default function TaskList() {
+  const [isVisible, setIsVisible] = useState(false);
+
   const scrollableRef = useRef<HTMLDivElement | null>(null);
 
   const {
@@ -202,6 +205,14 @@ export default function TaskList() {
     };
   }, [handleTouchStart]);
 
+  const handleVisibleClick = () => {
+    if (isVisible === false) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  };
+
   return (
     <section>
       <div className="my-[20px]">
@@ -209,6 +220,20 @@ export default function TaskList() {
           <div className="flex gap-[10px]">
             <p className="text-lg-medium">할 일 목록</p>
             <p className="text-lg-regular text-text-default">({listCount}개)</p>
+            <Image
+              src="/icons/question.svg"
+              alt="물음표 아이콘"
+              width={17}
+              height={17}
+              quality={100}
+              onClick={handleVisibleClick}
+              className="cursor-pointer rounded-[16px] object-contain hover:scale-110"
+            />
+            {isVisible && (
+              <p className="text-md-regular text-brand-primary">
+                할 일 목록을 꾹 눌러 드래그해서 순서를 편집할 수 있어요!
+              </p>
+            )}
           </div>
           <button
             type="button"
