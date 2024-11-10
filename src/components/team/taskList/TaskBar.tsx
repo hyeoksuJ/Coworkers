@@ -45,6 +45,26 @@ export default function TaskBar({
   };
 
   const [currentTagColor, setCurrentTagColor] = useState('');
+  const [storedTaskLists, setStoredTaskLists] = useState(() => {
+    return JSON.parse(localStorage.getItem(`TaskLists_${groupId}`) || '[]');
+  });
+
+  useEffect(() => {
+    const handleTaskListUpdate = () => {
+      const updatedTaskLists = JSON.parse(
+        localStorage.getItem(`TaskLists_${groupId}`) || '[]'
+      );
+      setStoredTaskLists(updatedTaskLists);
+    };
+
+    // 커스텀 이벤트 리스너 추가
+    window.addEventListener('taskListUpdate', handleTaskListUpdate);
+
+    // 컴포넌트 언마운트 시 리스너 제거
+    return () => {
+      window.removeEventListener('taskListUpdate', handleTaskListUpdate);
+    };
+  }, [groupId]);
 
   useEffect(() => {
     const pointColors = [
@@ -56,11 +76,6 @@ export default function TaskBar({
       '#ff9d35', // orange
       '#E6FE0B', // yellow
     ];
-    // 로컬 스토리지에서 taskLists 가져오기
-    const storedTaskLists = JSON.parse(
-      localStorage.getItem(`TaskLists_${groupId}`) || '[]'
-    );
-
     // 기존 taskList에 색상이 없으면 순서에 맞는 색상 할당
     let currentTaskList = storedTaskLists.find(
       (taskList: StoredTaskList) => taskList.name === name
@@ -71,7 +86,7 @@ export default function TaskBar({
       const colorIndex = storedTaskLists.length % pointColors.length;
       const newColor = pointColors[colorIndex];
       currentTaskList = { name, color: newColor };
-
+      setStoredTaskLists([...storedTaskLists, currentTaskList]);
       // taskList 저장
       localStorage.setItem(
         `TaskLists_${groupId}`,
@@ -81,7 +96,7 @@ export default function TaskBar({
 
     // 설정된 색상 사용
     setCurrentTagColor(currentTaskList.color);
-  }, [groupId, name]);
+  }, [groupId, name, storedTaskLists]);
 
   return (
     <CardMotion index={index} className="list-none">

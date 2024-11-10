@@ -102,6 +102,11 @@ export default function EditTaskListModal({
     },
 
     onSettled: () => {
+      // 로컬 스토리지 업데이트
+      localStorage.setItem('taskListUpdated', Date.now().toString());
+
+      // CustomEvent 트리거
+      window.dispatchEvent(new Event('taskListUpdate'));
       // 쿼리 무효화 및 리패치
       queryClient.invalidateQueries({ queryKey: ['group', id] });
     },
