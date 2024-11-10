@@ -28,7 +28,7 @@ export default function Report() {
 
   return (
     <section className="w-full">
-      <p className="my-[20px] text-lg-medium">리포트</p>
+      <p className="mb-[20px] mt-[30px] text-lg-medium">리포트</p>
       <div className="flex h-[217px] items-center justify-between gap-[15px] rounded-[12px] bg-background-secondary pr-[10px] md:gap-[30px] md:px-[24px]">
         <div className="relative flex items-center gap-[20px]">
           <div className="hidden md:block">

@@ -205,7 +205,7 @@ export default function TaskList() {
   return (
     <section>
       <div className="my-[20px]">
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between">
           <div className="flex gap-[10px]">
             <p className="text-lg-medium">할 일 목록</p>
             <p className="text-lg-regular text-text-default">({listCount}개)</p>
@@ -213,7 +213,7 @@ export default function TaskList() {
           <button
             type="button"
             onClick={addListOpenModal}
-            className="cursor-pointer text-md-regular text-brand-primary"
+            className="cursor-pointer rounded-lg p-1 text-md-regular text-brand-primary hover:bg-[#eeeeee12]"
           >
             +새로운 목록 추가하기
           </button>
@@ -248,7 +248,7 @@ export default function TaskList() {
               className="flex flex-col gap-[10px]"
               onMouseDown={(e) => e.stopPropagation()}
             >
-              {displayedTaskList.map((taskList) => (
+              {displayedTaskList.map((taskList, index) => (
                 <div className="relative" key={taskList.id}>
                   <div
                     onClick={(e) => {
@@ -262,6 +262,7 @@ export default function TaskList() {
                     />
                   </div>
                   <TaskBar
+                    index={index}
                     key={taskList.id}
                     id={taskList.id} // SortableItem requires an `id` prop
                     name={taskList.name}

@@ -84,7 +84,7 @@ export default function MyTeamPage() {
       </div>
       <div className="relative mx-auto flex h-auto w-full flex-grow px-[10px] pt-[100px] md:px-[100px] xl:block xl:h-[255px] xl:w-[1100px] xl:pt-[150px]">
         <img
-          src="/images/team_none.png"
+          src="/images/team_none_tb.png"
           alt="빈 공간 채우는 이미지"
           className="opacity-50 "
         />

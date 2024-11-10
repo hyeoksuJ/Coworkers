@@ -1,0 +1,12 @@
+@keyframes progressAnimation {
+  0% {
+    stroke-dashoffset: 100%;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.stroke {
+  animation: progressAnimation 1s ease-out forwards;
+}
