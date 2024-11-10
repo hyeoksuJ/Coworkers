@@ -99,7 +99,7 @@ export default function TaskBar({
   }, [groupId, name, storedTaskLists]);
 
   return (
-    <CardMotion index={index} className="list-none">
+    <CardMotion index={index} className="list-none hover:ml-[2px]">
       <div
         ref={setNodeRef}
         style={style}
