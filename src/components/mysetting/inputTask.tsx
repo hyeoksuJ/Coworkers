@@ -16,8 +16,8 @@ import ErrorIcon from 'public/icons/erroricon.svg';
 import PasswordInput from './PasswordInput';
 
 export default function InputTask() {
-  const [imagenackBar, setImageSnackbar] = useState(false);
-  const [nickNamesnackBar, setNickNameSnackbar] = useState(false);
+  const [imageSnackBar, setImageSnackbar] = useState(false);
+  const [nickNameSnackBar, setNickNameSnackbar] = useState(false);
   const [nickNameErrorSnackBar, setNickNameErrorSnackBar] = useState(false);
   const [profileNickname, setProfileNickname] = useState<string>('');
   const [ProfileImage, setProfileImage] = useState<string | JSX.Element>(
