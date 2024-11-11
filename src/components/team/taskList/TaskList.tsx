@@ -215,7 +215,7 @@ export default function TaskList() {
 
   return (
     <section>
-      <div className="my-[20px]">
+      <div className="relative my-[20px] ">
         <div className="flex items-center justify-between">
           <div className="flex gap-[10px]">
             <p className="text-lg-medium">할 일 목록</p>
@@ -230,9 +230,15 @@ export default function TaskList() {
               className="cursor-pointer rounded-[16px] object-contain hover:scale-110"
             />
             {isVisible && (
-              <p className="text-md-regular text-brand-primary">
-                할 일 목록을 꾹 눌러 드래그해서 순서를 편집할 수 있어요!
-              </p>
+              <>
+                <p className="hidden text-md-regular text-brand-primary md:block">
+                  할 일 목록을 꾹 눌러 드래그해서 순서를 편집할 수 있어요!
+                </p>
+                <div className="absolute left-[120px] top-[30px] z-10 w-fit animate-fadeInDown rounded-[6px] bg-background-tertiary p-2 text-sm-semibold text-brand-primary md:hidden">
+                  할 일 목록을 꾹 눌러 드래그해서 <br /> 순서를 편집할 수
+                  있어요!
+                </div>
+              </>
             )}
           </div>
           <button
