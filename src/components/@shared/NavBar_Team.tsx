@@ -2,7 +2,7 @@ import ArrowDown from 'public/icons/arrow_down.svg';
 import { useModal } from '@hooks/useModal';
 import AddTeamModal from '@components/team/AddTeamModal';
 import { useRouter } from 'next/router';
-import { useTeamStore } from '@/src/stores/teamStore';
+import { useTeamStore } from '@/src/stores/useTeamStore';
 import PCLogo from 'public/images/donut_logo3.png';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';

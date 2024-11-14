@@ -11,7 +11,7 @@ import {
   patchComment,
   CommentUrlParams,
 } from '@/src/api/tasks/commentAPI';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import getSortedDate from '@utils/getSortedDate';
 import getTimeAgo from '@utils/getTimeAgo';
 import ClickMotion from '@components/@shared/animation/ClickMotion';

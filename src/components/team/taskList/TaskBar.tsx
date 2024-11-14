@@ -1,4 +1,4 @@
-import { TaskProps, useTeamStore } from '@/src/stores/teamStore';
+import { TaskProps, useTeamStore } from '@/src/stores/useTeamStore';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useEffect, useState } from 'react';
@@ -30,7 +30,7 @@ export default function TaskBar({
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
-  const { id: groupId } = useTeamStore();
+  const { id: groupId, taskLists } = useTeamStore();
 
   // 1. 총 task의 개수
   const totalTasks = tasks.length;
@@ -83,7 +83,7 @@ export default function TaskBar({
 
     if (!currentTaskList) {
       // 새로운 taskList일 경우 순서에 따라 색상 할당
-      const colorIndex = storedTaskLists.length % pointColors.length;
+      const colorIndex = id % pointColors.length;
       const newColor = pointColors[colorIndex];
       currentTaskList = { name, color: newColor };
       setStoredTaskLists([...storedTaskLists, currentTaskList]);
@@ -96,7 +96,7 @@ export default function TaskBar({
 
     // 설정된 색상 사용
     setCurrentTagColor(currentTaskList.color);
-  }, [groupId, name, storedTaskLists]);
+  }, [groupId, name, id, storedTaskLists, taskLists]);
 
   return (
     <CardMotion index={index} className="list-none hover:ml-[2px]">

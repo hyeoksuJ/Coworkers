@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
 import { TASKLIST_REQUEST_INIT } from '@constants/initValues';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import { postTaskList, TaskListUrlParams } from '@/src/api/tasks/taskListAPI';
 import type { TaskListRequestBody } from '@/src/types/tasks/taskListDto';
 import NameInput from '../input/NameInput';

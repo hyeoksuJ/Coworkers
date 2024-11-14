@@ -1,4 +1,5 @@
 import getTimeAgo from '@utils/getTimeAgo';
+import Image from 'next/image';
 import Link from 'next/link';
 import SlideItemsMotion from '@components/@shared/animation/SlideItemsMotion';
 
@@ -31,6 +32,7 @@ export default function TeamBox({
             alt="팀 프로필 이미지"
             className="h-[40px] w-[40px] rounded-[12px] object-cover md:h-[64px] md:w-[64px]"
           />
+
           <div className="flex flex-col justify-between overflow-hidden md:my-[5px]">
             <p className="mr-[10px] overflow-hidden text-ellipsis whitespace-nowrap text-md-bold md:text-lg-bold">
               {teamName}

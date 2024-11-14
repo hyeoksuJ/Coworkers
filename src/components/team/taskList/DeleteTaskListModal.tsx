@@ -1,9 +1,10 @@
 import { deleteTaskList } from '@/src/api/tasks/taskListAPI';
-import { useTeamStore } from '@/src/stores/teamStore';
+import { useTeamStore } from '@/src/stores/useTeamStore';
 import Button from '@components/@shared/Button';
 import { Modal } from '@components/@shared/Modal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
+import useTaskListStorage from '@hooks/team/useTaskListStorage';
 import { UserData } from '../member/ExileUserModal';
 
 interface DeleteTaskListModalProps {
@@ -21,6 +22,7 @@ export default function DeleteTaskListModal({
 }: DeleteTaskListModalProps) {
   const queryClient = useQueryClient();
   const { id } = useTeamStore();
+  const { deleteStoredTaskList } = useTaskListStorage(id);
   // 'user' 키로 캐싱된 유저 데이터 가져오기
   const userData = queryClient.getQueryData<UserData>(['user']);
 
@@ -52,34 +54,7 @@ export default function DeleteTaskListModal({
     }
     deleteList(String(taskListId));
 
-    // 로컬 스토리지에서 기존 TaskLists 가져오기 (없으면 빈 배열)
-    const existingTaskListsString = localStorage.getItem(`TaskLists_${id}`);
-
-    let existingTaskLists = [];
-    if (existingTaskListsString) {
-      try {
-        existingTaskLists = JSON.parse(existingTaskListsString);
-
-        // JSON 파싱 후 배열인지 확인
-        if (!Array.isArray(existingTaskLists)) {
-          existingTaskLists = []; // 배열이 아닐 경우 빈 배열로 초기화
-        }
-      } catch (error) {
-        console.error(
-          '로컬 스토리지에서 TaskLists를 파싱하는 중 오류 발생:',
-          error
-        );
-        existingTaskLists = []; // 파싱 오류 발생 시 빈 배열로 초기화
-      }
-    }
-
-    // 삭제할 항목의 name을 가진 요소 필터링
-    const updatedTaskLists = existingTaskLists.filter(
-      (task) => task.name !== taskName
-    );
-
-    // 업데이트된 배열을 로컬 스토리지에 저장
-    localStorage.setItem(`TaskLists_${id}`, JSON.stringify(updatedTaskLists));
+    deleteStoredTaskList(taskName);
   };
 
   return (

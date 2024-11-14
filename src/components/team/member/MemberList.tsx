@@ -1,5 +1,5 @@
 import { useModal } from '@hooks/useModal';
-import { useTeamStore } from '@/src/stores/teamStore';
+import { useTeamStore } from '@/src/stores/useTeamStore';
 import { Option } from '@components/@shared/Dropdown';
 import MemberBox from './MemberBox';
 import InvitationModal from './InvitationModal';

@@ -6,7 +6,7 @@ import TeamBanner from '@components/team/banner/TeamBanner';
 import TaskList from '@components/team/taskList/TaskList';
 import Report from '@components/team/Report';
 import MemberList from '@components/team/member/MemberList';
-import { useTeamStore } from '@/src/stores/teamStore';
+import { useTeamStore } from '@/src/stores/useTeamStore';
 import { useEffect } from 'react';
 import Button from '@components/@shared/Button';
 import LoadingSpinner from '@components/@shared/LoadingSpinner';

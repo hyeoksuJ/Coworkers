@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Dayjs } from 'dayjs';
 import { useDate } from '@/src/contexts/DateContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import { postTask, TaskUrlParams } from '@/src/api/tasks/taskAPI';
 import { toKSTISOString } from '@utils/toKSTISOString';
 

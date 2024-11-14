@@ -1,6 +1,6 @@
 import { postImage } from '@/src/api/imageAPI';
 import { patchGroupById } from '@/src/api/team/teamAPI';
-import { useTeamStore } from '@/src/stores/teamStore';
+import { useTeamStore } from '@/src/stores/useTeamStore';
 import Image from 'next/image';
 import Button from '@components/@shared/Button';
 import { Input } from '@components/@shared/Input';
@@ -90,6 +90,7 @@ export default function EditTeamModal({ isOpen, onClose }: EditTeamModalProps) {
         validateValueOnSubmit('teamName', TeamNames, localTeamName, teamName)
       ) {
         editGroup({ groupId: id, image: imgUrl, name: localTeamName });
+        setTeamName(localTeamName); // 최종적으로 store에 반영
       }
     },
     onSettled: () => {
@@ -106,13 +107,16 @@ export default function EditTeamModal({ isOpen, onClose }: EditTeamModalProps) {
     if (!isAdmin) {
       return;
     }
-    setTeamName(localTeamName); // 최종적으로 store에 반영
-    if (imageFile) {
-      // 새로 선택된 파일이 있으면 업로드
-      uploadImageMutate.mutate(imageFile);
-    } else {
-      // 파일이 없으면 기존 URL로 그룹 수정
-      editGroup({ groupId: id, image: imageUrl, name: localTeamName });
+
+    if (validateValueOnSubmit('teamName', TeamNames, localTeamName, teamName)) {
+      if (imageFile) {
+        // 새로 선택된 파일이 있으면 업로드
+        uploadImageMutate.mutate(imageFile);
+      } else {
+        // 파일이 없으면 기존 URL로 그룹 수정
+        editGroup({ groupId: id, image: imageUrl, name: localTeamName });
+        setTeamName(localTeamName); // 최종적으로 store에 반영
+      }
     }
   };
 

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useEffect, useCallback, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import getResponsiveValue from '@utils/getResponsiveValue';
 import ButtonMotion from '@components/@shared/animation/ButtonMotion';
 import TaskCard from './TaskCard';

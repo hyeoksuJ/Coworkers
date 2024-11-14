@@ -6,7 +6,7 @@ import RepeatIcon from '@icons/repeat.svg';
 
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import { useDate } from '@/src/contexts/DateContext';
 import { toKSTISOString } from '@utils/toKSTISOString';
 import { getTask, patchTask, TaskUrlParams } from '@/src/api/tasks/taskAPI';

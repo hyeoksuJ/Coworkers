@@ -45,6 +45,7 @@ export default function CircleGraph({
   const boxSize = 2 * (radius + strokeWidth);
 
   useEffect(() => {
+    if (!circleRef.current) return;
     if (circleRef.current) {
       // 초기 애니메이션 효과 설정
       circleRef.current.style.transition = 'stroke-dashoffset 1s ease-out';

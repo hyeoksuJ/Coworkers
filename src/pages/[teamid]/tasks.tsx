@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDate } from '@/src/contexts/DateContext';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import { getTaskLists, getTaskList } from '@/src/api/tasks/taskListAPI';
 import TaskDate from '@components/tasks/TaskDate';
 import TaskList from '@components/tasks/TaskList';

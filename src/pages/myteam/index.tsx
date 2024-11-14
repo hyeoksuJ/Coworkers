@@ -6,6 +6,7 @@ import UserNotFound from '@components/@shared/UserNotFound';
 import EmptyTeamPage from '@components/team/myteam/EmptyTeamPage';
 import TeamBox from '@components/team/myteam/TeamBox';
 import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface Group {
@@ -86,10 +87,12 @@ export default function MyTeamPage() {
         </ClickMotion>
       </div>
       <div className="relative mx-auto flex h-auto w-full flex-grow px-[10px] pt-[100px] md:px-[100px] xl:block xl:h-[255px] xl:w-[1100px] xl:pt-[150px]">
-        <img
+        <Image
           src="/images/team_none_tb.png"
           alt="빈 공간 채우는 이미지"
           className="opacity-50 "
+          width={800}
+          height={400}
         />
       </div>
     </main>

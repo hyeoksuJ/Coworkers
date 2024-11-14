@@ -3,7 +3,7 @@ import Button from '@components/@shared/Button';
 import { Modal } from '@components/@shared/Modal';
 
 import { deleteTask, TaskUrlParams } from '@/src/api/tasks/taskAPI';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface DeleteTaskModalProps {

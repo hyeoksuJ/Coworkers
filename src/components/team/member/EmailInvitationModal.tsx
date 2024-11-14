@@ -2,7 +2,7 @@ import Button from '@components/@shared/Button';
 import { Modal } from '@components/@shared/Modal';
 import { inviteMember } from '@/src/api/team/memberAPI';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useTeamStore } from '@/src/stores/teamStore';
+import { useTeamStore } from '@/src/stores/useTeamStore';
 import Snackbar from '@components/article/Snackbar';
 import SuccessIcon from 'public/icons/successicon.svg';
 import FailIcon from 'public/icons/failIcon.svg';

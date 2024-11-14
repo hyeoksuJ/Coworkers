@@ -1,5 +1,5 @@
 import { useModal } from '@hooks/useModal';
-import { useTeamStore } from '@/src/stores/teamStore';
+import { useTeamStore } from '@/src/stores/useTeamStore';
 import { Option } from '@components/@shared/Dropdown';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {

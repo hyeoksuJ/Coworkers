@@ -1,11 +1,12 @@
 import { patchTaskList } from '@/src/api/tasks/taskListAPI';
-import { TeamStore, useTeamStore } from '@/src/stores/teamStore';
+import { TeamStore, useTeamStore } from '@/src/stores/useTeamStore';
 import Button from '@components/@shared/Button';
 import { Input } from '@components/@shared/Input';
 import { Modal } from '@components/@shared/Modal';
 import { useValidation } from '@hooks/useValidation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import useTaskListStorage from '@hooks/team/useTaskListStorage';
 import { tagColors } from './tagColors';
 
 interface EditTaskListModalProps {
@@ -26,9 +27,10 @@ export default function EditTaskListModal({
   initialTaskListName = '',
   taskListId,
 }: EditTaskListModalProps) {
-  const [TaskListName, setTaskListName] = useState(initialTaskListName);
+  const [taskListName, setTaskListName] = useState(initialTaskListName);
   const { id } = useTeamStore();
   const queryClient = useQueryClient();
+  const { updateTaskList } = useTaskListStorage(id);
 
   const {
     errors,
@@ -49,7 +51,7 @@ export default function EditTaskListModal({
 
   // onBlur 시 이름이 비어 있는지 검사
   const handleBlurName = () => {
-    validateOnBlur('taskListName', TaskListName);
+    validateOnBlur('taskListName', taskListName);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,58 +126,16 @@ export default function EditTaskListModal({
       validateValueOnSubmit(
         'taskListName',
         taskListNames,
-        TaskListName,
+        taskListName,
         initialTaskListName
       )
     ) {
       editGroup({
         groupId: Number(id),
         listId: String(taskListId),
-        name: TaskListName,
+        name: taskListName,
       });
-
-      const taskListData = {
-        name: TaskListName,
-        color: selectedColor,
-      };
-      // 로컬 스토리지에서 기존 TaskLists 가져오기 (없으면 빈 배열)
-      const existingTaskListsString = localStorage.getItem(`TaskLists_${id}`);
-
-      let existingTaskLists = [];
-      if (existingTaskListsString) {
-        try {
-          existingTaskLists = JSON.parse(existingTaskListsString);
-
-          // JSON 파싱 후 배열인지 확인
-          if (!Array.isArray(existingTaskLists)) {
-            existingTaskLists = []; // 배열이 아닐 경우 빈 배열로 초기화
-          }
-        } catch (error) {
-          console.error(
-            '로컬 스토리지에서 TaskLists를 파싱하는 중 오류 발생:',
-            error
-          );
-          existingTaskLists = []; // 파싱 오류 발생 시 빈 배열로 초기화
-        }
-      }
-
-      // 기존과 동일한 name이 있는지 확인
-      const existingTaskIndex = existingTaskLists.findIndex(
-        (task) => task.name === TaskListName
-      );
-
-      // 동일한 name이 있으면 color만 업데이트, 없으면 새로 추가
-      if (existingTaskIndex !== -1) {
-        existingTaskLists[existingTaskIndex].color = selectedColor;
-      } else {
-        existingTaskLists.push(taskListData);
-      }
-
-      // 업데이트된 배열을 로컬 스토리지에 저장
-      localStorage.setItem(
-        `TaskLists_${id}`,
-        JSON.stringify(existingTaskLists)
-      );
+      updateTaskList({ name: taskListName, color: selectedColor });
     }
   };
 
@@ -204,7 +164,7 @@ export default function EditTaskListModal({
       <Input
         placeholder="목록 명을 입력해주세요."
         inputProps={{
-          value: TaskListName,
+          value: taskListName,
           onChange: handleChange,
         }}
         className="mb-[30px] mt-[15px]"
