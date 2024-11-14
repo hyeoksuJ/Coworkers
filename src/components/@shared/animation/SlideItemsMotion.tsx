@@ -5,12 +5,14 @@ interface SlideItemsMotionProps {
   children: ReactNode;
   className?: string;
   index: number;
+  onClick?: () => void;
 }
 
 function SlideItemsMotion({
   children,
   className,
   index,
+  onClick,
 }: SlideItemsMotionProps) {
   return (
     <motion.li
@@ -19,6 +21,7 @@ function SlideItemsMotion({
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3, delay: index * 0.15 }}
       className={className}
+      onClick={onClick}
     >
       {children}
     </motion.li>

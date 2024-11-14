@@ -189,9 +189,9 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="mt-6 flex w-[343px] flex-col gap-10 md:mt-[100px] md:w-[460px]">
+    <div className="mt-12 flex w-[343px] flex-col gap-10 md:mt-[100px] md:w-[460px]">
       <form className="flex w-full flex-col gap-6">
-        <h1 className="flex w-full justify-center text-2xl-medium text-text-primary md:mb-[80px] xl:text-4xl">
+        <h1 className="flex w-full justify-center text-2xl-semibold text-brand-primary md:mb-[80px] md:text-2xl-medium md:text-text-primary xl:text-4xl">
           회원가입
         </h1>
         <Input

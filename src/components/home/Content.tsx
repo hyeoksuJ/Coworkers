@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useUserStore } from '@/src/stores/useUserStore';
 import { useRouter } from 'next/router';
 
+import ClickMotion from '@components/@shared/animation/ClickMotion';
 import ScrollFadeInMotion from '@components/@shared/animation/ScrollFadeInMotion';
 import Button from '@components/@shared/Button';
 import ICON_PATHS from '@constants/iconPaths';
@@ -21,19 +22,20 @@ export default function Content() {
   };
 
   return (
-    <section className="mx-4 flex flex-col gap-8 text-2lg-medium text-white md:mx-6 xl:mx-auto xl:w-[996px] xl:text-2xl-medium">
-      <div className="-mt-8 mb-6 flex w-full justify-center md:mb-14 md:mt-32 xl:mb-20 xl:mt-48">
-        <div className="w-64 rounded-[30px] border-[2px] border-background-secondary shadow-[0_0_12px_2px_rgba(0,0,0,0.25)] md:w-80">
+    <section className="mx-5 flex flex-col gap-8 text-2lg-medium text-white md:mx-6 xl:mx-auto xl:w-[996px] xl:text-2xl-medium">
+      <div className="mb-6 mt-14 flex w-full justify-center md:mb-14 md:mt-28 xl:mb-20 xl:mt-40">
+        <ClickMotion className="w-52 rounded-[30px] border-[2px] border-background-secondary shadow-[0_0_12px_2px_rgba(0,0,0,0.25)] md:w-80">
           <Button
             bgColor="gradient"
             shape="round"
             size="full"
-            height={54}
+            height={48}
             onClick={handleRedirect}
+            className="h-14"
           >
-            지금 시작하기
+            시작하기
           </Button>
-        </div>
+        </ClickMotion>
       </div>
       <ScrollFadeInMotion
         startDirection="left"
@@ -50,7 +52,10 @@ export default function Content() {
               quality={100}
             />
             <h2 className="flex flex-col gap-1">
-              그룹으로 <span> 할 일을 관리해요 </span>
+              그룹으로
+              <span>
+                <span className="text-brand-primary">할 일</span>을 관리해요
+              </span>
             </h2>
           </div>
           <Image
@@ -59,7 +64,7 @@ export default function Content() {
             width={291}
             height={338}
             quality={100}
-            className=" md:relative md:bottom-[-300px] md:order-1 md:pt-[81px]"
+            className="rounded-3xl border-[3px] border-zinc-900 md:relative md:bottom-[-350px] md:order-1 "
           />
         </div>
       </ScrollFadeInMotion>
@@ -68,30 +73,31 @@ export default function Content() {
         delay={1}
         className="relative flex h-[500px] w-full overflow-hidden rounded-40 border-[1px] border-[rgba(248,250,252,0.1)] bg-background-secondary px-[54px] shadow-[0_0_12px_2px_rgba(0,0,0,100)]  hover:shadow-[0_0_12px_2px_rgba(0,0,0,0.25)] md:h-[400px] md:px-[81px] xl:px-[174px]"
       >
-        <div className="mx-auto flex flex-col md:w-full md:flex-row md:justify-around">
-          <div className="relative top-[-50%] h-[740px] w-[280px]">
-            <Image
-              alt="멤버 초대 기능 랜딩이미지"
-              src={IMAGE_PATHS.LANDING_INVITE}
-              width={291}
-              height={756}
-              quality={100}
-              className="mx-auto object-cover shadow-[0_0_12px_2px_rgba(0,0,0,0.25)] md:top-[-10%] md:order-2"
-            />
-          </div>
-          <div className="flex-start relative bottom-[40%] flex w-full flex-col gap-4 md:static md:order-1 md:my-auto md:w-40 md:items-end xl:w-52 ">
+        <div className="mx-auto flex flex-col items-center md:w-full md:flex-row md:justify-around">
+          <div className="my-12 flex w-full flex-col items-end gap-4 md:order-1 md:w-40 md:items-start xl:w-52">
             <Image
               alt="이메일 랜딩아이콘"
               src={ICON_PATHS.LANDING_EMAIL}
               width={48}
               height={48}
-              className="rounded-xl shadow-[0_0_12px_2px_rgba(0,0,0,0.25)]"
+              className="rounded-xl shadow-[0_0_12px_2px_rgba(0,0,0,0.25)] md:pb-0"
               quality={100}
             />
-            <h2 className="flex flex-col gap-1 md:text-end">
-              간단하게 멤버들을 <span> 초대해요 </span>
+            <h2 className="flex flex-col items-end gap-1 md:items-start">
+              <span>
+                팀원들을 <span className="text-brand-primary">초대</span>해서
+              </span>
+              함께 관리해요
             </h2>
           </div>
+          <Image
+            alt="초대 기능 랜딩이미지"
+            src={IMAGE_PATHS.LANDING_INVITE}
+            width={291}
+            height={338}
+            quality={100}
+            className="rounded-3xl border-[3px] border-zinc-900 md:relative md:top-[-150px] md:-mt-0"
+          />
         </div>
       </ScrollFadeInMotion>
       <ScrollFadeInMotion
@@ -102,7 +108,7 @@ export default function Content() {
         <div className="mx-auto flex flex-col items-center md:w-full md:flex-row md:justify-around">
           <div className="my-12 flex w-full flex-col gap-4 md:w-40 xl:w-52">
             <Image
-              alt="이메일 체크아이콘"
+              alt="체크 랜딩아이콘"
               src={ICON_PATHS.LANDING_CHECK}
               width={48}
               height={48}
@@ -110,7 +116,10 @@ export default function Content() {
               quality={100}
             />
             <h2 className="flex flex-col gap-1">
-              할 일도 간편하게 <span> 체크해요 </span>
+              할 일을 간편하게
+              <span>
+                <span className="text-brand-primary">체크</span>해요{' '}
+              </span>
             </h2>
           </div>
           <Image

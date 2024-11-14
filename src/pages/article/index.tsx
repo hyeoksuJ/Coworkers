@@ -1,4 +1,5 @@
 // 게시글 메인 페이지
+import SlideInMotion from '@components/@shared/animation/SlideInMotion';
 import Button from '@components/@shared/Button';
 import { SearchInput } from '@components/@shared/Input';
 import ArticleCard from '@components/article/ArticleCard';
@@ -49,41 +50,43 @@ export default function ArticlePage() {
 
   return (
     <div className="mx-4 mt-8 max-w-[1200px] xl:mx-auto">
-      <header className="mb-6">
+      <header className="mb-10">
+        <h1 className="mb-6 text-2lg-bold text-brand-primary md:text-2xl-bold md:text-text-primary">
+          커뮤니티
+        </h1>
         <div className="flex items-center gap-2">
-          <h1 className="mb-6 mt-8 text-2lg-bold md:text-2xl-bold">커뮤니티</h1>
-          <div className="flex items-center gap-2">
-            <Image
-              src="/icons/question.svg"
-              alt="물음표 아이콘"
-              width={17}
-              height={17}
-              quality={100}
-              onClick={handleVisibleClick}
-              className="cursor-pointer rounded-[16px] object-contain hover:scale-110"
-            />
-            {isVisible && (
-              <>
-                <p className="hidden text-md-regular text-brand-primary md:block">
-                  일정을 함께 관리할 팀원을 모집하거나, 자유롭게 글을 작성할 수
-                  있습니다.
-                </p>
-                <div className="absolute left-[110px] top-[120px] z-10 w-fit animate-fadeInDown rounded-[6px] bg-background-tertiary p-2 text-sm-semibold text-brand-primary md:hidden">
-                  일정을 함께 관리할 팀원을 모집하거나, <br />
-                  자유롭게 글을 작성할 수 있습니다.
-                </div>
-              </>
-            )}
-          </div>
+          <Image
+            src="/icons/question.svg"
+            alt="물음표 아이콘"
+            width={17}
+            height={17}
+            quality={100}
+            onClick={handleVisibleClick}
+            className="cursor-pointer rounded-[16px] object-contain hover:scale-110"
+          />
+          {isVisible && (
+            <>
+              <p className="hidden text-md-regular text-brand-primary md:block">
+                일정을 함께 관리할 팀원을 모집하거나, 자유롭게 글을 작성할 수
+                있습니다.
+              </p>
+              <div className="animate-fadeInDown absolute left-[110px] top-[120px] z-10 w-fit  rounded-[6px] bg-background-tertiary p-2 text-sm-semibold text-brand-primary md:hidden">
+                일정을 함께 관리할 팀원을 모집하거나, <br />
+                자유롭게 글을 작성할 수 있습니다.
+              </div>
+            </>
+          )}
         </div>
-        <SearchInput
-          placeholder="검색어를 입력해주세요"
-          inputProps={{
-            onChange: handleChange,
-            onKeyDown: handleKeyDown,
-            value,
-          }}
-        />
+        <SlideInMotion>
+          <SearchInput
+            placeholder="검색어를 입력해주세요"
+            inputProps={{
+              onChange: handleChange,
+              onKeyDown: handleKeyDown,
+              value,
+            }}
+          />
+        </SlideInMotion>
       </header>
       <main>
         <BestCard keyword={searchTerm} />

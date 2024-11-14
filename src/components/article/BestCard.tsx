@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import ArrowRightIcon from 'public/icons/arrow_right.svg';
 import NetworkError from '@components/@shared/NetworkError';
-import TextButtonMotion from '@components/@shared/animation/TextButtonMotion';
+import ButtonMotion from '@components/@shared/animation/ButtonMotion';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import Heart from './Heart';
@@ -68,7 +68,7 @@ export default function BestCard({ keyword }: BestCardProps) {
     <>
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-lg-bold md:text-xl-bold">베스트 게시글</h2>
-        <TextButtonMotion>
+        <ButtonMotion>
           <button
             type="button"
             className="flex items-center gap-[1px]"
@@ -79,7 +79,7 @@ export default function BestCard({ keyword }: BestCardProps) {
             </span>
             <ArrowRightIcon />
           </button>
-        </TextButtonMotion>
+        </ButtonMotion>
       </div>
 
       <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">

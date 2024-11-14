@@ -60,9 +60,10 @@ export default function MemberList() {
         </div>
       </div>
       <div className={`max-h-[320px] overflow-y-auto ${styles.taskListScroll}`}>
-        <div className="grid grid-cols-2 gap-[10px] md:grid-cols-3 md:gap-[20px]">
-          {members.map((member) => (
+        <ul className="grid grid-cols-1 gap-[10px] md:grid-cols-3 md:gap-[20px]">
+          {members.map((member, index) => (
             <MemberBox
+              index={index}
               key={member.userId}
               userId={member.userId}
               userName={member.userName}
@@ -71,7 +72,7 @@ export default function MemberList() {
               role={member.role}
             />
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   );

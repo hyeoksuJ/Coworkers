@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { getGroupById } from '@/src/api/team/teamAPI';
+import SlideInMotion from '@components/@shared/animation/SlideInMotion';
 import TeamBanner from '@components/team/banner/TeamBanner';
 import TaskList from '@components/team/taskList/TaskList';
 import Report from '@components/team/Report';
@@ -38,17 +39,19 @@ export default function TeamPage() {
       <TaskList />
       <Report />
       <MemberList />
-      <Button
-        className="mx-auto mt-[50px] w-full md:mr-0 md:mt-[100px] md:w-[200px]"
-        size="full"
-        type="button"
-        bgColor="transparent"
-        border="green"
-        fontColor="green"
-        onClick={() => router.push('myteam')}
-      >
-        팀 목록으로 돌아가기
-      </Button>
+      <SlideInMotion>
+        <Button
+          className="mx-auto mt-[50px] w-full md:mr-0 md:mt-[100px] md:w-[200px]"
+          size="full"
+          type="button"
+          bgColor="transparent"
+          border="green"
+          fontColor="green"
+          onClick={() => router.push('myteam')}
+        >
+          팀 목록으로 돌아가기
+        </Button>
+      </SlideInMotion>
     </main>
   );
 }

@@ -9,7 +9,7 @@ export default function Banner() {
   const { src, width, height } = useResponsiveImageDetails({
     mobile: {
       src: IMAGE_PATHS.LADNING_TRAIN_MB,
-      width: 640,
+      width: 580,
       height: 480,
     },
     tablet: {
@@ -51,8 +51,8 @@ export default function Banner() {
 
   return (
     <section className="border-b-4 border-brand-secondary shadow-[0_8px_32px_2px_rgba(255,85,128,1)] hover:border-brand-secondary hover:shadow-brand-secondary">
-      <div className="bg-brw-full relative -mt-24 h-[600px] md:-mt-10 md:h-[600px] xl:mx-auto xl:mt-0 xl:w-[1200px]">
-        <div className="mt-[100px] flex h-full flex-col items-center justify-evenly md:top-[100px] md:gap-2 xl:top-[84px] xl:gap-5">
+      <div className="bg-brw-full relative h-full md:h-[600px] xl:mx-auto xl:mt-0 xl:w-[1200px]">
+        <div className=" top-5 flex h-full flex-col items-center gap-2 pt-12 md:mt-[100px] md:gap-2 md:pt-0 xl:top-[84px] xl:justify-evenly">
           <SlideInMotion
             delay={0.4}
             className="flex flex-col items-center md:mt-20"
@@ -77,7 +77,7 @@ export default function Banner() {
             initial="hidden"
             animate={['forward', 'back']}
             variants={trainVariants}
-            className="mt-10 xl:mt-0"
+            className="mt-16 md:mt-10 xl:mt-0"
           >
             <Image
               src={src}
@@ -85,6 +85,7 @@ export default function Banner() {
               width={width}
               height={height}
               quality={100}
+              className="z-10"
             />
           </motion.div>
         </div>

@@ -48,7 +48,7 @@ export default function ArrayDropdown({ onSelect }: ArrayDropdownProps) {
       onSelect={handleSelectFilter}
       triggerIcon={<Toggle />}
       triggerClass="flex items-center px-[14px] py-[11px] border border-background-tertiary rounded-[12px] justify-between text-xs-regular md:text-md-regular bg-background-primary text-text-default hover:bg-background-tertiary rounded-[12px] p-[8px]  md:w-[120px] md:h-[44px] w-[109px] h-[40px]"
-      optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
+      optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary shadow-[0_2px_10px_rgba(0,0,0,0.5)] "
       optionClass="flex items-center px-[14px] py-[11px] rounded-[12px] md:w-[120px] w-[109px] h-[40px] text-xs-regular md:text-md-regular text-center hover:bg-background-tertiary"
     />
   );

@@ -97,11 +97,11 @@ export default function InputTask() {
     if (data && data.image) {
       setProfileImage(
         <Image
-          width={64}
-          height={64}
+          width={128}
+          height={128}
           src={data.image}
           alt="프로필 이미지"
-          className="h-16 w-16 rounded-full object-cover"
+          className="h-32 w-32 rounded-full object-cover md:h-16 md:w-16"
         />
       );
     } else {
@@ -184,7 +184,7 @@ export default function InputTask() {
 
   return (
     <main className="mx-6 flex max-w-[792px] flex-col gap-6">
-      <div>
+      <div className="flex w-full justify-center md:justify-start">
         <input
           type="file"
           ref={fileInput}
@@ -195,7 +195,7 @@ export default function InputTask() {
           <Dropdown
             options={basic}
             triggerIcon={ProfileImage}
-            optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
+            optionsWrapClass="mt-2 right-0 rounded-[12px] shadow-[0_2px_10px_rgba(0,0,0,0.5)] border border-background-tertiary"
             optionClass="rounded-[12px] md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
           />
 
@@ -204,7 +204,7 @@ export default function InputTask() {
           </div>
         </div>
       </div>
-      <div className="relative flex w-full flex-col">
+      <div className="relative flex w-full flex-col ">
         <Input
           label="이름"
           inputProps={{

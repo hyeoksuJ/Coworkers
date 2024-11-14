@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useTask } from '@hooks/myhistory/useTask';
+import SlideInMotion from '@components/@shared/animation/SlideInMotion';
+import ClickMotion from '@components/@shared/animation/ClickMotion';
 import NetworkError from '@components/@shared/NetworkError';
 import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
@@ -94,16 +96,22 @@ export default function Contributions() {
 
   return (
     <div className="flex flex-col">
-      <h1 className="mb-[15px] text-2lg-bold">My Contributions</h1>
-      <div className=" w-max-full mr-1 h-full max-w-full rounded-lg border-4 border-[#313131] p-10">
+      <h1 className="mb-[15px] text-2lg-bold text-brand-primary">
+        My Contributions
+      </h1>
+      <SlideInMotion className=" w-max-full mr-1 h-full max-w-full rounded-lg border-4 border-[#313131] p-10">
         <div className="mb-4 flex gap-5">
-          <button type="button" onClick={handlePreviousYear}>
-            <LeftIcon />
-          </button>
+          <ClickMotion className="flex items-center">
+            <button type="button" onClick={handlePreviousYear}>
+              <LeftIcon />
+            </button>
+          </ClickMotion>
           <span className="font-bold">{year}</span>
-          <button type="button" onClick={handleNextYear}>
-            <RightIcon />
-          </button>
+          <ClickMotion className="flex items-center">
+            <button type="button" onClick={handleNextYear}>
+              <RightIcon />
+            </button>
+          </ClickMotion>
         </div>
 
         {/* 월 이름을 가로로 배치 */}
@@ -141,7 +149,7 @@ export default function Contributions() {
             </div>
           </div>
         </div>
-      </div>
+      </SlideInMotion>
     </div>
   );
 }

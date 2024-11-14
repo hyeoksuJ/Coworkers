@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useModal } from '@hooks/useModal';
 import useViewportSize from '@hooks/useViewportSize';
 import ICON_PATHS from '@constants/iconPaths';
-import TextButtonMotion from '@components/@shared/animation/TextButtonMotion';
+import ButtonMotion from '@components/@shared/animation/ButtonMotion';
 import AddTaskListModal from '../modal/AddTaskListModal';
 
 export default function AddTaskListButton() {
@@ -16,7 +16,7 @@ export default function AddTaskListButton() {
         onClick={onOpen}
         className=" flex items-center gap-2"
       >
-        <TextButtonMotion className=" my-auto flex gap-2 text-md-regular text-brand-primary">
+        <ButtonMotion className=" my-auto flex gap-2 text-md-regular text-brand-primary">
           <Image
             alt="분홍색 십자가 아이콘"
             src={ICON_PATHS.PLUS_PINK}
@@ -26,7 +26,7 @@ export default function AddTaskListButton() {
             className="bg-b m-auto rounded-full bg-background-secondary p-[2px]"
           />
           {isMobile ? '목록 추가' : '새로운 목록 추가하기'}
-        </TextButtonMotion>
+        </ButtonMotion>
       </button>
 
       {isOpen && <AddTaskListModal isOpen={isOpen} onClose={onClose} />}

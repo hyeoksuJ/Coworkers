@@ -1,21 +1,19 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 
-interface TextButtonMotionProps {
+interface ButtonMotionProps {
   children: ReactNode;
   className?: string;
   disabled?: boolean;
 }
-export default function TextButtonMotion({
+export default function ButtonMotion({
   children,
   className,
   disabled = false,
-}: TextButtonMotionProps) {
+}: ButtonMotionProps) {
   return (
     <motion.div
-      whileHover={
-        !disabled ? { WebkitBackgroundClip: 'text', scale: 1.05 } : {}
-      }
+      whileHover={!disabled ? { scale: 1.05 } : {}}
       whileTap={{
         scale: 0.92,
         transition: {

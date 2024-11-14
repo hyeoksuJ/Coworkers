@@ -1,6 +1,6 @@
 import ICON_PATHS from '@constants/iconPaths';
 import Image from 'next/image';
-import TextButtonMotion from '@components/@shared/animation/TextButtonMotion';
+import ButtonMotion from '@components/@shared/animation/ButtonMotion';
 
 interface PaginationProps {
   currentPage: number;
@@ -17,7 +17,7 @@ export default function ListPagination({
 }: PaginationProps) {
   return (
     <div className="mb-4 flex justify-between">
-      <TextButtonMotion className="flex gap-2" disabled={currentPage === 1}>
+      <ButtonMotion className="flex gap-2" disabled={currentPage === 1}>
         <button
           type="button"
           onClick={onPrevPage}
@@ -35,8 +35,8 @@ export default function ListPagination({
           />
           <span>이전 목록</span>
         </button>
-      </TextButtonMotion>
-      <TextButtonMotion
+      </ButtonMotion>
+      <ButtonMotion
         className="flex gap-2"
         disabled={currentPage === totalPages}
       >
@@ -63,7 +63,7 @@ export default function ListPagination({
             className="m-auto"
           />
         </button>
-      </TextButtonMotion>
+      </ButtonMotion>
     </div>
   );
 }

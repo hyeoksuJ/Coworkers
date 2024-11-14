@@ -204,7 +204,7 @@ export default function NavBarTeam({ data }: { data: User }) {
               onSelect={handleSelectTeam}
               triggerClass="flex gap-[12px] items-center text-text-primary"
               triggerIcon={<ArrowDown />}
-              optionsWrapClass="mt-[30px] flex p-[16px] rounded-[12px]"
+              optionsWrapClass="mt-[30px] shadow-[0_2px_10px_rgba(0,0,0,0.5)] flex p-[16px] rounded-[12px]"
               optionClass="px[8px] py-[7px] rounded-[8px] w-[186px] h-[46px]"
             />
             <AddTeamModal isOpen={addIsOpen} onClose={addCloseModal} />

@@ -2,6 +2,7 @@ import { useModal } from '@hooks/useModal';
 import { Option } from '@components/@shared/Dropdown';
 import { useTeamStore } from '@/src/stores/teamStore';
 import Image from 'next/image';
+import SlideInMotion from '@components/@shared/animation/SlideInMotion';
 import EditDropdown from '../EditDropdown';
 import EditTeamModal from './EditTeamModal';
 import DeleteTeamModal from './DeleteTeamModal';
@@ -40,7 +41,7 @@ export default function TeamBanner() {
     } // '삭제하기'를 선택했을 때
   };
   return (
-    <div className="flex items-center justify-between rounded-[12px] border border-border-primary border-opacity-10 bg-background-secondary bg-[url('/images/thumbnail_team.png')] bg-contain bg-[90%] bg-no-repeat px-[24px] py-[15px]">
+    <SlideInMotion className="flex items-center justify-between rounded-[12px] border border-border-primary border-opacity-10 bg-background-secondary bg-[url('/images/thumbnail_team.png')] bg-contain bg-[90%] bg-no-repeat px-[24px] py-[15px]">
       <div className="flex items-center gap-[15px]">
         <div
           className="relative h-[45px] w-[45px] shrink-0 cursor-pointer rounded-[16px] bg-border-primary"
@@ -64,6 +65,6 @@ export default function TeamBanner() {
         onClose={ProfileModalClose}
         img={imageUrl || '/icons/profile_large.svg'}
       />
-    </div>
+    </SlideInMotion>
   );
 }
