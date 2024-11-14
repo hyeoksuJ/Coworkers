@@ -70,7 +70,7 @@ export default function ArticlePage() {
                 일정을 함께 관리할 팀원을 모집하거나, 자유롭게 글을 작성할 수
                 있습니다.
               </p>
-              <div className="animate-fadeInDown absolute left-[110px] top-[120px] z-10 w-fit  rounded-[6px] bg-background-tertiary p-2 text-sm-semibold text-brand-primary md:hidden">
+              <div className="absolute·left-[110px]·top-[120px]·z-10·w-fit·animate-fadeInDown rounded-[6px] bg-background-tertiary p-2 text-sm-semibold text-brand-primary md:hidden">
                 일정을 함께 관리할 팀원을 모집하거나, <br />
                 자유롭게 글을 작성할 수 있습니다.
               </div>

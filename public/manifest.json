@@ -1,0 +1,26 @@
+{
+  "theme_color": "#1e1e1e",
+  "background_color": "#121212",
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "icons/icon512_maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "icons/icon512_maskable.png",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "any",
+  "display": "standalone",
+  "dir": "auto",
+  "lang": "ko-KR",
+  "start_url": "/",
+  "name": "DO'NUT",
+  "short_name": "DO'NUT",
+  "scope": "/"
+}

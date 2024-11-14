@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTeamStore } from '@/src/stores/teamStore';
+import { useTeamStore } from '@/src/stores/useTeamStore';
 import SlideInMotion from '@components/@shared/animation/SlideInMotion';
 import Image from 'next/image';
 import CircleGraph from './CircleGraph';

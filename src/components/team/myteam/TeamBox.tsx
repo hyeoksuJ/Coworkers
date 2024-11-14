@@ -27,9 +27,11 @@ export default function TeamBox({
           index={index}
           className="flex w-full gap-[10px] rounded-[12px] bg-background-secondary px-6 py-[20px] hover:brightness-110 md:grid-cols-[100px_1fr] md:gap-[20px] md:p-[20px] md:px-3 "
         >
-          <img
+          <Image
             src={image}
             alt="팀 프로필 이미지"
+            width={40}
+            height={40}
             className="h-[40px] w-[40px] rounded-[12px] object-cover md:h-[64px] md:w-[64px]"
           />
 
