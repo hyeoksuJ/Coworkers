@@ -7,10 +7,10 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import HeartIcon from 'public/icons/heart.svg';
-import LoadingSpinner from '@components/@shared/LoadingSpinner';
 import UserNotFound from '@components/@shared/UserNotFound';
 import { motion } from 'framer-motion';
 import ArticleLoadingSpinner from 'public/icons/articleLoadingSpinner.svg';
+import ArticleSkeletonUI from './Skeleton.tsx/ArticleSkeletonUI';
 
 interface ArticleCardProps {
   keyword: string;
@@ -70,7 +70,7 @@ export default function ArticleCard({ keyword }: ArticleCardProps) {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <ArticleSkeletonUI />;
   if (isError) return <UserNotFound />;
 
   return (
@@ -108,7 +108,7 @@ export default function ArticleCard({ keyword }: ArticleCardProps) {
                               width={64}
                               height={64}
                               alt="게시글 이미지"
-                              className="rounded-lg"
+                              className="h-16 w-16 rounded-lg"
                             />
                           </div>
                         </div>
@@ -118,8 +118,8 @@ export default function ArticleCard({ keyword }: ArticleCardProps) {
                               src="/icons/profile_large.svg"
                               width={32}
                               height={32}
-                              alt="게시글 이미지"
-                              className="rounded-full"
+                              alt="프로필 이미지"
+                              className="h-8 w-8 rounded-full"
                             />
                             <span className="text-xs-medium md:text-md-medium">
                               {card.writer.nickname}

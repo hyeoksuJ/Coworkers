@@ -167,3 +167,7 @@ div.react-datepicker__day--disabled {
 body {
   font-family: 'PretendardVariable', sans-serif;
 }
+
+.navbar {
+  @apply fixed left-0 top-0 z-50 h-16 w-full bg-background-secondary;
+}

@@ -67,7 +67,7 @@ export default function InputTask() {
   };
 
   const handelNicknameChangeSubmit = () => {
-    if (profileNickname) {
+    if (data?.nickname !== profileNickname) {
       nicknameMutation.mutate({ nickname: profileNickname });
       handleClickSnackbar();
     }

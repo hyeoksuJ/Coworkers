@@ -121,7 +121,7 @@ export default function NavBar() {
               triggerIcon={
                 <div
                   className={clsx({
-                    'flex items-center gap-2 ': data,
+                    'mt-[5px] flex items-center gap-2 ': data,
                     hidden: !data,
                   })}
                 >
@@ -129,9 +129,9 @@ export default function NavBar() {
                     <Image
                       src={data?.image ?? '/icons/user.svg'}
                       alt="로고"
-                      width={40}
-                      height={40}
-                      className="rounded-lg"
+                      width={35}
+                      height={35}
+                      className="h-[35px] w-[35px] rounded-lg"
                     />
                   </div>
                   <TextButtonMotion>

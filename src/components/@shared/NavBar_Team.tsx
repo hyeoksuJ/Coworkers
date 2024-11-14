@@ -210,7 +210,7 @@ export default function NavBarTeam({ data }: { data: User }) {
             <AddTeamModal isOpen={addIsOpen} onClose={addCloseModal} />
           </div>
           <Link href="/article">
-            <span className="hover:text-brand-primary">자유게시판</span>
+            <span className="hover:text-brand-primary">커뮤니티</span>
           </Link>
         </>
       )}

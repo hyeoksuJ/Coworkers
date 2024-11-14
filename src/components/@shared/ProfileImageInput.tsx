@@ -67,9 +67,11 @@ export default function ProfileImageInput({
           style={{ border: profileImage ? '3px solid #64748B' : undefined }}
         >
           {profileImage ? (
-            <img
+            <Image
               src={profileImage}
               alt="프로필 이미지"
+              width={64}
+              height={64}
               className="h-16 w-16 rounded-full object-cover"
             />
           ) : (
