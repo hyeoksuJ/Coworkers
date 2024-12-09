@@ -54,7 +54,7 @@ export default function ArticlePage() {
         <h1 className="mb-6 text-2lg-bold text-brand-primary md:text-2xl-bold md:text-text-primary">
           커뮤니티
         </h1>
-        <div className="flex items-center gap-2">
+        <div className="mb-2 flex items-center gap-2">
           <Image
             src="/icons/question.svg"
             alt="물음표 아이콘"
