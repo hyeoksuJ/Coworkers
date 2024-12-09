@@ -22,5 +22,6 @@
   "start_url": "/",
   "name": "DO'NUT",
   "short_name": "DO'NUT",
-  "scope": "/"
+  "scope": "/",
+  "version": "1.0.1"
 }
