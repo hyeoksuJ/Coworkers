@@ -1,5 +1,5 @@
 import { useModal } from '@hooks/useModal';
-import { useTeamStore } from '@/src/stores/teamStore';
+import { useTeamStore } from '@/src/stores/useTeamStore';
 import { Option } from '@components/@shared/Dropdown';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -21,6 +21,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchTaskListOrder } from '@/src/api/tasks/taskListAPI';
 import styles from '@styles/scroll.module.css';
+import Image from 'next/image';
 import TaskBar from './TaskBar';
 import AddTaskListModal from './AddTaskListModal';
 import EditDropdown from '../EditDropdown';
@@ -29,6 +30,8 @@ import DeleteTaskListModal from './DeleteTaskListModal';
 import { moreIcon } from '../MoreIcon';
 
 export default function TaskList() {
+  const [isVisible, setIsVisible] = useState(false);
+
   const scrollableRef = useRef<HTMLDivElement | null>(null);
 
   const {
@@ -202,18 +205,46 @@ export default function TaskList() {
     };
   }, [handleTouchStart]);
 
+  const handleVisibleClick = () => {
+    if (isVisible === false) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  };
+
   return (
     <section>
-      <div className="my-[20px]">
-        <div className="flex justify-between">
+      <div className="relative my-[20px] ">
+        <div className="flex items-center justify-between">
           <div className="flex gap-[10px]">
             <p className="text-lg-medium">할 일 목록</p>
             <p className="text-lg-regular text-text-default">({listCount}개)</p>
+            <Image
+              src="/icons/question.svg"
+              alt="물음표 아이콘"
+              width={17}
+              height={17}
+              quality={100}
+              onClick={handleVisibleClick}
+              className="cursor-pointer rounded-[16px] object-contain hover:scale-110"
+            />
+            {isVisible && (
+              <>
+                <p className="hidden text-md-regular text-brand-primary md:block">
+                  할 일 목록을 꾹 눌러 드래그해서 순서를 편집할 수 있어요!
+                </p>
+                <div className="absolute left-[120px] top-[30px] z-10 w-fit animate-fadeInDown rounded-[6px] bg-background-tertiary p-2 text-sm-semibold text-brand-primary md:hidden">
+                  할 일 목록을 꾹 눌러 드래그해서 <br /> 순서를 편집할 수
+                  있어요!
+                </div>
+              </>
+            )}
           </div>
           <button
             type="button"
             onClick={addListOpenModal}
-            className="cursor-pointer text-md-regular text-brand-primary"
+            className="cursor-pointer rounded-lg p-1 text-md-regular text-brand-primary hover:bg-[#eeeeee12]"
           >
             +새로운 목록 추가하기
           </button>
@@ -248,7 +279,7 @@ export default function TaskList() {
               className="flex flex-col gap-[10px]"
               onMouseDown={(e) => e.stopPropagation()}
             >
-              {displayedTaskList.map((taskList) => (
+              {displayedTaskList.map((taskList, index) => (
                 <div className="relative" key={taskList.id}>
                   <div
                     onClick={(e) => {
@@ -262,6 +293,7 @@ export default function TaskList() {
                     />
                   </div>
                   <TaskBar
+                    index={index}
                     key={taskList.id}
                     id={taskList.id} // SortableItem requires an `id` prop
                     name={taskList.name}

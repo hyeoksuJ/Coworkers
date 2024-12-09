@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { useEffect, useCallback, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import getResponsiveValue from '@utils/getResponsiveValue';
-import TextButtonMotion from '@components/@shared/animation/TextButtonMotion';
+import ButtonMotion from '@components/@shared/animation/ButtonMotion';
 import TaskCard from './TaskCard';
 import NoTaskCard from './UI/NoTaskCard';
 import ListPagination from './UI/ListPagination';
@@ -135,14 +135,14 @@ export default function TaskList() {
                 query: { taskListId: taskList.id },
               }}
             >
-              <TextButtonMotion>
+              <ButtonMotion>
                 <button
                   type="button"
                   className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap pb-1"
                 >
                   {taskList.name}
                 </button>
-              </TextButtonMotion>
+              </ButtonMotion>
             </Link>
           </li>
         ))}

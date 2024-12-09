@@ -28,12 +28,6 @@ export const useCommentAdd = () => {
       articleId: number;
       content: string;
     }) => fetchCommentadd({ articleId, content }),
-    onSuccess: () => {
-      console.log('게시글등록 완료 ');
-    },
-    onError: (error) => {
-      console.error('게시글 등록안됨', error);
-    },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['CommentCards'] });
       queryClient.invalidateQueries({ queryKey: ['DetailCard'] });

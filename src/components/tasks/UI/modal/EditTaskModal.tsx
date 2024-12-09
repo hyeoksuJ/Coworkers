@@ -2,7 +2,7 @@ import Button from '@components/@shared/Button';
 import { Modal } from '@components/@shared/Modal';
 
 import { patchTask, TaskUrlParams } from '@/src/api/tasks/taskAPI';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { TASK_REQUEST_INIT } from '@constants/initValues';

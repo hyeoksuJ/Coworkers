@@ -5,7 +5,7 @@ import Footer from '@components/home/Footer';
 export default function Home() {
   return (
     <>
-      <main>
+      <main style={{ overflowX: 'hidden' }}>
         <Banner />
         <Content />
       </main>

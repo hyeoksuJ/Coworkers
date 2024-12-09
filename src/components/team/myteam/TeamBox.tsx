@@ -1,11 +1,14 @@
 import getTimeAgo from '@utils/getTimeAgo';
+import Image from 'next/image';
 import Link from 'next/link';
+import SlideItemsMotion from '@components/@shared/animation/SlideItemsMotion';
 
 interface TeamBoxProps {
   teamName: string;
   image: string;
   groupId: number;
   updatedAt: string;
+  index: number;
 }
 
 export default function TeamBox({
@@ -13,18 +16,25 @@ export default function TeamBox({
   image,
   groupId,
   updatedAt,
+  index,
 }: TeamBoxProps) {
   const lastActiveAt = getTimeAgo(updatedAt);
 
   return (
-    <div className="w-full">
+    <ul className="w-full">
       <Link href={`/${groupId}`}>
-        <div className="flex w-full grid-cols-[100px_1fr] gap-[10px] rounded-[12px] bg-background-secondary px-[10px] py-[20px] hover:brightness-110 md:gap-[20px] md:p-[20px] ">
-          <img
+        <SlideItemsMotion
+          index={index}
+          className="flex w-full gap-[10px] rounded-[12px] bg-background-secondary px-6 py-[20px] hover:brightness-110 md:grid-cols-[100px_1fr] md:gap-[20px] md:p-[20px] md:px-3 "
+        >
+          <Image
             src={image}
             alt="팀 프로필 이미지"
+            width={40}
+            height={40}
             className="h-[40px] w-[40px] rounded-[12px] object-cover md:h-[64px] md:w-[64px]"
           />
+
           <div className="flex flex-col justify-between overflow-hidden md:my-[5px]">
             <p className="mr-[10px] overflow-hidden text-ellipsis whitespace-nowrap text-md-bold md:text-lg-bold">
               {teamName}
@@ -33,8 +43,8 @@ export default function TeamBox({
               최근 활동 : {lastActiveAt}
             </p>
           </div>
-        </div>
+        </SlideItemsMotion>
       </Link>
-    </div>
+    </ul>
   );
 }

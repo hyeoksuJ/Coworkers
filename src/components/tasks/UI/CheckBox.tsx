@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchTask, TaskUrlParams } from '@/src/api/tasks/taskAPI';
 import ActiveCheckBoxIcon from '@icons/checkbox_active.svg';
 import InActiveCheckBoxIcon from '@icons/checkbox_inactive.svg';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import type { TaskRequestBody } from '@/src/types/tasks/taskDto';
 import ClickMotion from '@components/@shared/animation/ClickMotion';
 

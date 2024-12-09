@@ -1,3 +1,5 @@
+import withPWA from 'next-pwa';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -6,27 +8,27 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'i.pinimg.com', // 기존 허용할 외부 도메인
-        port: '', // 특정 포트를 허용하려면 설정
-        pathname: '/**', // 모든 경로를 허용
+        hostname: 'i.pinimg.com',
+        port: '',
+        pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'sprint-fe-project.s3.ap-northeast-2.amazonaws.com', // 추가할 S3 도메인
-        port: '', // 특정 포트를 허용하려면 설정
-        pathname: '/**', // 모든 경로를 허용
+        hostname: 'sprint-fe-project.s3.ap-northeast-2.amazonaws.com',
+        port: '',
+        pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'lh3.googleusercontent.com', // 구글 프로필 이미지 도메인 추가
-        port: '', // 특정 포트를 허용하려면 설정
-        pathname: '/**', // 모든 경로를 허용
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+        pathname: '/**',
       },
       {
         protocol: 'http',
-        hostname: 'k.kakaocdn.net', // 카카오 프로필 이미지 도메인 추가
-        port: '', // 특정 포트를 허용하려면 설정
-        pathname: '/**', // 모든 경로를 허용
+        hostname: 'k.kakaocdn.net',
+        port: '',
+        pathname: '/**',
       },
     ],
   },
@@ -40,4 +42,8 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withPWA({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+})(nextConfig); // withPWA 호출에서 nextConfig을 전달

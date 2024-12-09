@@ -6,7 +6,7 @@ import type { TaskDto } from '@/src/types/tasks/taskDto';
 import { formatTaskCardDate } from '@utils/getFormattedDate';
 import { useRouter } from 'next/router';
 import { useModal } from '@hooks/useModal';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import useDropdownModals from '@hooks/useDropdownModals';
 import Image from 'next/image';
 

@@ -2,7 +2,7 @@ import ArrowDown from 'public/icons/arrow_down.svg';
 import { useModal } from '@hooks/useModal';
 import AddTeamModal from '@components/team/AddTeamModal';
 import { useRouter } from 'next/router';
-import { useTeamStore } from '@/src/stores/teamStore';
+import { useTeamStore } from '@/src/stores/useTeamStore';
 import PCLogo from 'public/images/donut_logo3.png';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
@@ -204,13 +204,13 @@ export default function NavBarTeam({ data }: { data: User }) {
               onSelect={handleSelectTeam}
               triggerClass="flex gap-[12px] items-center text-text-primary"
               triggerIcon={<ArrowDown />}
-              optionsWrapClass="mt-[30px] flex p-[16px] rounded-[12px]"
+              optionsWrapClass="mt-[30px] shadow-[0_2px_10px_rgba(0,0,0,0.5)] flex p-[16px] rounded-[12px]"
               optionClass="px[8px] py-[7px] rounded-[8px] w-[186px] h-[46px]"
             />
             <AddTeamModal isOpen={addIsOpen} onClose={addCloseModal} />
           </div>
           <Link href="/article">
-            <span className="hover:text-brand-primary">자유게시판</span>
+            <span className="hover:text-brand-primary">커뮤니티</span>
           </Link>
         </>
       )}

@@ -1,8 +1,10 @@
 import { useModal } from '@hooks/useModal';
 import Image from 'next/image';
+import { useQueryClient } from '@tanstack/react-query';
+import SlideItemsMotion from '@components/@shared/animation/SlideItemsMotion';
 import GetUserDetailModal from './GetUserDetailModal';
 import ExileDropdown from './ExileDropdown';
-import ExileUserModal from './ExileUserModal';
+import ExileUserModal, { UserData } from './ExileUserModal';
 
 export interface MemberProps {
   role: string;
@@ -10,6 +12,7 @@ export interface MemberProps {
   userEmail: string;
   userName: string;
   userId: number;
+  index: number;
 }
 
 export default function MemberBox({
@@ -18,6 +21,7 @@ export default function MemberBox({
   userImage,
   role,
   userId,
+  index,
 }: MemberProps) {
   const { isOpen, onOpen, onClose } = useModal();
   const {
@@ -25,6 +29,14 @@ export default function MemberBox({
     onOpen: deleteOpenModal,
     onClose: deleteCloseModal,
   } = useModal();
+
+  const queryClient = useQueryClient();
+
+  // 'user' 키로 캐싱된 유저 데이터 가져오기
+  const userData = queryClient.getQueryData<UserData>(['user']);
+
+  // 본인인가?
+  const isSelf = userData && userData.id === userId;
 
   const handleDropdownClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // 클릭 이벤트 전파 방지
@@ -35,12 +47,13 @@ export default function MemberBox({
   };
   return (
     <>
-      <div
+      <SlideItemsMotion
         onClick={onOpen}
+        index={index}
         className="flex h-[68px] cursor-pointer items-center justify-between gap-[10px] rounded-[16px] bg-background-secondary px-[24px] hover:brightness-110 active:brightness-105 md:h-[73px] xl:w-[384px]"
       >
-        <div className="grid grid-cols-[30px_1fr] grid-rows-2 items-center md:grid-cols-[40px_1fr] md:grid-rows-2 md:gap-[5px]">
-          <div className="relative my-auto h-[24px] w-[24px] md:col-span-1 md:row-span-2 md:row-start-1 md:mb-[3px] md:h-[34px] md:w-[34px]">
+        <div className="grid grid-cols-[40px_1fr] grid-rows-2 items-center md:grid-cols-[40px_1fr] md:grid-rows-2 md:gap-[5px]">
+          <div className="relative col-span-1 row-span-2 row-start-1 my-auto mb-[3px] h-6 h-[34px] w-6 w-[34px]">
             <Image
               src={userImage || '/icons/profile_large.svg'}
               alt="프로필 사진"
@@ -49,7 +62,7 @@ export default function MemberBox({
             />
           </div>
 
-          <div className="ml-[4px] flex items-center gap-[2px] overflow-hidden text-ellipsis whitespace-nowrap text-md-medium md:col-start-2 md:row-start-1 md:ml-0">
+          <div className="ml-[4px] flex items-center gap-[4px] overflow-hidden text-ellipsis whitespace-nowrap text-md-medium md:col-start-2 md:row-start-1 md:ml-0">
             {role === 'ADMIN' && (
               <Image
                 src="/images/crown.png"
@@ -69,9 +82,9 @@ export default function MemberBox({
           onClick={handleDropdownClick}
           className="mr-[-10px] w-[20px] cursor-pointer rounded-full hover:bg-[#ffffff1c]"
         >
-          <ExileDropdown onSelect={handleExileClick} />
+          <ExileDropdown onSelect={handleExileClick} isSelf={isSelf} />
         </div>
-      </div>
+      </SlideItemsMotion>
       <GetUserDetailModal
         isOpen={isOpen}
         onClose={onClose}
@@ -85,6 +98,8 @@ export default function MemberBox({
         onClose={deleteCloseModal}
         memberName={userName}
         userId={userId}
+        role={role}
+        isSelf={isSelf}
       />
     </>
   );

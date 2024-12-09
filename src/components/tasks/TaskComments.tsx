@@ -11,7 +11,7 @@ import {
   patchComment,
   CommentUrlParams,
 } from '@/src/api/tasks/commentAPI';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import getSortedDate from '@utils/getSortedDate';
 import getTimeAgo from '@utils/getTimeAgo';
 import ClickMotion from '@components/@shared/animation/ClickMotion';
@@ -222,7 +222,7 @@ export function TaskComments() {
                     <button
                       type="button"
                       onClick={() => setEditingCommentId(undefined)}
-                      className="my-auto h-9 w-14 rounded-md border-[1px] border-background-tertiary bg-text-default px-2 py-1 text-xs-medium text-white hover:border-status-danger hover:bg-status-danger"
+                      className="my-auto h-9 w-14 rounded-md border-[1px] border-background-tertiary bg-text-default px-2 py-1 text-xs-medium text-text-disabled hover:border-status-danger hover:bg-status-danger hover:text-text-inverse"
                     >
                       취소
                     </button>
@@ -230,7 +230,7 @@ export function TaskComments() {
                       type="submit"
                       disabled={!isValid}
                       className={`my-auto h-9 w-14 rounded-md border-[1px] px-2 py-1 text-xs-medium text-white 
-                      ${!isValid ? 'border-background-tertiary bg-text-default ' : 'border-brand-primary bg-brand-primary  hover:bg-brand-secondary'}`}
+                      ${!isValid ? 'border-background-tertiary bg-text-disabled ' : 'border-brand-primary bg-brand-primary  hover:bg-interaction-hover'}`}
                     >
                       수정
                     </button>

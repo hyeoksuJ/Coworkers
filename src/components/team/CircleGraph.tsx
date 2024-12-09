@@ -2,6 +2,7 @@ import {
   calculateCircleProgress,
   calculateCircleViewBox,
 } from '@utils/calculateCircleProgress';
+import { useEffect, useRef } from 'react';
 
 type GraphProps = {
   backgroundColor: string; // 배경 원의 색상
@@ -26,6 +27,8 @@ export default function CircleGraph({
   additionalTextColor,
   isTextShown = false,
 }: GraphProps) {
+  const circleRef = useRef<SVGCircleElement>(null);
+
   const { viewBox, centerX, centerY } = calculateCircleViewBox({
     radius,
     strokeWidth,
@@ -40,6 +43,22 @@ export default function CircleGraph({
   const gradientId = `gradient-${Math.random().toString(36).substr(2, 9)}`;
 
   const boxSize = 2 * (radius + strokeWidth);
+
+  useEffect(() => {
+    if (!circleRef.current) return;
+    if (circleRef.current) {
+      // 초기 애니메이션 효과 설정
+      circleRef.current.style.transition = 'stroke-dashoffset 1s ease-out';
+
+      // 초기에는 가득 채워진 상태에서 시작
+      circleRef.current.style.strokeDashoffset = '100%';
+
+      // 이후 목표 퍼센트에 맞춰 채워지도록 설정
+      requestAnimationFrame(() => {
+        circleRef.current!.style.strokeDashoffset = `${strokeDashoffset}px`;
+      });
+    }
+  }, [strokeDashoffset]);
 
   return (
     <div
@@ -87,6 +106,7 @@ export default function CircleGraph({
           </linearGradient>
         </defs>
         <circle
+          ref={circleRef}
           cx={centerX}
           cy={centerY}
           r={radius}

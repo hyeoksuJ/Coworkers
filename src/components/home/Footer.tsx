@@ -18,19 +18,20 @@ export default function Footer() {
   });
 
   return (
-    <footer className="relative mx-auto h-[500px] w-full px-[60px] md:h-[740px] xl:h-[780px] xl:w-[1080px]">
-      <div className="mt-40 flex w-full flex-col items-center gap-4 text-center text-text-primary md:gap-6">
+    <footer className="relative mx-auto h-[400px] w-full px-8 md:h-[740px]  md:p-6 md:px-[60px] xl:h-[780px] xl:w-[1080px]">
+      <div className="mt-24 flex w-full flex-col items-center gap-4 text-center text-text-primary md:mt-40 md:gap-6">
         <h3 className="text-2xl-semibold md:text-4xl-semibold">
-          지금 바로 시작해보세요
+          당신의 하루를 <span className="text-brand-primary">달콤</span>하게 !
         </h3>
-        <p className=" text-lg-medium md:text-2xl-medium">
-          팀원 모두와 같은 방향,
-          <span className="block md:inline">
-            같은 속도로 나아가는 가장 쉬운 방법
+        <p className="text-lg-medium md:text-2xl-medium">
+          귀여운 도넛과 함께하는 달콤한 일상,
+          <span className="mt-1 block md:inline">
+            팀원들과 <span className="text-brand-primary">목표</span>를 더
+            특별하게 관리해보세요.
           </span>
         </p>
       </div>
-      <div className="relative mx-auto h-[400px] w-full xl:w-[90%]">
+      <div className="relative mx-auto h-[250px] w-full md:mt-16 xl:mt-24 xl:w-[90%]">
         <Image
           src={src}
           alt="하단 배너 협업이미지"
@@ -38,7 +39,7 @@ export default function Footer() {
           className="object-contain"
           quality={100}
         />
-        <div className="absolute top-[210px] flex w-[70%] justify-center xl:top-[200px] xl:w-[650px]">
+        <div className="absolute top-[140px] flex w-[70%] justify-center md:top-[110px] md:w-[500px] xl:left-10 xl:top-[100px]  xl:w-[600px]">
           <ScrollDonutBounceMotion
             delay={0.4}
             className="relative h-full w-full flex-grow"

@@ -10,6 +10,7 @@ export interface ModalClassProps {
   fontSize?: '16' | '14' | '12';
   fontArray?: 'center' | 'left' | 'right';
   gap?: '8' | '24' | '32' | '40';
+  width?: '375' | '500';
 }
 
 export const getModalClass = ({
@@ -17,6 +18,7 @@ export const getModalClass = ({
   array,
   padding,
   gap,
+  width = '375',
   bgColor,
   fontColor,
   fontSize,
@@ -43,5 +45,6 @@ export const getModalClass = ({
     'text-center': fontArray === 'center',
     'text-left': fontArray === 'left',
     'text-right': fontArray === 'right',
+    'md:w-[500px] xl:w-[500px]': width === '500',
   });
 };

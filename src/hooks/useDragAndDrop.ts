@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { QueryClient, UseMutationResult } from '@tanstack/react-query';
-import { TaskListProps, useTeamStore } from '../stores/teamStore';
+import { TaskListProps, useTeamStore } from '../stores/useTeamStore';
 import { TaskListUrlParams } from '../api/tasks/taskListAPI';
 
 export default function useDragAndDrop(

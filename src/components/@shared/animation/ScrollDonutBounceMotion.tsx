@@ -11,10 +11,10 @@ const greetings = [
   '안녕?😗',
   'Hello!',
   'Hi!',
-  '반가워~🖐️',
+  '반가워~',
   '시작해봐!',
-  'XD',
-  '🍩👍',
+  ':-D 🖐️',
+  '냠 🍩',
 ];
 
 export default function ScrollDonutBounceMotion({
@@ -92,7 +92,7 @@ export default function ScrollDonutBounceMotion({
       {children}
       {showBubble && (
         <motion.div
-          className="absolute left-1/3 rounded-md border-[2px] border-text-secondary bg-background-primary px-2 py-2 text-xl-semibold text-xs-medium text-text-primary shadow-md md:px-4 md:text-md-medium xl:text-xl-medium"
+          className="absolute right-1/4 w-3/4 rounded-md border-[1px] border-background-tertiary bg-background-primary px-2 py-2 text-center text-[9px] font-semibold  text-text-secondary shadow-md md:left-1/3 md:border-[2px] md:px-4 md:text-md-medium xl:text-xl-medium"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}

@@ -1,3 +1,4 @@
+import SlideInMotion from '@components/@shared/animation/SlideInMotion';
 import InputTask from '@components/mysetting/inputTask';
 import RemoveAccount from '@components/mysetting/RemoveAccount';
 
@@ -7,9 +8,9 @@ export default function MySetting() {
       <header className="w-full max-w-[792px] text-left text-2lg-bold text-text-primary">
         <span className="ml-6">계정설정</span>
       </header>
-      <div className="w-full max-w-[792px]">
+      <SlideInMotion className="w-full max-w-[792px]">
         <InputTask />
-      </div>
+      </SlideInMotion>
       <footer className="flex w-full max-w-[792px] ">
         <RemoveAccount />
       </footer>

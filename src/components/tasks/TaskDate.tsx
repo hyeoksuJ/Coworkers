@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { formatTaskListDate } from '@utils/getFormattedDate';
 import { useDate } from '@/src/contexts/DateContext';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import BounceTextMotion from '@components/@shared/animation/BounceTextMotion';
 import SlideInMotion from '@components/@shared/animation/SlideInMotion';
 import DatePagination from './UI/DatePagination';

@@ -105,7 +105,7 @@ export default function Dropdown({
         ReactDOM.createPortal(
           <div
             ref={dropdownRef}
-            className={`${optionsWrapClass} absolute z-50 flex max-h-[200px] w-fit flex-col overflow-y-auto bg-background-secondary text-text-primary ${styles.dropdownScroll}`}
+            className={`${optionsWrapClass} absolute z-50 flex max-h-[200px] w-fit flex-col overflow-y-auto bg-background-secondary text-text-primary ${styles.dropdownScroll} animate-fadeInDown`}
           >
             {options.map((option) => (
               <button

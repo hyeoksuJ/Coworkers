@@ -184,9 +184,19 @@ export function AutoTextArea({
         className={`${value ? '' : 'cursor-default'}`}
       >
         {value ? (
-          <img src="/icons/enter_active.svg" alt="비활성화 제출 버튼" />
+          <Image
+            src="/icons/enter_active.svg"
+            alt="활성화 제출 버튼"
+            width={27}
+            height={27}
+          />
         ) : (
-          <img src="/icons/enter_inactive.svg" alt="활성화 제출 버튼" />
+          <Image
+            src="/icons/enter_inactive.svg"
+            alt="비활성화 제출 버튼"
+            width={27}
+            height={27}
+          />
         )}
       </button>
     </form>

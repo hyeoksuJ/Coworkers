@@ -6,9 +6,11 @@ import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import ArrowRightIcon from 'public/icons/arrow_right.svg';
 import NetworkError from '@components/@shared/NetworkError';
+import ButtonMotion from '@components/@shared/animation/ButtonMotion';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import Heart from './Heart';
+import BestSkeletonUI from './Skeleton.tsx/BestSkeletonUI';
 
 interface BestCardProps {
   keyword: string;
@@ -16,7 +18,11 @@ interface BestCardProps {
 
 export default function BestCard({ keyword }: BestCardProps) {
   const [pageSize, setPageSize] = useState(0);
-  const { data: cards, isError } = useCard(1, pageSize, 'like', keyword || '');
+  const {
+    data: cards,
+    isError,
+    isLoading,
+  } = useCard(1, pageSize, 'like', keyword || '');
   const { isMobile, isTablet, isPC } = useViewportSize();
   const router = useRouter();
 
@@ -36,11 +42,11 @@ export default function BestCard({ keyword }: BestCardProps) {
 
   // 에러 상태 처리
   if (isError) {
-    return (
-      <div>
-        <NetworkError />
-      </div>
-    );
+    return <NetworkError />;
+  }
+  // 스켈레톤 ui 추가
+  if (isLoading) {
+    return <BestSkeletonUI />;
   }
 
   const handleLodaMore = () => {
@@ -62,16 +68,18 @@ export default function BestCard({ keyword }: BestCardProps) {
     <>
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-lg-bold md:text-xl-bold">베스트 게시글</h2>
-        <button
-          type="button"
-          className="flex items-center gap-[1px]"
-          onClick={handleLodaMore}
-        >
-          <span className="text-sm text-slate-400 md:text-lg-regular">
-            더보기
-          </span>
-          <ArrowRightIcon />
-        </button>
+        <ButtonMotion>
+          <button
+            type="button"
+            className="flex items-center gap-[1px]"
+            onClick={handleLodaMore}
+          >
+            <span className="text-sm text-slate-400 md:text-lg-regular">
+              더보기
+            </span>
+            <ArrowRightIcon />
+          </button>
+        </ButtonMotion>
       </div>
 
       <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -105,7 +113,7 @@ export default function BestCard({ keyword }: BestCardProps) {
                           width={64}
                           height={64}
                           alt="게시글 이미지"
-                          className="rounded-lg"
+                          className="h-16 w-16 rounded-lg"
                         />
                       </div>
                     </div>
@@ -117,7 +125,7 @@ export default function BestCard({ keyword }: BestCardProps) {
                         width={32}
                         height={32}
                         alt="게시글 이미지"
-                        className="rounded-full"
+                        className="h-8 w-8 rounded-full"
                       />
                       <span className="text-xs-medium md:text-md-medium">
                         {card.writer.nickname}

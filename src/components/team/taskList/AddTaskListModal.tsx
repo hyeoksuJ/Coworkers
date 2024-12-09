@@ -4,7 +4,8 @@ import { Input } from '@components/@shared/Input';
 import { Modal } from '@components/@shared/Modal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { TeamStore } from '@/src/stores/teamStore';
+import useTaskListStorage from '@hooks/team/useTaskListStorage';
+import { TeamStore } from '@/src/stores/useTeamStore';
 import { useValidation } from '@hooks/useValidation';
 import { tagColors } from './tagColors';
 
@@ -19,6 +20,7 @@ export default function AddTaskListModal({
   onClose,
   groupId,
 }: AddTaskListModalProps) {
+  const { updateTaskList } = useTaskListStorage(groupId);
   const [taskListName, setTaskListName] = useState('');
   const newGroupId = Number(groupId);
   const queryClient = useQueryClient();
@@ -78,50 +80,7 @@ export default function AddTaskListModal({
     if (validateValueOnSubmit('taskListName', taskListNames, taskListName)) {
       createTaskList({ id: newGroupId, name: taskListName });
 
-      const taskListData = {
-        name: taskListName,
-        color: selectedColor,
-      };
-      // 로컬 스토리지에서 기존 TaskLists 가져오기 (없으면 빈 배열)
-      const existingTaskListsString = localStorage.getItem(
-        `TaskLists_${newGroupId}`
-      );
-
-      let existingTaskLists = [];
-      if (existingTaskListsString) {
-        try {
-          existingTaskLists = JSON.parse(existingTaskListsString);
-
-          // JSON 파싱 후 배열인지 확인
-          if (!Array.isArray(existingTaskLists)) {
-            existingTaskLists = []; // 배열이 아닐 경우 빈 배열로 초기화
-          }
-        } catch (error) {
-          console.error(
-            '로컬 스토리지에서 TaskLists를 파싱하는 중 오류 발생:',
-            error
-          );
-          existingTaskLists = []; // 파싱 오류 발생 시 빈 배열로 초기화
-        }
-      }
-
-      // 기존 이름과 겹치는지 확인
-      const existingTaskIndex = existingTaskLists.findIndex(
-        (task) => task.name === taskListData.name
-      );
-
-      // 기존 이름이 있는 경우 색상 업데이트, 없으면 새로 추가
-      if (existingTaskIndex !== -1) {
-        existingTaskLists[existingTaskIndex].color = taskListData.color;
-      } else {
-        existingTaskLists.push(taskListData);
-      }
-
-      // 업데이트된 배열을 로컬 스토리지에 저장
-      localStorage.setItem(
-        `TaskLists_${newGroupId}`,
-        JSON.stringify(existingTaskLists)
-      );
+      updateTaskList({ name: taskListName, color: selectedColor });
     }
   };
 

@@ -155,7 +155,6 @@ export default function AddTeamForm() {
   return (
     <form className="flex w-[343px] flex-col gap-10 md:w-[460px]">
       <div className="flex w-[343px] flex-col items-center gap-6 md:w-[460px] md:gap-[80px]">
-        <h1 className="text-2xl-medium xl:text-4xl">팀 생성하기</h1>
         <div className="flex w-full flex-col gap-6">
           <div>
             <div className="mb-3 text-lg-medium">팀 프로필</div>

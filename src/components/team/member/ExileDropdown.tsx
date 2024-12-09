@@ -3,11 +3,21 @@ import Image from 'next/image';
 
 interface ExileDropdownProps {
   onSelect: () => void;
+  isSelf?: boolean;
 }
 
-export default function ExileDropdown({ onSelect }: ExileDropdownProps) {
+export default function ExileDropdown({
+  onSelect,
+  isSelf = false,
+}: ExileDropdownProps) {
   const Option = [
-    { component: <div className="text-point-rose">추방하기</div> },
+    {
+      component: (
+        <div className="text-point-rose">
+          {isSelf ? '탈퇴하기' : '추방하기'}
+        </div>
+      ),
+    },
   ];
 
   const moreIcon = (

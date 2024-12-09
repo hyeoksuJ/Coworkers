@@ -1,5 +1,5 @@
 import { useModal } from '@hooks/useModal';
-import { useTaskListStore } from '@/src/stores/taskListStore';
+import { useTaskListStore } from '@/src/stores/useTaskListStore';
 import { useDate } from '@/src/contexts/DateContext';
 import ClickMotion from '@components/@shared/animation/ClickMotion';
 import Button from '@components/@shared/Button';

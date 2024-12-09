@@ -1,8 +1,10 @@
 // 게시글 메인 페이지
+import SlideInMotion from '@components/@shared/animation/SlideInMotion';
 import Button from '@components/@shared/Button';
 import { SearchInput } from '@components/@shared/Input';
 import ArticleCard from '@components/article/ArticleCard';
 import BestCard from '@components/article/BestCard';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import PlusIcon from 'public/icons/plus.svg';
 import { useEffect, useState } from 'react';
@@ -11,6 +13,7 @@ export default function ArticlePage() {
   const [value, setValue] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
+  const [isVisible, setIsVisible] = useState(false);
 
   const handelNewArticle = () => {
     router.push('/article/newarticle');
@@ -37,18 +40,53 @@ export default function ArticlePage() {
     }
   }, [router.query.q]);
 
+  const handleVisibleClick = () => {
+    if (isVisible === false) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  };
+
   return (
     <div className="mx-4 mt-8 max-w-[1200px] xl:mx-auto">
-      <header className="mb-6">
-        <h1 className="mb-6 text-2lg-bold md:text-2xl-bold">자유 게시판</h1>
-        <SearchInput
-          placeholder="검색어를 입력해주세요"
-          inputProps={{
-            onChange: handleChange,
-            onKeyDown: handleKeyDown,
-            value,
-          }}
-        />
+      <header className="mb-10">
+        <h1 className="mb-6 text-2lg-bold text-brand-primary md:text-2xl-bold md:text-text-primary">
+          커뮤니티
+        </h1>
+        <div className="mb-2 flex items-center gap-2">
+          <Image
+            src="/icons/question.svg"
+            alt="물음표 아이콘"
+            width={17}
+            height={17}
+            quality={100}
+            onClick={handleVisibleClick}
+            className="cursor-pointer rounded-[16px] object-contain hover:scale-110"
+          />
+          {isVisible && (
+            <>
+              <p className="hidden text-md-regular text-brand-primary md:block">
+                일정을 함께 관리할 팀원을 모집하거나, 자유롭게 글을 작성할 수
+                있습니다.
+              </p>
+              <div className="absolute·left-[110px]·top-[120px]·z-10·w-fit·animate-fadeInDown rounded-[6px] bg-background-tertiary p-2 text-sm-semibold text-brand-primary md:hidden">
+                일정을 함께 관리할 팀원을 모집하거나, <br />
+                자유롭게 글을 작성할 수 있습니다.
+              </div>
+            </>
+          )}
+        </div>
+        <SlideInMotion>
+          <SearchInput
+            placeholder="검색어를 입력해주세요"
+            inputProps={{
+              onChange: handleChange,
+              onKeyDown: handleKeyDown,
+              value,
+            }}
+          />
+        </SlideInMotion>
       </header>
       <main>
         <BestCard keyword={searchTerm} />

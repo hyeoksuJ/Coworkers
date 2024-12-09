@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import dayjs from 'dayjs';
+import SlideInMotion from '@components/@shared/animation/SlideInMotion';
 import Dropdown, { Option } from '@components/@shared/Dropdown';
 import { useModal } from '@hooks/useModal';
 import { useUserData } from '@hooks/mysetting/useUserData';
@@ -179,7 +180,7 @@ export default function CommentList() {
   return (
     <>
       {comments.map((comment) => (
-        <div key={comment.id}>
+        <SlideInMotion key={comment.id}>
           {isEditing !== comment.id ? (
             <article className="mb-4 rounded-xl bg-background-secondary">
               <div className="flex flex-col gap-12 px-6 py-5 ">
@@ -200,7 +201,7 @@ export default function CommentList() {
                         comment.content
                       )}
                       triggerIcon={<SmallKebabIcon />}
-                      optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
+                      optionsWrapClass="mt-2 shadow-[0_2px_10px_rgba(0,0,0,0.5)]  right-0 rounded-[12px] border border-background-tertiary"
                       optionClass="rounded-[12px] md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
                     />
                   </div>
@@ -272,7 +273,7 @@ export default function CommentList() {
               </div>
             </article>
           )}
-        </div>
+        </SlideInMotion>
       ))}
 
       <div

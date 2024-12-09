@@ -1,3 +1,4 @@
+import SlideInMotion from '@components/@shared/animation/SlideInMotion';
 import Button from '@components/@shared/Button';
 import { Input, ScrollTextArea } from '@components/@shared/Input';
 import { Modal } from '@components/@shared/Modal';
@@ -61,40 +62,46 @@ export default function NewArticle() {
           <span className="text-md-medium md:text-lg-medium">
             <span className="text-brand-tertiary">*</span> 제목
           </span>
-          <Input
-            placeholder="이름을 입력해주세요"
-            inputProps={{
-              value: title,
-              onChange: handleTitleChange,
-            }}
-            isError={isTitleError}
-            errorMessage="제목은 50자 내외입니다."
-          />
+          <SlideInMotion>
+            <Input
+              placeholder="이름을 입력해주세요"
+              inputProps={{
+                value: title,
+                onChange: handleTitleChange,
+              }}
+              isError={isTitleError}
+              errorMessage="제목은 50자 내외입니다."
+            />
+          </SlideInMotion>
         </div>
         <div>
           <span className="text-md-medium md:text-lg-medium">
             <span className="text-brand-tertiary">*</span> 내용
           </span>
-          <ScrollTextArea
-            placeholder="내용을 입력해주세요."
-            textareaProps={{
-              value: content,
-              onChange: handleContentChange,
-            }}
-            isError={isContentError}
-            errorMessage="내용은 2000자 내외입니다."
-          />
+          <SlideInMotion>
+            <ScrollTextArea
+              placeholder="내용을 입력해주세요."
+              textareaProps={{
+                value: content,
+                onChange: handleContentChange,
+              }}
+              isError={isContentError}
+              errorMessage="내용은 2000자 내외입니다."
+            />
+          </SlideInMotion>
         </div>
         <div>
           <h2 className="mb-4 text-md-medium md:text-lg-medium">이미지</h2>
-          <ArticleImageInput onUploadSuccess={handleImageChange} />
+          <SlideInMotion>
+            <ArticleImageInput onUploadSuccess={handleImageChange} />
+          </SlideInMotion>
         </div>
 
-        <div className="md:hidden">
+        <SlideInMotion className="md:hidden">
           <Button size="full" onClick={handleSubmit}>
             등록
           </Button>
-        </div>
+        </SlideInMotion>
 
         <Modal
           isOpen={isOpen}

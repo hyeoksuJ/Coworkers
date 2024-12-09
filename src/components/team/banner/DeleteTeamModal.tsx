@@ -1,5 +1,5 @@
 import { deleteGroupById } from '@/src/api/team/teamAPI';
-import { useTeamStore } from '@/src/stores/teamStore';
+import { useTeamStore } from '@/src/stores/useTeamStore';
 import Button from '@components/@shared/Button';
 import { Modal } from '@components/@shared/Modal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -76,11 +76,7 @@ export default function DeleteTeamModal({
             width={24}
             height={24}
           />
-          {isAdmin ? (
-            <span>목록을 삭제하시겠어요?</span>
-          ) : (
-            <span>권한 없음</span>
-          )}
+          {isAdmin ? <span>팀을 삭제하시겠어요?</span> : <span>권한 없음</span>}
         </Modal.Header>
         <Modal.Content fontColor="secondary" fontSize="14" fontArray="center">
           {isAdmin && (

@@ -4,6 +4,7 @@ import { useDetailCard } from '@hooks/article/useCommentAdd';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import SlideInMotion from '@components/@shared/animation/SlideInMotion';
 import NetworkError from '@components/@shared/NetworkError';
 import Dropdown, { Option } from '@components/@shared/Dropdown';
 import { useUserData } from '@hooks/mysetting/useUserData';
@@ -85,7 +86,7 @@ export default function DetailCard() {
           <span className="text-lg-medium md:text-2lg-medium">
             {data?.title}
           </span>
-          <div
+          <SlideInMotion
             className={clsx({
               hidden: data?.writer.id !== UserData?.id,
               block: data?.writer.id === UserData?.id,
@@ -94,13 +95,13 @@ export default function DetailCard() {
             <Dropdown
               options={basic}
               triggerIcon={<LargeKebabIcon />}
-              optionsWrapClass="mt-2 right-0 rounded-[12px] border border-background-tertiary"
+              optionsWrapClass="mt-2 right-0 rounded-[12px] shadow-[0_2px_10px_rgba(0,0,0,0.5)] border border-background-tertiary"
               optionClass="rounded-[12px] md:w-[135px] md:h-[47px] w-[120px] h-[40px] justify-center text-md-regular md:text-lg-regular text-center hover:bg-background-tertiary"
             />
-          </div>
+          </SlideInMotion>
         </div>
         <hr className="my-4 opacity-10" />
-        <div className="flex items-center justify-between">
+        <SlideInMotion className="flex items-center justify-between">
           <div className="flex items-center">
             <span className="ml-[6px] mr-2 border-r-[1px] border-slate-700/60 pr-2  text-xs-medium text-text-primary md:text-md-medium ">
               {data?.writer.nickname}
@@ -123,9 +124,9 @@ export default function DetailCard() {
               </span>
             </div>
           </div>
-        </div>
+        </SlideInMotion>
       </header>
-      <div className="flex flex-col">
+      <SlideInMotion className="flex flex-col">
         <div className="mb-4 flex justify-center md:justify-start">
           <div className=" relative h-[200px] w-[200px] md:h-[240px] md:w-[240px] ">
             <Image
@@ -141,7 +142,7 @@ export default function DetailCard() {
             {data?.content}
           </p>
         </div>
-      </div>
+      </SlideInMotion>
       <div className="flex flex-col justify-between">
         <CommentForm articleId={Number(articleId)} />
       </div>
