@@ -77,7 +77,7 @@ export default function Heart({ articleId }: HeartProps) {
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
-            className="fixed bottom-1/2 left-1/2"
+            className="fixed bottom-1/2 left-1/2 -translate-x-1/2 translate-y-1/2 transform md:left-1/2"
           >
             <Image
               alt="하트 클릭 애니메이션"
